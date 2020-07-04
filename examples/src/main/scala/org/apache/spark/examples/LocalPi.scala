@@ -21,14 +21,19 @@ package org.apache.spark.examples
 import scala.math.random
 
 object LocalPi {
+  private val s: Long = System.currentTimeMillis()
+
   def main(args: Array[String]): Unit = {
     var count = 0
-    for (i <- 1 to 100000) {
+    val size = 10000000
+    for (i <- 1 to size) {
       val x = random * 2 - 1
       val y = random * 2 - 1
       if (x*x + y*y <= 1) count += 1
     }
-    println(s"Pi is roughly ${4 * count / 100000.0}")
+
+    println("time is " + (System.currentTimeMillis()-s)/1000.0 + "s")
+    println(s"Pi is roughly ${4 * count /size.toDouble}")
   }
 }
 // scalastyle:on println
