@@ -47,7 +47,7 @@ object SparkPi {
       if (x * x + y * y <= 1) 1 else 0
     }.reduce(_ + _)
     val ret = paraRDD.mapPartitions { data =>
-      JavaPiMPI.HelloMPI(2)
+//      JavaPiMPI.HelloMPI(2)
       data
     }
     ret.collect()
