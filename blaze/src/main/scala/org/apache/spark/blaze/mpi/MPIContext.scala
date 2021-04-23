@@ -17,7 +17,10 @@
 
 package org.apache.spark.blaze.mpi
 
+import java.net.URI
+
 import org.apache.hadoop.conf.Configuration
+
 import org.apache.spark.{ContextCleaner, ExecutorAllocationManager, Heartbeater, SparkConf, SparkEnv, SparkStatusTracker}
 import org.apache.spark.internal.plugin.PluginContainer
 import org.apache.spark.resource.ResourceInformation
@@ -28,7 +31,6 @@ import org.apache.spark.status.AppStatusStore
 import org.apache.spark.ui.{ConsoleProgressBar, SparkUI}
 import org.apache.spark.util.logging.DriverLogger
 
-import java.net.URI
 
 class MPIContext {
 
@@ -74,4 +76,10 @@ class MPIContext {
   private var _plugins: Option[PluginContainer] = None
 
 
+}
+
+object MPIContext {
+  def getOrCreate(sparkconf: SparkConf): MPIContext = {
+    new MPIContext
+  }
 }

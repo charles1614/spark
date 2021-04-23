@@ -18,13 +18,15 @@
 package org.apache.spark.blaze
 
 import java.io.Closeable
-import org.apache.spark.{SPARK_VERSION, SparkContext, TaskContext}
-import org.apache.spark.annotation.{DeveloperApi, Unstable}
+
+import scala.collection.mutable
+
+import org.apache.spark.{SPARK_VERSION, SparkConf, SparkContext, TaskContext}
+import org.apache.spark.annotation.DeveloperApi
 import org.apache.spark.blaze.mpi.MPIContext
 import org.apache.spark.internal.Logging
 import org.apache.spark.util.{CallSite, Utils}
 
-import scala.collection.mutable
 
 /**
  * The entry point to programming Spark with MPI extensions
@@ -32,7 +34,7 @@ import scala.collection.mutable
 
 @DeveloperApi
 class BlazeSession private(
-                            @transient val sparkContext: SparkContext,
+                            @transient val sparkContext: SparkContext)(
                             @transient val mpiContext: MPIContext,
                           ) extends Serializable with Closeable with Logging {
 
@@ -86,18 +88,18 @@ object BlazeSession extends Logging {
     private[this] var userSuppliedSparkContext: Option[SparkContext] = None
     private[this] var userSuppliedMPIContext: Option[MPIContext] = None
 
-    private[spark] def sparkContest(sparkContext: SparkContext) : Builder = synchronized {
+    private[spark] def sparkContest(sparkContext: SparkContext): Builder = synchronized {
       userSuppliedSparkContext = Option(sparkContext)
       this
     }
 
-    private[spark] def MPIContext(mpiContext: MPIContext) : Builder = synchronized{
+    private[spark] def mpiContext(mpiContext: MPIContext): Builder = synchronized {
       userSuppliedMPIContext = Option(mpiContext)
       this
     }
 
     private[this] def config(key: String, value: String): Builder = synchronized {
-      options + (key, value)
+      options += key -> value
       this
     }
 
@@ -127,20 +129,30 @@ object BlazeSession extends Logging {
      */
 
     def getOrCreate(): BlazeSession = {
+      val sparkConf = new SparkConf()
 
       assertOnDriver()
-      new BlazeSession(userSuppliedMPIContext, userSuppliedSparkContext)
-
+      val mpicontext: MPIContext = userSuppliedMPIContext.getOrElse {
+        if (!sparkConf.contains("spark.app.name")) {
+          sparkConf.setAppName(java.util.UUID.randomUUID().toString)
+        }
+        MPIContext.getOrCreate(sparkConf)
+      }
+      val sparkcontext: SparkContext = userSuppliedSparkContext.getOrElse {
+        if (!sparkConf.contains("spark.app.name")) {
+          sparkConf.setAppName(java.util.UUID.randomUUID().toString)
+        }
+        SparkContext.getOrCreate(sparkConf)
+      }
+      new BlazeSession(sparkcontext)(mpicontext)
     }
-
-
   }
 
-  /**
-   *  Create [[BlazeSession.Builder]] for constructing a  [[BlazeSession]]
-   */
-  def builder: Builder = {
-    new Builder()
-  }
+    /**
+     * Create [[BlazeSession.Builder]] for constructing a  [[BlazeSession]]
+     */
+    def builder: Builder = {
+      new Builder()
+    }
 
 }
