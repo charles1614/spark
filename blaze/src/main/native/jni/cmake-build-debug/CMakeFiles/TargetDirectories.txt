@@ -1,0 +1,3 @@
+/home/xialb/opt/spark/blaze/src/main/native/jni/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/xialb/opt/spark/blaze/src/main/native/jni/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/xialb/opt/spark/blaze/src/main/native/jni/cmake-build-debug/CMakeFiles/blaze.dir

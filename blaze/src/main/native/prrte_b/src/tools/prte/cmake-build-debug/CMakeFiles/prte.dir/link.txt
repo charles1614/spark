@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC -g -shared -Wl,-soname,libprte.so -o libprte.so CMakeFiles/prte.dir/org_apache_spark_blaze_MPILauncher.c.o 

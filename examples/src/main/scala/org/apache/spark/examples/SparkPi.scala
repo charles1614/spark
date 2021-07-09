@@ -19,25 +19,62 @@
 package org.apache.spark.examples
 
 import scala.math.random
-
-import org.apache.spark.sql.SparkSession
+import mpi.{MPI, MPIException}
+import org.apache.spark.SparkConf
+import org.apache.spark.blaze.BlazeSession
+import org.apache.spark.blaze.NativeUtils.{getEnv, test}
 
 /** Computes an approximation to pi */
 object SparkPi {
+
+  @throws[MPIException]
+  private def mpiop(mpargs: Array[String]): Unit = {
+
+
+//    MPI.Init(mpargs)
+//    val myrank = MPI.COMM_WORLD.getRank
+//    val size = MPI.COMM_WORLD.getSize
+//    System.out.println("Hello world from rank " + myrank + " size of " + size)
+//    MPI.Finalize()
+  }
+
   def main(args: Array[String]): Unit = {
-    val spark = SparkSession
+//    val spark = SparkSession
+//      .builder
+//      .appName("Spark Pi")
+//      .getOrCreate()
+
+    val conf = new SparkConf().set("spark.master", "spark://192.168.32.197:7077");
+
+    val blaze = BlazeSession
       .builder
-      .appName("Spark Pi")
+      .appName("blazePi")
+//      .config(conf)
+      .master("local[*]")
+//      .master("spark://192.168.32.197:7077")
       .getOrCreate()
+
+//    getEnv()
+    // transfer an jar file
+//    val run = new MpiRun;
+//    val app = Array[String]("prun", "hostname")
+//    run.exec(app);
+//    mpiop(args);
+
     val slices = if (args.length > 0) args(0).toInt else 2
     val n = math.min(100000L * slices, Int.MaxValue).toInt // avoid overflow
-    val count = spark.sparkContext.parallelize(1 until n, slices).map { i =>
+    val count = blaze.sparkContext.parallelize(1 until n, slices).map { i =>
+//      mpiop(args)
       val x = random * 2 - 1
       val y = random * 2 - 1
       if (x*x + y*y <= 1) 1 else 0
     }.reduce(_ + _)
+
+//    blaze.sparkContext.parallelize(1 until 3, slices).map(i => mpiop(args)).collect()
+    blaze.mpiContext.parallelize(1 until 3, slices).map(i => mpiop(args)).collect()
+    mpiop(args);
     println(s"Pi is roughly ${4.0 * count / (n - 1)}")
-    spark.stop()
+    blaze.stop()
   }
 }
 // scalastyle:on println

@@ -139,7 +139,17 @@
             <artifactId>selenium-htmlunit-driver</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.open-mpi</groupId>
+            <artifactId>java</artifactId>
+            <version>5.0.1</version>
+        </dependency>
+
     </dependencies>
+
+
+
+
     <build>
         <outputDirectory>target/scala-${scala.binary.version}/classes</outputDirectory>
         <testOutputDirectory>target/scala-${scala.binary.version}/test-classes</testOutputDirectory>

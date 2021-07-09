@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC -g -shared -Wl,-soname,libblaze.so -o libblaze.so CMakeFiles/blaze.dir/org_apache_spark_blaze_MPILauncher.c.o CMakeFiles/blaze.dir/prte.c.o CMakeFiles/blaze.dir/prun.c.o  /opt/deps/pmix/lib/libpmix.so /opt/deps/prrte/lib/libprrte.so /usr/lib/libevent_core-2.1.so.7 /usr/lib/libevent_pthreads-2.1.so.7 /usr/lib/libpthread.so.0 -lpmix -lprrte -levent 

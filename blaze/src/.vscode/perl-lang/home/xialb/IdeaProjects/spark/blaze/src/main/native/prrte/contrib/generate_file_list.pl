@@ -1,0 +1,1 @@
+{"vars":[{"containerName":null,"line":24,"name":"@file_name","kind":13},{"line":25,"name":"FILE","kind":12},{"kind":12,"name":"TEMP","line":26},{"name":"FILE","line":27,"kind":12},{"name":"TEMP","line":30,"kind":12},{"kind":12,"line":33,"name":"TEMP"},{"kind":13,"name":"$file_name","line":34,"containerName":null}],"version":4}

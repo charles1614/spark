@@ -31,11 +31,10 @@ import org.apache.spark.util.{CallSite, Utils}
 /**
  * The entry point to programming Spark with MPI extensions
  */
-
 @DeveloperApi
 class BlazeSession private(
                             @transient val sparkContext: SparkContext)(
-                            @transient val mpiContext: MPIContext,
+                            @transient val mpiContext: MPIContext
                           ) extends Serializable with Closeable with Logging {
 
   private val creationCallSite: CallSite = Utils.getCallSite()
@@ -49,24 +48,8 @@ class BlazeSession private(
  * ----------------------- */
 
   /**
-   * State shared across sessions, including the `SparkContext`, cached data, listener,
-   * and a catalog that interacts with external systems.
-   *
-   * This is internal to Spark and there is no guarantee on interface stability.
-   *
-   * @since 2.2.0
-   */
-  //  @Unstable
-  //  @transient
-  //  lazy val sharedState: SharedState = {
-  //    existingSharedState.getOrElse(new SharedState(sparkContext, initialSessionOptions))
-  //  }
-
-
-  /**
    * stop underlying sparkContext
    */
-
   def stop(): Unit = {
     sparkContext.stop()
     mpiContext.stop()
@@ -88,7 +71,7 @@ object BlazeSession extends Logging {
     private[this] var userSuppliedSparkContext: Option[SparkContext] = None
     private[this] var userSuppliedMPIContext: Option[MPIContext] = None
 
-    private[spark] def sparkContest(sparkContext: SparkContext): Builder = synchronized {
+    private[spark] def sparkContext(sparkContext: SparkContext): Builder = synchronized {
       userSuppliedSparkContext = Option(sparkContext)
       this
     }
@@ -98,10 +81,68 @@ object BlazeSession extends Logging {
       this
     }
 
-    private[this] def config(key: String, value: String): Builder = synchronized {
+
+    /**
+     * Sets a config option. Options set using this method are automatically propagated to
+     * both `SparkConf` and SparkSession's own configuration.
+     *
+     * @since 2.0.0
+     */
+    def config(key: String, value: String): Builder = synchronized {
       options += key -> value
       this
     }
+
+    /**
+     * Sets a config option. Options set using this method are automatically propagated to
+     * both `SparkConf` and SparkSession's own configuration.
+     *
+     * @since 2.0.0
+     */
+    def config(key: String, value: Long): Builder = synchronized {
+      options += key -> value.toString
+      this
+    }
+
+    /**
+     * Sets a config option. Options set using this method are automatically propagated to
+     * both `SparkConf` and SparkSession's own configuration.
+     *
+     * @since 2.0.0
+     */
+    def config(key: String, value: Double): Builder = synchronized {
+      options += key -> value.toString
+      this
+    }
+
+    /**
+     * Sets a config option. Options set using this method are automatically propagated to
+     * both `SparkConf` and SparkSession's own configuration.
+     *
+     * @since 2.0.0
+     */
+    def config(key: String, value: Boolean): Builder = synchronized {
+      options += key -> value.toString
+      this
+    }
+
+    /**
+     * Sets a list of config options based on the given `SparkConf`.
+     *
+     * @since 2.0.0
+     */
+    def config(conf: SparkConf): Builder = synchronized {
+      conf.getAll.foreach { case (k, v) => options += k -> v }
+      this
+    }
+
+    /**
+     * Sets the Spark master URL to connect to, such as "local" to run locally, "local[4]" to
+     * run locally with 4 cores, or "spark://master:7077" to run on a Spark standalone cluster.
+     *
+     * @since 2.0.0
+     */
+    def master(master: String): Builder = config("spark.master", master)
 
     def appName(name: String): Builder = config("blaze.app.name", name)
 
@@ -127,32 +168,36 @@ object BlazeSession extends Logging {
      * In case an existing BlazeSession is returned, the non-static config options specified
      * in this builder will be applied to the existing BlazeSession.
      */
-
     def getOrCreate(): BlazeSession = {
       val sparkConf = new SparkConf()
 
+      options.foreach { case (k, v) => sparkConf.set(k, v ) }
+
       assertOnDriver()
-      val mpicontext: MPIContext = userSuppliedMPIContext.getOrElse {
-        if (!sparkConf.contains("spark.app.name")) {
-          sparkConf.setAppName(java.util.UUID.randomUUID().toString)
-        }
-        MPIContext.getOrCreate(sparkConf)
-      }
+
       val sparkcontext: SparkContext = userSuppliedSparkContext.getOrElse {
         if (!sparkConf.contains("spark.app.name")) {
           sparkConf.setAppName(java.util.UUID.randomUUID().toString)
         }
         SparkContext.getOrCreate(sparkConf)
       }
+
+      val mpicontext: MPIContext = userSuppliedMPIContext.getOrElse {
+        if (!sparkConf.contains("spark.app.name")) {
+          sparkConf.setAppName(java.util.UUID.randomUUID().toString)
+        }
+        MPIContext.getOrCreate(sparkConf, sparkcontext)
+      }
+
       new BlazeSession(sparkcontext)(mpicontext)
     }
   }
 
-    /**
-     * Create [[BlazeSession.Builder]] for constructing a  [[BlazeSession]]
-     */
-    def builder: Builder = {
-      new Builder()
-    }
+  /**
+   * Create [[BlazeSession.Builder]] for constructing a  [[BlazeSession]]
+   */
+  def builder: Builder = {
+    new Builder()
+  }
 
 }
