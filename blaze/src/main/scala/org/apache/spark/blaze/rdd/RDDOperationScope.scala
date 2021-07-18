@@ -3,14 +3,12 @@
 package org.apache.spark.blaze.rdd
 
 import java.util.concurrent.atomic.AtomicInteger
-
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.annotation.{JsonInclude, JsonPropertyOrder}
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
-
 import org.apache.spark.SparkContext
-import org.apache.spark.blaze.mpi.MPIContext
+import org.apache.spark.blaze.ompi.MPIContext
 import org.apache.spark.internal.Logging
 
 

@@ -25,4 +25,4 @@ fi
 
 . "${SPARK_HOME}/sbin/spark-config.sh"
 
-"${SPARK_HOME}/sbin"/spark-daemon.sh stop org.apache.spark.deploy.master.Master 1
+"${SPARK_HOME}/sbin"/spark-daemon.sh stop org.apache.spark.blaze.deploy.master.Master 1

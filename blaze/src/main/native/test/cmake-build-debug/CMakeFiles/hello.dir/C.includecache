@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/xialb/opt/spark/blaze/src/main/native/test/hello.c
+stdio.h
+-
+pmix_common.h
+-
+fcntl.h
+-
+mpi.h
+/home/xialb/opt/spark/blaze/src/main/native/test/mpi.h
+

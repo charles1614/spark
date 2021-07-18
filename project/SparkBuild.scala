@@ -271,7 +271,7 @@ object SparkBuild extends PomBuild {
       "-skip-packages", Seq(
         "org.apache.spark.api.python",
         "org.apache.spark.network",
-        "org.apache.spark.deploy",
+        "org.apache.spark.org.apache.spark.blaze.deploy",
         "org.apache.spark.util.collection"
       ).mkString(":"),
       "-doc-title", "Spark " + version.value.replaceAll("-SNAPSHOT", "") + " ScalaDoc"
@@ -415,7 +415,7 @@ object SparkBuild extends PomBuild {
       val args = Seq("--packages", packages, "--class", className, (Keys.`package` in Compile in LocalProject("core"))
         .value.getCanonicalPath) ++ otherArgs
       println(args)
-      scalaRun.run("org.apache.spark.deploy.SparkSubmit", classpath.map(_.data), args, streams.value.log)
+      scalaRun.run("org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmit", classpath.map(_.data), args, streams.value.log)
     },
 
     javaOptions in Compile += "-Dspark.master=local",
@@ -825,7 +825,7 @@ object Unidoc {
   private def ignoreUndocumentedPackages(packages: Seq[Seq[File]]): Seq[Seq[File]] = {
     packages
       .map(_.filterNot(_.getName.contains("$")))
-      .map(_.filterNot(_.getCanonicalPath.contains("org/apache/spark/deploy")))
+      .map(_.filterNot(_.getCanonicalPath.contains("org/apache/spark/org.apache.spark.blaze.deploy")))
       .map(_.filterNot(_.getCanonicalPath.contains("org/apache/spark/examples")))
       .map(_.filterNot(_.getCanonicalPath.contains("org/apache/spark/internal")))
       .map(_.filterNot(_.getCanonicalPath.contains("org/apache/spark/memory")))

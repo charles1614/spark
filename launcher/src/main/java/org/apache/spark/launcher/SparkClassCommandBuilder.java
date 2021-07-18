@@ -50,19 +50,19 @@ class SparkClassCommandBuilder extends AbstractCommandBuilder {
     // Master, Worker, HistoryServer, ExternalShuffleService, MesosClusterDispatcher use
     // SPARK_DAEMON_JAVA_OPTS (and specific opts) + SPARK_DAEMON_MEMORY.
     switch (className) {
-      case "org.apache.spark.deploy.master.Master":
+      case "org.apache.spark.blaze.deploy.master.Master":
         javaOptsKeys.add("SPARK_DAEMON_JAVA_OPTS");
         javaOptsKeys.add("SPARK_MASTER_OPTS");
         extraClassPath = getenv("SPARK_DAEMON_CLASSPATH");
         memKey = "SPARK_DAEMON_MEMORY";
         break;
-      case "org.apache.spark.deploy.worker.Worker":
+      case "org.apache.spark.blaze.deploy.worker.Worker":
         javaOptsKeys.add("SPARK_DAEMON_JAVA_OPTS");
         javaOptsKeys.add("SPARK_WORKER_OPTS");
         extraClassPath = getenv("SPARK_DAEMON_CLASSPATH");
         memKey = "SPARK_DAEMON_MEMORY";
         break;
-      case "org.apache.spark.deploy.history.HistoryServer":
+      case "org.apache.spark.blaze.deploy.history.HistoryServer":
         javaOptsKeys.add("SPARK_DAEMON_JAVA_OPTS");
         javaOptsKeys.add("SPARK_HISTORY_OPTS");
         extraClassPath = getenv("SPARK_DAEMON_CLASSPATH");
@@ -78,13 +78,13 @@ class SparkClassCommandBuilder extends AbstractCommandBuilder {
         memKey = "SPARK_EXECUTOR_MEMORY";
         extraClassPath = getenv("SPARK_EXECUTOR_CLASSPATH");
         break;
-      case "org.apache.spark.deploy.mesos.MesosClusterDispatcher":
+      case "org.apache.spark.blaze.deploy.mesos.MesosClusterDispatcher":
         javaOptsKeys.add("SPARK_DAEMON_JAVA_OPTS");
         extraClassPath = getenv("SPARK_DAEMON_CLASSPATH");
         memKey = "SPARK_DAEMON_MEMORY";
         break;
-      case "org.apache.spark.deploy.ExternalShuffleService":
-      case "org.apache.spark.deploy.mesos.MesosExternalShuffleService":
+      case "org.apache.spark.blaze.deploy.ExternalShuffleService":
+      case "org.apache.spark.blaze.deploy.mesos.MesosExternalShuffleService":
         javaOptsKeys.add("SPARK_DAEMON_JAVA_OPTS");
         javaOptsKeys.add("SPARK_SHUFFLE_OPTS");
         extraClassPath = getenv("SPARK_DAEMON_CLASSPATH");

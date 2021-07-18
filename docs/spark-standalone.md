@@ -21,7 +21,7 @@ license: |
 * This will become a table of contents (this text will be scraped).
 {:toc}
 
-In addition to running on the Mesos or YARN cluster managers, Spark also provides a simple standalone deploy mode. You can launch a standalone cluster either manually, by starting a master and workers by hand, or use our provided [launch scripts](#cluster-launch-scripts). It is also possible to run these daemons on a single machine for testing.
+In addition to running on the Mesos or YARN cluster managers, Spark also provides a simple standalone org.apache.spark.blaze.deploy mode. You can launch a standalone cluster either manually, by starting a master and workers by hand, or use our provided [launch scripts](#cluster-launch-scripts). It is also possible to run these daemons on a single machine for testing.
 
 # Security
 
@@ -97,7 +97,7 @@ Note, the master machine accesses each of the worker machines via ssh. By defaul
 If you do not have a password-less setup, you can set the environment variable SPARK_SSH_FOREGROUND and serially provide a password for each worker.
 
 
-Once you've set up this file, you can launch or stop your cluster with the following shell scripts, based on Hadoop's deploy scripts, and available in `SPARK_HOME/sbin`:
+Once you've set up this file, you can launch or stop your cluster with the following shell scripts, based on Hadoop's org.apache.spark.blaze.deploy scripts, and available in `SPARK_HOME/sbin`:
 
 - `sbin/start-master.sh` - Starts a master instance on the machine the script is executed on.
 - `sbin/start-slaves.sh` - Starts a worker instance on each machine specified in the `conf/slaves` file.
@@ -187,7 +187,7 @@ SPARK_MASTER_OPTS supports the following system properties:
 <table class="table">
 <tr><th>Property Name</th><th>Default</th><th>Meaning</th><th>Since Version</th></tr>
 <tr>
-  <td><code>spark.deploy.retainedApplications</code></td>
+  <td><code>spark.org.apache.spark.blaze.deploy.retainedApplications</code></td>
   <td>200</td>
   <td>
     The maximum number of completed applications to display. Older applications will be dropped from the UI to maintain this limit.<br/>
@@ -195,7 +195,7 @@ SPARK_MASTER_OPTS supports the following system properties:
   <td>0.8.0</td>
 </tr>
 <tr>
-  <td><code>spark.deploy.retainedDrivers</code></td>
+  <td><code>spark.org.apache.spark.blaze.deploy.retainedDrivers</code></td>
   <td>200</td>
   <td>
    The maximum number of completed drivers to display. Older drivers will be dropped from the UI to maintain this limit.<br/>
@@ -203,7 +203,7 @@ SPARK_MASTER_OPTS supports the following system properties:
   <td>1.1.0</td>
 </tr>
 <tr>
-  <td><code>spark.deploy.spreadOut</code></td>
+  <td><code>spark.org.apache.spark.blaze.deploy.spreadOut</code></td>
   <td>true</td>
   <td>
     Whether the standalone cluster manager should spread applications out across nodes or try
@@ -213,7 +213,7 @@ SPARK_MASTER_OPTS supports the following system properties:
   <td>0.6.1</td>
 </tr>
 <tr>
-  <td><code>spark.deploy.defaultCores</code></td>
+  <td><code>spark.org.apache.spark.blaze.deploy.defaultCores</code></td>
   <td>(infinite)</td>
   <td>
     Default number of cores to give to applications in Spark's standalone mode if they don't
@@ -225,16 +225,16 @@ SPARK_MASTER_OPTS supports the following system properties:
   <td>0.9.0</td>
 </tr>
 <tr>
-  <td><code>spark.deploy.maxExecutorRetries</code></td>
+  <td><code>spark.org.apache.spark.blaze.deploy.maxExecutorRetries</code></td>
   <td>10</td>
   <td>
     Limit on the maximum number of back-to-back executor failures that can occur before the
     standalone cluster manager removes a faulty application. An application will never be removed
     if it has any running executors. If an application experiences more than
-    <code>spark.deploy.maxExecutorRetries</code> failures in a row, no executors
+    <code>spark.org.apache.spark.blaze.deploy.maxExecutorRetries</code> failures in a row, no executors
     successfully start running in between those failures, and the application has no running
     executors then the standalone cluster manager will remove the application and mark it as failed.
-    To disable this automatic removal, set <code>spark.deploy.maxExecutorRetries</code> to
+    To disable this automatic removal, set <code>spark.org.apache.spark.blaze.deploy.maxExecutorRetries</code> to
     <code>-1</code>.
     <br/>
   </td>
@@ -244,7 +244,7 @@ SPARK_MASTER_OPTS supports the following system properties:
   <td><code>spark.worker.timeout</code></td>
   <td>60</td>
   <td>
-    Number of seconds after which the standalone deploy master considers a worker lost if it
+    Number of seconds after which the standalone org.apache.spark.blaze.deploy master considers a worker lost if it
     receives no heartbeats.
   </td>
   <td>0.6.2</td>
@@ -378,7 +378,7 @@ You can also pass an option `--total-executor-cores <numCores>` to control the n
 
 The [`spark-submit` script](submitting-applications.html) provides the most straightforward way to
 submit a compiled Spark application to the cluster. For standalone clusters, Spark currently
-supports two deploy modes. In `client` mode, the driver is launched in the same process as the
+supports two org.apache.spark.blaze.deploy modes. In `client` mode, the driver is launched in the same process as the
 client that submits the application. In `cluster` mode, however, the driver is launched from one
 of the Worker processes inside the cluster, and the client process exits as soon as it fulfills
 its responsibility of submitting the application without waiting for the application to finish.
@@ -394,7 +394,7 @@ exited with non-zero exit code. To use this feature, you may pass in the `--supe
 `spark-submit` when launching your application. Then, if you wish to kill an application that is
 failing repeatedly, you may do so through:
 
-    ./bin/spark-class org.apache.spark.deploy.Client kill <master url> <driver ID>
+    ./bin/spark-class org.apache.spark.org.apache.spark.blaze.deploy.Client kill <master url> <driver ID>
 
 You can find the driver ID through the standalone Master web UI at `http://<master url>:8080`.
 
@@ -415,12 +415,12 @@ val conf = new SparkConf()
 val sc = new SparkContext(conf)
 {% endhighlight %}
 
-In addition, you can configure `spark.deploy.defaultCores` on the cluster master process to change the
+In addition, you can configure `spark.org.apache.spark.blaze.deploy.defaultCores` on the cluster master process to change the
 default for applications that don't set `spark.cores.max` to something less than infinite.
 Do this by adding the following to `conf/spark-env.sh`:
 
 {% highlight bash %}
-export SPARK_MASTER_OPTS="-Dspark.deploy.defaultCores=<value>"
+export SPARK_MASTER_OPTS="-Dspark.org.apache.spark.blaze.deploy.defaultCores=<value>"
 {% endhighlight %}
 
 This is useful on shared clusters where users might not have configured a maximum number of cores
@@ -473,8 +473,8 @@ Learn more about getting started with ZooKeeper [here](https://zookeeper.apache.
 
 **Configuration**
 
-In order to enable this recovery mode, you can set SPARK_DAEMON_JAVA_OPTS in spark-env by configuring `spark.deploy.recoveryMode` and related spark.deploy.zookeeper.* configurations.
-For more information about these configurations please refer to the [configuration doc](configuration.html#deploy)
+In order to enable this recovery mode, you can set SPARK_DAEMON_JAVA_OPTS in spark-env by configuring `spark.org.apache.spark.blaze.deploy.recoveryMode` and related spark.org.apache.spark.blaze.deploy.zookeeper.* configurations.
+For more information about these configurations please refer to the [configuration doc](configuration.html#org.apache.spark.blaze.deploy)
 
 Possible gotcha: If you have multiple Masters in your cluster but fail to correctly configure the Masters to use ZooKeeper, the Masters will fail to discover each other and think they're all leaders. This will not lead to a healthy cluster state (as all Masters will schedule independently).
 
@@ -501,12 +501,12 @@ In order to enable this recovery mode, you can set SPARK_DAEMON_JAVA_OPTS in spa
 <table class="table">
   <tr><th style="width:21%">System property</th><th>Meaning</th><th>Since Version</th></tr>
   <tr>
-    <td><code>spark.deploy.recoveryMode</code></td>
+    <td><code>spark.org.apache.spark.blaze.deploy.recoveryMode</code></td>
     <td>Set to FILESYSTEM to enable single-node recovery mode (default: NONE).</td>
     <td>0.8.1</td>
   </tr>
   <tr>
-    <td><code>spark.deploy.recoveryDirectory</code></td>
+    <td><code>spark.org.apache.spark.blaze.deploy.recoveryDirectory</code></td>
     <td>The directory in which Spark will store recovery state, accessible from the Master's perspective.</td>
     <td>0.8.1</td>
   </tr>

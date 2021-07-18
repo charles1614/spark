@@ -1,0 +1,8 @@
+/home/xialb/ihep/spark_bk/examples/src/main/scala/org/apache/spark/examples/lqcd/jni/cmake-build-debug/CMakeFiles/install/strip.dir
+/home/xialb/ihep/spark_bk/examples/src/main/scala/org/apache/spark/examples/lqcd/jni/cmake-build-debug/CMakeFiles/install/local.dir
+/home/xialb/ihep/spark_bk/examples/src/main/scala/org/apache/spark/examples/lqcd/jni/cmake-build-debug/CMakeFiles/install.dir
+/home/xialb/ihep/spark_bk/examples/src/main/scala/org/apache/spark/examples/lqcd/jni/cmake-build-debug/CMakeFiles/list_install_components.dir
+/home/xialb/ihep/spark_bk/examples/src/main/scala/org/apache/spark/examples/lqcd/jni/cmake-build-debug/CMakeFiles/read_file_c.dir
+/home/xialb/ihep/spark_bk/examples/src/main/scala/org/apache/spark/examples/lqcd/jni/cmake-build-debug/CMakeFiles/main.dir
+/home/xialb/ihep/spark_bk/examples/src/main/scala/org/apache/spark/examples/lqcd/jni/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/xialb/ihep/spark_bk/examples/src/main/scala/org/apache/spark/examples/lqcd/jni/cmake-build-debug/CMakeFiles/rebuild_cache.dir

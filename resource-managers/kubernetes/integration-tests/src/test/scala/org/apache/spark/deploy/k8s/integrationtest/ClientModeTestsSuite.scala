@@ -70,7 +70,7 @@ private[spark] trait ClientModeTestsSuite { k8sSuite: KubernetesSuite =>
             .withImagePullPolicy("IfNotPresent")
             .addToArgs("/opt/spark/bin/run-example")
             .addToArgs("--master", s"k8s://https://kubernetes.default.svc")
-            .addToArgs("--deploy-mode", "client")
+            .addToArgs("--org.apache.spark.blaze.deploy-mode", "client")
             .addToArgs("--conf", s"spark.kubernetes.container.image=$image")
             .addToArgs(
               "--conf",

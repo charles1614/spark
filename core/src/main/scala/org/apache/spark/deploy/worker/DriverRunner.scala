@@ -42,7 +42,7 @@ import org.apache.spark.util.{Clock, ShutdownHookManager, SystemClock, Utils}
 
 /**
  * Manages the execution of one driver, including automatically restarting the driver on failure.
- * This is currently only used in standalone cluster deploy mode.
+ * This is currently only used in standalone cluster org.apache.spark.blaze.deploy mode.
  */
 private[deploy] class DriverRunner(
     conf: SparkConf,

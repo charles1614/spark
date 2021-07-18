@@ -32,7 +32,7 @@ only_commits:
     - sql/core/src/main/scala/org/apache/spark/sql/api/r/
     - core/src/main/scala/org/apache/spark/api/r/
     - mllib/src/main/scala/org/apache/spark/ml/r/
-    - core/src/test/scala/org/apache/spark/deploy/SparkSubmitSuite.scala
+    - core/src/test/scala/org/apache/spark/org.apache.spark.blaze.deploy/SparkSubmitSuite.scala
     - bin/*.cmd
 
 cache:

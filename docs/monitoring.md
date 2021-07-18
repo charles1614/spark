@@ -146,7 +146,7 @@ Security options for the Spark History Server are covered more detail in the
   <tr><th>Property Name</th><th>Default</th><th>Meaning</th><th>Since Version</th></tr>
   <tr>
     <td>spark.history.provider</td>
-    <td><code>org.apache.spark.deploy.history.FsHistoryProvider</code></td>
+    <td><code>org.apache.spark.org.apache.spark.blaze.deploy.history.FsHistoryProvider</code></td>
     <td>Name of the class implementing the application history backend. Currently there is only
     one implementation, provided by Spark, which looks for application logs stored in the
     file system.</td>

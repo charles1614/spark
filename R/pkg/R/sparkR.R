@@ -644,7 +644,7 @@ processSparkPackages <- function(packages) {
 #
 # @param sparkHome directory to find Spark package.
 # @param master the Spark master URL, used to check local or remote mode.
-# @param deployMode whether to deploy your driver on the worker nodes (cluster)
+# @param deployMode whether to org.apache.spark.blaze.deploy your driver on the worker nodes (cluster)
 #        or locally as an external client (client).
 # @return NULL if no need to update sparkHome, and new sparkHome otherwise.
 sparkCheckInstall <- function(sparkHome, master, deployMode) {

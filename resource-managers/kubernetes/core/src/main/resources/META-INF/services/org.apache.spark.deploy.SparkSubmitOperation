@@ -1,1 +1,1 @@
-org.apache.spark.deploy.k8s.submit.K8SSparkSubmitOperation
+org.apache.spark.org.apache.spark.blaze.deploy.k8s.submit.K8SSparkSubmitOperation

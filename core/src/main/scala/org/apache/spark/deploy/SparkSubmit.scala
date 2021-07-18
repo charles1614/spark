@@ -70,7 +70,7 @@ private[deploy] object SparkSubmitAction extends Enumeration {
  * Main gateway of launching a Spark application.
  *
  * This program handles setting up the classpath with relevant Spark dependencies and provides
- * a layer over the different cluster managers and deploy modes that Spark supports.
+ * a layer over the different cluster managers and org.apache.spark.blaze.deploy modes that Spark supports.
  */
 private[spark] class SparkSubmit extends Logging {
 
@@ -182,7 +182,7 @@ private[spark] class SparkSubmit extends Logging {
     }
 
     // In standalone cluster mode, there are two submission gateways:
-    //   (1) The traditional RPC gateway using o.a.s.deploy.Client as a wrapper
+    //   (1) The traditional RPC gateway using o.a.s.org.apache.spark.blaze.deploy.Client as a wrapper
     //   (2) The new REST-based gateway introduced in Spark 1.3
     // The latter is the default behavior as of Spark 1.3, but Spark submit will fail over
     // to use the legacy gateway if the master endpoint turns out to be not a REST server.
@@ -239,7 +239,7 @@ private[spark] class SparkSubmit extends Logging {
         -1
     }
 
-    // Set the deploy mode; default is client mode
+    // Set the org.apache.spark.blaze.deploy mode; default is client mode
     var deployMode: Int = args.deployMode match {
       case "client" | null => CLIENT
       case "cluster" => CLUSTER
@@ -270,19 +270,19 @@ private[spark] class SparkSubmit extends Logging {
     // Fail fast, the following modes are not supported or applicable
     (clusterManager, deployMode) match {
       case (STANDALONE, CLUSTER) if args.isPython =>
-        error("Cluster deploy mode is currently not supported for python " +
+        error("Cluster org.apache.spark.blaze.deploy mode is currently not supported for python " +
           "applications on standalone clusters.")
       case (STANDALONE, CLUSTER) if args.isR =>
-        error("Cluster deploy mode is currently not supported for R " +
+        error("Cluster org.apache.spark.blaze.deploy mode is currently not supported for R " +
           "applications on standalone clusters.")
       case (LOCAL, CLUSTER) =>
-        error("Cluster deploy mode is not compatible with master \"local\"")
+        error("Cluster org.apache.spark.blaze.deploy mode is not compatible with master \"local\"")
       case (_, CLUSTER) if isShell(args.primaryResource) =>
-        error("Cluster deploy mode is not applicable to Spark shells.")
+        error("Cluster org.apache.spark.blaze.deploy mode is not applicable to Spark shells.")
       case (_, CLUSTER) if isSqlShell(args.mainClass) =>
-        error("Cluster deploy mode is not applicable to Spark SQL shell.")
+        error("Cluster org.apache.spark.blaze.deploy mode is not applicable to Spark SQL shell.")
       case (_, CLUSTER) if isThriftServer(args.mainClass) =>
-        error("Cluster deploy mode is not applicable to Spark Thrift server.")
+        error("Cluster org.apache.spark.blaze.deploy mode is not applicable to Spark Thrift server.")
       case _ =>
     }
 
@@ -469,9 +469,9 @@ private[spark] class SparkSubmit extends Logging {
       if (args.primaryResource == PYSPARK_SHELL) {
         args.mainClass = "org.apache.spark.api.python.PythonGatewayServer"
       } else {
-        // If a python file is provided, add it to the child arguments and list of files to deploy.
+        // If a python file is provided, add it to the child arguments and list of files to org.apache.spark.blaze.deploy.
         // Usage: PythonAppRunner <main python file> <extra python files> [app arguments]
-        args.mainClass = "org.apache.spark.deploy.PythonRunner"
+        args.mainClass = "org.apache.spark.org.apache.spark.blaze.deploy.PythonRunner"
         args.childArgs = ArrayBuffer(localPrimaryResource, localPyFiles) ++ args.childArgs
       }
       if (clusterManager != YARN) {
@@ -531,9 +531,9 @@ private[spark] class SparkSubmit extends Logging {
       if (args.primaryResource == SPARKR_SHELL) {
         args.mainClass = "org.apache.spark.api.r.RBackend"
       } else {
-        // If an R file is provided, add it to the child arguments and list of files to deploy.
+        // If an R file is provided, add it to the child arguments and list of files to org.apache.spark.blaze.deploy.
         // Usage: RRunner <main R file> [app arguments]
-        args.mainClass = "org.apache.spark.deploy.RRunner"
+        args.mainClass = "org.apache.spark.org.apache.spark.blaze.deploy.RRunner"
         args.childArgs = ArrayBuffer(localPrimaryResource) ++ args.childArgs
         args.files = mergeFileLists(args.files, args.primaryResource)
       }
@@ -549,7 +549,7 @@ private[spark] class SparkSubmit extends Logging {
     sys.props("SPARK_SUBMIT") = "true"
 
     // A list of rules to map each argument to system properties or command-line options in
-    // each deploy mode; we iterate through these below
+    // each org.apache.spark.blaze.deploy mode; we iterate through these below
     val options = List[OptionAssigner](
 
       // All cluster managers
@@ -715,11 +715,11 @@ private[spark] class SparkSubmit extends Logging {
       childMainClass = YARN_CLUSTER_SUBMIT_CLASS
       if (args.isPython) {
         childArgs += ("--primary-py-file", args.primaryResource)
-        childArgs += ("--class", "org.apache.spark.deploy.PythonRunner")
+        childArgs += ("--class", "org.apache.spark.org.apache.spark.blaze.deploy.PythonRunner")
       } else if (args.isR) {
         val mainFile = new Path(args.primaryResource).getName
         childArgs += ("--primary-r-file", mainFile)
-        childArgs += ("--class", "org.apache.spark.deploy.RRunner")
+        childArgs += ("--class", "org.apache.spark.org.apache.spark.blaze.deploy.RRunner")
       } else {
         if (args.primaryResource != SparkLauncher.NO_RESOURCE) {
           childArgs += ("--jar", args.primaryResource)
@@ -756,10 +756,10 @@ private[spark] class SparkSubmit extends Logging {
       if (args.primaryResource != SparkLauncher.NO_RESOURCE) {
         if (args.isPython) {
           childArgs ++= Array("--primary-py-file", args.primaryResource)
-          childArgs ++= Array("--main-class", "org.apache.spark.deploy.PythonRunner")
+          childArgs ++= Array("--main-class", "org.apache.spark.org.apache.spark.blaze.deploy.PythonRunner")
         } else if (args.isR) {
           childArgs ++= Array("--primary-r-file", args.primaryResource)
-          childArgs ++= Array("--main-class", "org.apache.spark.deploy.RRunner")
+          childArgs ++= Array("--main-class", "org.apache.spark.org.apache.spark.blaze.deploy.RRunner")
         }
         else {
           childArgs ++= Array("--primary-java-resource", args.primaryResource)
@@ -860,12 +860,12 @@ private[spark] class SparkSubmit extends Logging {
    *
    * This runs in two steps. First, we prepare the launch environment by setting up
    * the appropriate classpath, system properties, and application arguments for
-   * running the child main class based on the cluster manager and the deploy mode.
+   * running the child main class based on the cluster manager and the org.apache.spark.blaze.deploy mode.
    * Second, we use this launch environment to invoke the main method of the child
    * main class.
    *
    * Note that this main class will not be the one provided by the user if we're
-   * running cluster deploy mode or python applications.
+   * running cluster org.apache.spark.blaze.deploy mode or python applications.
    */
   private def runMain(args: SparkSubmitArguments, uninitLog: Boolean): Unit = {
     val (childArgs, childClasspath, sparkConf, childMainClass) = prepareSubmitEnvironment(args)
@@ -976,11 +976,11 @@ object SparkSubmit extends CommandLineUtils with Logging {
 
   // Following constants are visible for testing.
   private[deploy] val YARN_CLUSTER_SUBMIT_CLASS =
-    "org.apache.spark.deploy.yarn.YarnClusterApplication"
+    "org.apache.spark.org.apache.spark.blaze.deploy.yarn.YarnClusterApplication"
   private[deploy] val REST_CLUSTER_SUBMIT_CLASS = classOf[RestSubmissionClientApp].getName()
   private[deploy] val STANDALONE_CLUSTER_SUBMIT_CLASS = classOf[ClientApp].getName()
   private[deploy] val KUBERNETES_CLUSTER_SUBMIT_CLASS =
-    "org.apache.spark.deploy.k8s.submit.KubernetesClientApplication"
+    "org.apache.spark.org.apache.spark.blaze.deploy.k8s.submit.KubernetesClientApplication"
 
   override def main(args: Array[String]): Unit = {
     val submit = new SparkSubmit() {

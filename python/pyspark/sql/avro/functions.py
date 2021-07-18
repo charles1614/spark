@@ -36,7 +36,7 @@ def from_avro(data, jsonFormatSchema, options={}):
     To deserialize the data with a compatible and evolved schema, the expected Avro schema can be
     set via the option avroSchema.
 
-    Note: Avro is built-in but external data source module since Spark 2.4. Please deploy the
+    Note: Avro is built-in but external data source module since Spark 2.4. Please org.apache.spark.blaze.deploy the
     application as per the deployment section of "Apache Avro Data Source Guide".
 
     :param data: the binary column.
@@ -75,7 +75,7 @@ def to_avro(data, jsonFormatSchema=""):
     """
     Converts a column into binary of avro format.
 
-    Note: Avro is built-in but external data source module since Spark 2.4. Please deploy the
+    Note: Avro is built-in but external data source module since Spark 2.4. Please org.apache.spark.blaze.deploy the
     application as per the deployment section of "Apache Avro Data Source Guide".
 
     :param data: the data column.

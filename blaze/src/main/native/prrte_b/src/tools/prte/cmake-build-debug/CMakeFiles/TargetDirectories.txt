@@ -1,3 +1,0 @@
-/home/xialb/IdeaProjects/spark/blaze/src/main/native/prrte/src/tools/prte/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/xialb/IdeaProjects/spark/blaze/src/main/native/prrte/src/tools/prte/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/xialb/IdeaProjects/spark/blaze/src/main/native/prrte/src/tools/prte/cmake-build-debug/CMakeFiles/blaze.dir

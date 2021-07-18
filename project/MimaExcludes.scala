@@ -110,7 +110,7 @@ object MimaExcludes {
     ProblemFilters.exclude[DirectAbstractMethodProblem]("scala.concurrent.Future.transform"),
 
     // [SPARK-26254][CORE] Extract Hive + Kafka dependencies from Core.
-    ProblemFilters.exclude[MissingClassProblem]("org.apache.spark.deploy.security.HiveDelegationTokenProvider"),
+    ProblemFilters.exclude[MissingClassProblem]("org.apache.spark.org.apache.spark.blaze.deploy.security.HiveDelegationTokenProvider"),
 
     // [SPARK-26329][CORE] Faster polling of executor memory metrics.
     ProblemFilters.exclude[MissingTypesProblem]("org.apache.spark.scheduler.SparkListenerTaskEnd$"),
@@ -292,7 +292,7 @@ object MimaExcludes {
     ProblemFilters.exclude[IncompatibleMethTypeProblem]("org.apache.spark.sql.expressions.WindowSpec.rangeBetween"),
 
     // [SPARK-23781][CORE] Merge token renewer functionality into HadoopDelegationTokenManager
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkHadoopUtil.nextCredentialRenewalTime"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkHadoopUtil.nextCredentialRenewalTime"),
 
     // [SPARK-26133][ML] Remove deprecated OneHotEncoder and rename OneHotEncoderEstimator to OneHotEncoder
     ProblemFilters.exclude[MissingClassProblem]("org.apache.spark.ml.feature.OneHotEncoderEstimator"),
@@ -444,7 +444,7 @@ object MimaExcludes {
     ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.FetchFailed.this"),
 
     // [SPARK-28957][SQL] Copy any "spark.hive.foo=bar" spark properties into hadoop conf as "hive.foo=bar"
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkHadoopUtil.appendS3AndSparkHadoopConfigurations"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkHadoopUtil.appendS3AndSparkHadoopConfigurations"),
 
     // [SPARK-29348] Add observable metrics.
     ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.sql.streaming.StreamingQueryProgress.this"),
@@ -492,9 +492,9 @@ object MimaExcludes {
     ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.TaskKilled.this"),
 
     // [SPARK-22941][core] Do not exit JVM when submit fails with in-process launcher.
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkSubmit.printWarning"),
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkSubmit.parseSparkConfProperty"),
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkSubmit.printVersionAndExit"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmit.printWarning"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmit.parseSparkConfProperty"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmit.printVersionAndExit"),
 
     // [SPARK-23412][ML] Add cosine distance measure to BisectingKmeans
     ProblemFilters.exclude[InheritedNewAbstractMethodProblem]("org.apache.spark.ml.param.shared.HasDistanceMeasure.org$apache$spark$ml$param$shared$HasDistanceMeasure$_setter_$distanceMeasure_="),
@@ -538,15 +538,15 @@ object MimaExcludes {
     ProblemFilters.exclude[MissingClassProblem]("org.apache.spark.ml.classification.LabelConverter"),
 
     // [SPARK-21842][MESOS] Support Kerberos ticket renewal and creation in Mesos
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkHadoopUtil.getDateOfNextUpdate"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkHadoopUtil.getDateOfNextUpdate"),
 
     // [SPARK-23366] Improve hot reading path in ReadAheadInputStream
     ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.io.ReadAheadInputStream.this"),
 
     // [SPARK-22941][CORE] Do not exit JVM when submit fails with in-process launcher.
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkSubmit.addJarToClasspath"),
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkSubmit.mergeFileLists"),
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkSubmit.prepareSubmitEnvironment$default$2"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmit.addJarToClasspath"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmit.mergeFileLists"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmit.prepareSubmitEnvironment$default$2"),
 
     // Data Source V2 API changes
     // TODO: they are unstable APIs and should not be tracked by mima.
@@ -594,14 +594,14 @@ object MimaExcludes {
     ProblemFilters.exclude[IncompatibleResultTypeProblem]("org.apache.spark.sql.streaming.StreamingQueryManager.startQuery$default$9"),
 
     // SPARK-22372: Make cluster submission use SparkApplication.
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkHadoopUtil.getSecretKeyFromUserCredentials"),
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkHadoopUtil.isYarnMode"),
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkHadoopUtil.getCurrentUserCredentials"),
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkHadoopUtil.addSecretKeyToUserCredentials"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkHadoopUtil.getSecretKeyFromUserCredentials"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkHadoopUtil.isYarnMode"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkHadoopUtil.getCurrentUserCredentials"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkHadoopUtil.addSecretKeyToUserCredentials"),
 
     // SPARK-18085: Better History Server scalability for many / large applications
     ProblemFilters.exclude[IncompatibleResultTypeProblem]("org.apache.spark.status.api.v1.ExecutorSummary.executorLogs"),
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.history.HistoryServer.getSparkUI"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.history.HistoryServer.getSparkUI"),
     ProblemFilters.exclude[MissingClassProblem]("org.apache.spark.ui.env.EnvironmentListener"),
     ProblemFilters.exclude[MissingClassProblem]("org.apache.spark.ui.exec.ExecutorsListener"),
     ProblemFilters.exclude[MissingClassProblem]("org.apache.spark.ui.storage.StorageListener"),
@@ -650,11 +650,11 @@ object MimaExcludes {
     ProblemFilters.exclude[FinalClassProblem]("org.apache.spark.ml.tuning.TrainValidationSplitModel$TrainValidationSplitModelWriter"),
 
     // [SPARK-21728][CORE] Allow SparkSubmit to use Logging
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkSubmit.downloadFileList"),
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkSubmit.downloadFile"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmit.downloadFileList"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmit.downloadFile"),
 
     // [SPARK-21714][CORE][YARN] Avoiding re-uploading remote resources in yarn client mode
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkSubmit.prepareSubmitEnvironment"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmit.prepareSubmitEnvironment"),
 
     // [SPARK-22324][SQL][PYTHON] Upgrade Arrow to 0.8.0
     ProblemFilters.exclude[FinalMethodProblem]("org.apache.spark.network.util.AbstractFileRegion.transfered"),
@@ -689,7 +689,7 @@ object MimaExcludes {
     ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.status.api.v1.ApplicationAttemptInfo.this"),
 
     // [SPARK-19652][UI] Do auth checks for REST API access.
-    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.history.HistoryServer.withSparkUI"),
+    ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.history.HistoryServer.withSparkUI"),
     ProblemFilters.exclude[IncompatibleTemplateDefProblem]("org.apache.spark.status.api.v1.UIRootFromServletContext"),
 
     // [SPARK-18663][SQL] Simplify CountMinSketch aggregate implementation
@@ -770,9 +770,9 @@ object MimaExcludes {
   lazy val v21excludes = v20excludes ++ {
     Seq(
       // [SPARK-17671] Spark 2.0 history server summary page is slow even set spark.history.ui.maxApplications
-      ProblemFilters.exclude[IncompatibleResultTypeProblem]("org.apache.spark.deploy.history.HistoryServer.getApplicationList"),
+      ProblemFilters.exclude[IncompatibleResultTypeProblem]("org.apache.spark.org.apache.spark.blaze.deploy.history.HistoryServer.getApplicationList"),
       // [SPARK-14743] Improve delegation token handling in secure cluster
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkHadoopUtil.getTimeFromNowToRenewal"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkHadoopUtil.getTimeFromNowToRenewal"),
       // [SPARK-16199][SQL] Add a method to list the referenced columns in data source Filter
       ProblemFilters.exclude[ReversedMissingMethodProblem]("org.apache.spark.sql.sources.Filter.references"),
       // [SPARK-16853][SQL] Fixes encoder error in DataSet typed select
@@ -1078,7 +1078,7 @@ object MimaExcludes {
       ProblemFilters.exclude[MissingClassProblem]("org.apache.spark.scheduler.cluster.YarnSchedulerBackend$YarnSchedulerEndpoint")
     ) ++ Seq(
       // SPARK-7889
-      ProblemFilters.exclude[MissingMethodProblem]("org.apache.spark.deploy.history.HistoryServer.org$apache$spark$deploy$history$HistoryServer$@tachSparkUI"),
+      ProblemFilters.exclude[MissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.history.HistoryServer.org$apache$spark$org.apache.spark.blaze.deploy$history$HistoryServer$@tachSparkUI"),
       // SPARK-13296
       ProblemFilters.exclude[IncompatibleResultTypeProblem]("org.apache.spark.sql.UDFRegistration.register"),
       ProblemFilters.exclude[MissingClassProblem]("org.apache.spark.sql.UserDefinedPythonFunction$"),
@@ -1169,9 +1169,9 @@ object MimaExcludes {
       ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.SparkEnv.actorSystem"),
       ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.SparkEnv.cacheManager"),
       ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.SparkEnv.this"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkHadoopUtil.getConfigurationFromJobContext"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkHadoopUtil.getTaskAttemptIDFromTaskAttemptContext"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.deploy.SparkHadoopUtil.newConfiguration"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkHadoopUtil.getConfigurationFromJobContext"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkHadoopUtil.getTaskAttemptIDFromTaskAttemptContext"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.org.apache.spark.blaze.deploy.SparkHadoopUtil.newConfiguration"),
       ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.executor.InputMetrics.bytesReadCallback"),
       ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.executor.InputMetrics.bytesReadCallback_="),
       ProblemFilters.exclude[DirectMissingMethodProblem]("org.apache.spark.executor.InputMetrics.canEqual"),

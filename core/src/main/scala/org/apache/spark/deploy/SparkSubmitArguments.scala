@@ -341,7 +341,7 @@ private[deploy] class SparkSubmitArguments(args: Seq[String], env: Map[String, S
 
       case DEPLOY_MODE =>
         if (value != "client" && value != "cluster") {
-          error("--deploy-mode must be either \"client\" or \"cluster\"")
+          error("--org.apache.spark.blaze.deploy-mode must be either \"client\" or \"cluster\"")
         }
         deployMode = value
 
@@ -490,7 +490,7 @@ private[deploy] class SparkSubmitArguments(args: Seq[String], env: Map[String, S
         |Options:
         |  --master MASTER_URL         spark://host:port, mesos://host:port, yarn,
         |                              k8s://https://host:port, or local (Default: local[*]).
-        |  --deploy-mode DEPLOY_MODE   Whether to launch the driver program locally ("client") or
+        |  --org.apache.spark.blaze.deploy-mode DEPLOY_MODE   Whether to launch the driver program locally ("client") or
         |                              on one of the worker machines inside the cluster ("cluster")
         |                              (Default: client).
         |  --class CLASS_NAME          Your application's main class (for Java / Scala apps).
@@ -533,14 +533,14 @@ private[deploy] class SparkSubmitArguments(args: Seq[String], env: Map[String, S
         |  --verbose, -v               Print additional debug output.
         |  --version,                  Print the version of current Spark.
         |
-        | Cluster deploy mode only:
+        | Cluster org.apache.spark.blaze.deploy mode only:
         |  --driver-cores NUM          Number of cores used by the driver, only in cluster mode
         |                              (Default: 1).
         |
-        | Spark standalone or Mesos with cluster deploy mode only:
+        | Spark standalone or Mesos with cluster org.apache.spark.blaze.deploy mode only:
         |  --supervise                 If given, restarts the driver on failure.
         |
-        | Spark standalone, Mesos or K8s with cluster deploy mode only:
+        | Spark standalone, Mesos or K8s with cluster org.apache.spark.blaze.deploy mode only:
         |  --kill SUBMISSION_ID        If given, kills the driver specified.
         |  --status SUBMISSION_ID      If given, requests the status of the driver specified.
         |

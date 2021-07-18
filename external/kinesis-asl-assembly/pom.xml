@@ -139,7 +139,7 @@
     <!-- SPARK-17418: prevent the kinesis-asl-assembly from being published to Maven -->
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-deploy-plugin</artifactId>
+      <artifactId>maven-org.apache.spark.blaze.deploy-plugin</artifactId>
       <configuration>
         <skip>true</skip>
       </configuration>

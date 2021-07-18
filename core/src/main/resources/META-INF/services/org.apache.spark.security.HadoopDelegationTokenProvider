@@ -1,2 +1,2 @@
-org.apache.spark.deploy.security.HadoopFSDelegationTokenProvider
-org.apache.spark.deploy.security.HBaseDelegationTokenProvider
+org.apache.spark.org.apache.spark.blaze.deploy.security.HadoopFSDelegationTokenProvider
+org.apache.spark.org.apache.spark.blaze.deploy.security.HBaseDelegationTokenProvider

@@ -88,7 +88,7 @@ class ApplicationMasterArguments(val args: Array[String]) {
       System.err.println("Unknown/unsupported param " + unknownParam)
     }
     System.err.println("""
-      |Usage: org.apache.spark.deploy.yarn.ApplicationMaster [options]
+      |Usage: org.apache.spark.org.apache.spark.blaze.deploy.yarn.ApplicationMaster [options]
       |Options:
       |  --jar JAR_PATH       Path to your application's JAR file
       |  --class CLASS_NAME   Name of your application's main class

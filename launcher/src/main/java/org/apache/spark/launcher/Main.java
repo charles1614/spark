@@ -36,7 +36,7 @@ class Main {
    * <p>
    * This CLI works in two different modes:
    * <ul>
-   *   <li>"spark-submit": if <i>class</i> is "org.apache.spark.deploy.SparkSubmit", the
+   *   <li>"spark-submit": if <i>class</i> is "org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmit", the
    *   {@link SparkLauncher} class is used to launch a Spark application.</li>
    *   <li>"spark-class": if another class is provided, an internal Spark class is run.</li>
    * </ul>
@@ -57,7 +57,7 @@ class Main {
     boolean printLaunchCommand = !isEmpty(System.getenv("SPARK_PRINT_LAUNCH_COMMAND"));
     Map<String, String> env = new HashMap<>();
     List<String> cmd;
-    if (className.equals("org.apache.spark.deploy.SparkSubmit")) {
+    if (className.equals("org.apache.spark.blaze.deploy.SparkSubmit")) {
       try {
         AbstractCommandBuilder builder = new SparkSubmitCommandBuilder(args);
         cmd = buildCommand(builder, env, printLaunchCommand);

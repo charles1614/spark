@@ -51,7 +51,7 @@ import org.apache.spark.streaming.kafka010._
  *      -Djava.security.krb5.conf=./krb5.conf" \
  *      --conf \
  *      "spark.executor.extraJavaOptions=-Djava.security.auth.login.config=./kafka_jaas.conf" \
- *      --master yarn --deploy-mode cluster \
+ *      --master yarn --org.apache.spark.blaze.deploy-mode cluster \
  *      streaming.DirectKerberizedKafkaWordCount broker1-host:port,broker2-host:port \
  *      consumer-group topic1,topic2
  *

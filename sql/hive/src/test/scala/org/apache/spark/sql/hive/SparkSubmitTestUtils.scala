@@ -37,7 +37,7 @@ trait SparkSubmitTestUtils extends SparkFunSuite with TimeLimits {
   implicit val defaultSignaler: Signaler = ThreadSignaler
 
   // NOTE: This is an expensive operation in terms of time (10 seconds+). Use sparingly.
-  // This is copied from org.apache.spark.deploy.SparkSubmitSuite
+  // This is copied from org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmitSuite
   protected def runSparkSubmit(
       args: Seq[String],
       sparkHomeOpt: Option[String] = None,

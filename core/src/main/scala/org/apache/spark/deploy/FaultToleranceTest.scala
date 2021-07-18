@@ -40,11 +40,11 @@ import org.apache.spark.util.{ThreadUtils, Utils}
  * This suite tests the fault tolerance of the Spark standalone scheduler, mainly the Master.
  * In order to mimic a real distributed cluster more closely, Docker is used.
  * Execute using
- * ./bin/spark-class org.apache.spark.deploy.FaultToleranceTest
+ * ./bin/spark-class org.apache.spark.org.apache.spark.blaze.deploy.FaultToleranceTest
  *
  * Make sure that the environment includes the following properties in SPARK_DAEMON_JAVA_OPTS:
- *   - spark.deploy.recoveryMode=ZOOKEEPER
- *   - spark.deploy.zookeeper.url=172.17.42.1:2181
+ *   - spark.org.apache.spark.blaze.deploy.recoveryMode=ZOOKEEPER
+ *   - spark.org.apache.spark.blaze.deploy.zookeeper.url=172.17.42.1:2181
  * Note that 172.17.42.1 is the default docker ip for the host and 2181 is the default ZK port.
  *
  * In case of failure, make sure to kill off prior docker containers before restarting:

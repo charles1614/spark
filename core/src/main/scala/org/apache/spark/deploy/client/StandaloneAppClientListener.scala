@@ -18,7 +18,7 @@
 package org.apache.spark.deploy.client
 
 /**
- * Callbacks invoked by deploy client when various events happen. There are currently five events:
+ * Callbacks invoked by org.apache.spark.blaze.deploy client when various events happen. There are currently five events:
  * connecting to the cluster, disconnecting, being given an executor, having an executor removed
  * (either due to failure or due to revocation), and having a worker removed.
  *

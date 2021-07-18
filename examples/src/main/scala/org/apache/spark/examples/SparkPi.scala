@@ -18,11 +18,13 @@
 // scalastyle:off println
 package org.apache.spark.examples
 
-import scala.math.random
 import mpi.{MPI, MPIException}
 import org.apache.spark.SparkConf
+
+import scala.math.random
 import org.apache.spark.blaze.BlazeSession
-import org.apache.spark.blaze.NativeUtils.{getEnv, test}
+import org.apache.spark.blaze.deploy.mpi.NativeUtils.{getEnv, test}
+import org.apache.spark.sql.SparkSession
 
 /** Computes an approximation to pi */
 object SparkPi {
@@ -31,50 +33,51 @@ object SparkPi {
   private def mpiop(mpargs: Array[String]): Unit = {
 
 
-//    MPI.Init(mpargs)
-//    val myrank = MPI.COMM_WORLD.getRank
-//    val size = MPI.COMM_WORLD.getSize
-//    System.out.println("Hello world from rank " + myrank + " size of " + size)
-//    MPI.Finalize()
+    MPI.Init(mpargs)
+    val myrank = MPI.COMM_WORLD.getRank
+    val size = MPI.COMM_WORLD.getSize
+    System.out.println("Hello world from rank " + myrank + " size of " + size)
+    MPI.Finalize()
   }
 
   def main(args: Array[String]): Unit = {
-//    val spark = SparkSession
-//      .builder
-//      .appName("Spark Pi")
-//      .getOrCreate()
 
     val conf = new SparkConf().set("spark.master", "spark://192.168.32.197:7077");
 
-    val blaze = BlazeSession
+    val spark = SparkSession
       .builder
-      .appName("blazePi")
-//      .config(conf)
-      .master("local[*]")
-//      .master("spark://192.168.32.197:7077")
+      .config(conf)
+      .appName("Spark Pi")
       .getOrCreate()
 
-//    getEnv()
-    // transfer an jar file
-//    val run = new MpiRun;
-//    val app = Array[String]("prun", "hostname")
-//    run.exec(app);
-//    mpiop(args);
 
-    val slices = if (args.length > 0) args(0).toInt else 2
+//    val blaze = BlazeSession
+//      .builder
+//      .appName("blazePi")
+//      .config(conf)
+////      .master("local[2]")
+////      .master("spark://192.168.32.197:7077")
+//      .getOrCreate()
+
+
+    val start = System.nanoTime()
+//    val slices = if (args.length > 0) args(0).toInt else 2
+    val slices = 8
     val n = math.min(100000L * slices, Int.MaxValue).toInt // avoid overflow
-    val count = blaze.sparkContext.parallelize(1 until n, slices).map { i =>
-//      mpiop(args)
+    val count = spark.sparkContext.parallelize(1 until n, slices).map { i =>
       val x = random * 2 - 1
       val y = random * 2 - 1
       if (x*x + y*y <= 1) 1 else 0
     }.reduce(_ + _)
 
 //    blaze.sparkContext.parallelize(1 until 3, slices).map(i => mpiop(args)).collect()
-    blaze.mpiContext.parallelize(1 until 3, slices).map(i => mpiop(args)).collect()
-    mpiop(args);
+//    blaze.mpiContext.parallelize(1 until 2, slices).map(i => mpiop(args)).collect()
+//    mpiop(args);
+    val end = System.nanoTime()
     println(s"Pi is roughly ${4.0 * count / (n - 1)}")
-    blaze.stop()
+    println(s"elapse time is ${(end - start) / 1000000} ms")
+//    blaze.stop()
+    spark.stop()
   }
 }
 // scalastyle:on println

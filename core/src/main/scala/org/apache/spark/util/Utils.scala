@@ -2626,7 +2626,7 @@ private[spark] object Utils extends Logging {
     // While the original intent was to only redact the value if the key matched with the regex,
     // we've found that especially in verbose mode, the value of the property may contain sensitive
     // information like so:
-    // "sun.java.command":"org.apache.spark.deploy.SparkSubmit ... \
+    // "sun.java.command":"org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmit ... \
     // --conf spark.executorEnv.HADOOP_CREDSTORE_PASSWORD=secret_password ...
     //
     // And, in such cases, simply searching for the sensitive information regex in the key name is

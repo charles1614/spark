@@ -114,10 +114,10 @@ in the `spark-defaults.conf` file. A few configuration keys have been renamed si
 versions of Spark; in such cases, the older key names are still accepted, but take lower
 precedence than any instance of the newer key.
 
-Spark properties mainly can be divided into two kinds: one is related to deploy, like
+Spark properties mainly can be divided into two kinds: one is related to org.apache.spark.blaze.deploy, like
 "spark.driver.memory", "spark.executor.instances", this kind of properties may not be affected when
 setting programmatically through `SparkConf` in runtime, or the behavior is depending on which
-cluster manager and deploy mode you choose, so it would be suggested to set through configuration
+cluster manager and org.apache.spark.blaze.deploy mode you choose, so it would be suggested to set through configuration
 file or `spark-submit` command line options; another is mainly related to Spark runtime control,
 like "spark.task.maxFailures", this kind of properties can be set in either way.
 
@@ -366,7 +366,7 @@ of the most common options to set are:
   <td><code>spark.submit.deployMode</code></td>
   <td>(none)</td>
   <td>
-    The deploy mode of Spark driver program, either "client" or "cluster",
+    The org.apache.spark.blaze.deploy mode of Spark driver program, either "client" or "cluster",
     Which means to launch driver program locally ("client")
     or remotely ("cluster") on one of the nodes inside the cluster.
   </td>
@@ -387,7 +387,7 @@ of the most common options to set are:
   <td>false</td>
   <td>
     If true, restarts the driver automatically if it fails with a non-zero exit status.
-    Only has effect in Spark standalone mode or Mesos cluster deploy mode.
+    Only has effect in Spark standalone mode or Mesos cluster org.apache.spark.blaze.deploy mode.
   </td>
   <td>1.3.0</td>
 </tr>
@@ -1970,11 +1970,11 @@ Apart from these, the following properties are also available, and may be useful
   <td><code>spark.cores.max</code></td>
   <td>(not set)</td>
   <td>
-    When running on a <a href="spark-standalone.html">standalone deploy cluster</a> or a
+    When running on a <a href="spark-standalone.html">standalone org.apache.spark.blaze.deploy cluster</a> or a
     <a href="running-on-mesos.html#mesos-run-modes">Mesos cluster in "coarse-grained"
     sharing mode</a>, the maximum amount of CPU cores to request for the application from
     across the cluster (not from each machine). If not set, the default will be
-    <code>spark.deploy.defaultCores</code> on Spark's standalone cluster manager, or
+    <code>spark.org.apache.spark.blaze.deploy.defaultCores</code> on Spark's standalone cluster manager, or
     infinite (all available cores) on Mesos.
   </td>
   <td>0.6.0</td>
@@ -2837,22 +2837,22 @@ External users can query the static sql config values via `SparkSession.conf` or
 <table class="table">
   <tr><th>Property Name</th><th>Default</th><th>Meaning</th><th>Since Version</th></tr>
   <tr>
-    <td><code>spark.deploy.recoveryMode</code></td>
+    <td><code>spark.org.apache.spark.blaze.deploy.recoveryMode</code></td>
     <td>NONE</td>
     <td>The recovery mode setting to recover submitted Spark jobs with cluster mode when it failed and relaunches.
     This is only applicable for cluster mode when running with Standalone or Mesos.</td>
     <td>0.8.1</td>
   </tr>
   <tr>
-    <td><code>spark.deploy.zookeeper.url</code></td>
+    <td><code>spark.org.apache.spark.blaze.deploy.zookeeper.url</code></td>
     <td>None</td>
-    <td>When `spark.deploy.recoveryMode` is set to ZOOKEEPER, this configuration is used to set the zookeeper URL to connect to.</td>
+    <td>When `spark.org.apache.spark.blaze.deploy.recoveryMode` is set to ZOOKEEPER, this configuration is used to set the zookeeper URL to connect to.</td>
     <td>0.8.1</td>
   </tr>
   <tr>
-    <td><code>spark.deploy.zookeeper.dir</code></td>
+    <td><code>spark.org.apache.spark.blaze.deploy.zookeeper.dir</code></td>
     <td>None</td>
-    <td>When `spark.deploy.recoveryMode` is set to ZOOKEEPER, this configuration is used to set the zookeeper directory to store recovery state.</td>
+    <td>When `spark.org.apache.spark.blaze.deploy.recoveryMode` is set to ZOOKEEPER, this configuration is used to set the zookeeper directory to store recovery state.</td>
     <td>0.8.1</td>
   </tr>
 </table>

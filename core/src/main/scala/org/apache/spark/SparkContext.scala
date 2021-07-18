@@ -2993,7 +2993,7 @@ private object SparkMasterRegex {
   val LOCAL_N_FAILURES_REGEX = """local\[([0-9]+|\*)\s*,\s*([0-9]+)\]""".r
   // Regular expression for simulating a Spark cluster of [N, cores, memory] locally
   val LOCAL_CLUSTER_REGEX = """local-cluster\[\s*([0-9]+)\s*,\s*([0-9]+)\s*,\s*([0-9]+)\s*]""".r
-  // Regular expression for connecting to Spark deploy clusters
+  // Regular expression for connecting to Spark org.apache.spark.blaze.deploy clusters
   val SPARK_REGEX = """spark://(.*)""".r
 }
 

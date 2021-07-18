@@ -40,7 +40,7 @@
 # - SPARK_EXECUTOR_MEMORY, Memory per Executor (e.g. 1000M, 2G) (Default: 1G)
 # - SPARK_DRIVER_MEMORY, Memory for Driver (e.g. 1000M, 2G) (Default: 1G)
 
-# Options for the daemons used in the standalone deploy mode
+# Options for the daemons used in the standalone org.apache.spark.blaze.deploy mode
 # - SPARK_MASTER_HOST, to bind the master to a different IP address or hostname
 # - SPARK_MASTER_PORT / SPARK_MASTER_WEBUI_PORT, to use non-default ports for the master
 # - SPARK_MASTER_OPTS, to set config properties only for the master (e.g. "-Dx=y")
@@ -59,7 +59,7 @@
 # Options for launcher
 # - SPARK_LAUNCHER_OPTS, to set config properties and Java options for the launcher (e.g. "-Dx=y")
 
-# Generic options for the daemons used in the standalone deploy mode
+# Generic options for the daemons used in the standalone org.apache.spark.blaze.deploy mode
 # - SPARK_CONF_DIR      Alternate conf dir. (Default: ${SPARK_HOME}/conf)
 # - SPARK_LOG_DIR       Where log files are stored.  (Default: ${SPARK_HOME}/logs)
 # - SPARK_PID_DIR       Where the pid file is stored. (Default: /tmp)

@@ -35,7 +35,7 @@ The main useful options are outlined below.
 
 ## Using a different backend
 
-The integration test backend i.e. the K8S cluster used for testing is controlled by the `--deploy-mode` option.  By 
+The integration test backend i.e. the K8S cluster used for testing is controlled by the `--org.apache.spark.blaze.deploy-mode` option.  By 
 default this is set to `minikube`, the available backends are their prerequisites are as follows.  
 
 ### `minikube`

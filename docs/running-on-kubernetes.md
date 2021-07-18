@@ -122,7 +122,7 @@ To launch Spark Pi in cluster mode,
 ```bash
 $ ./bin/spark-submit \
     --master k8s://https://<k8s-apiserver-host>:<k8s-apiserver-port> \
-    --deploy-mode cluster \
+    --org.apache.spark.blaze.deploy-mode cluster \
     --name spark-pi \
     --class org.apache.spark.examples.SparkPi \
     --conf spark.executor.instances=5 \
@@ -182,7 +182,7 @@ hostname via `spark.driver.host` and your spark driver's port to `spark.driver.p
 ### Client Mode Executor Pod Garbage Collection
 
 If you run your Spark driver in a pod, it is highly recommended to set `spark.kubernetes.driver.pod.name` to the name of that pod.
-When this property is set, the Spark scheduler will deploy the executor pods with an
+When this property is set, the Spark scheduler will org.apache.spark.blaze.deploy the executor pods with an
 [OwnerReference](https://kubernetes.io/docs/concepts/workloads/controllers/garbage-collection/), which in turn will
 ensure that once the driver pod is deleted from the cluster, all of the application's executor pods will also be deleted.
 The driver will look for a pod with the given name in the namespace specified by `spark.kubernetes.namespace`, and

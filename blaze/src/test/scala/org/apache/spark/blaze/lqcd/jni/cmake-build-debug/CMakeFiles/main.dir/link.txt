@@ -1,0 +1,1 @@
+/usr/bin/cc -std=c99 -lsimplelqcd -lm -g -rdynamic CMakeFiles/main.dir/main.c.o -o main 

@@ -98,7 +98,7 @@ The Spark [cluster mode overview](cluster-overview.html) explains the key concep
 Spark can run both by itself, or over several existing cluster managers. It currently provides several
 options for deployment:
 
-* [Standalone Deploy Mode](spark-standalone.html): simplest way to deploy Spark on a private cluster
+* [Standalone Deploy Mode](spark-standalone.html): simplest way to org.apache.spark.blaze.deploy Spark on a private cluster
 * [Apache Mesos](running-on-mesos.html)
 * [Hadoop YARN](running-on-yarn.html)
 * [Kubernetes](running-on-kubernetes.html)
@@ -130,10 +130,10 @@ options for deployment:
 * Deployment modes:
   * [Amazon EC2](https://github.com/amplab/spark-ec2): scripts that let you launch a cluster on EC2 in about 5 minutes
   * [Standalone Deploy Mode](spark-standalone.html): launch a standalone cluster quickly without a third-party cluster manager
-  * [Mesos](running-on-mesos.html): deploy a private cluster using
+  * [Mesos](running-on-mesos.html): org.apache.spark.blaze.deploy a private cluster using
       [Apache Mesos](https://mesos.apache.org)
-  * [YARN](running-on-yarn.html): deploy Spark on top of Hadoop NextGen (YARN)
-  * [Kubernetes](running-on-kubernetes.html): deploy Spark on top of Kubernetes
+  * [YARN](running-on-yarn.html): org.apache.spark.blaze.deploy Spark on top of Hadoop NextGen (YARN)
+  * [Kubernetes](running-on-kubernetes.html): org.apache.spark.blaze.deploy Spark on top of Kubernetes
 
 **Other Documents:**
 

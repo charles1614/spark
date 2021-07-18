@@ -210,7 +210,7 @@ class SparkSubmitSuite
     assert(e.getMessage.contains("Number of executors must be a positive number"))
   }
 
-  test("specify deploy mode through configuration") {
+  test("specify org.apache.spark.blaze.deploy mode through configuration") {
     val clArgs = Seq(
       "--master", "yarn",
       "--conf", "spark.submit.deployMode=client",
@@ -226,7 +226,7 @@ class SparkSubmitSuite
     // Both cmd line and configuration are specified, cmdline option takes the priority
     val clArgs1 = Seq(
       "--master", "yarn",
-      "--deploy-mode", "cluster",
+      "--org.apache.spark.blaze.deploy-mode", "cluster",
       "--conf", "spark.submit.deployMode=client",
       "--class", "org.SomeClass",
       "thejar.jar"
@@ -253,7 +253,7 @@ class SparkSubmitSuite
 
   test("handles YARN cluster mode") {
     val clArgs = Seq(
-      "--deploy-mode", "cluster",
+      "--org.apache.spark.blaze.deploy-mode", "cluster",
       "--master", "yarn",
       "--executor-memory", "5g",
       "--executor-cores", "5",
@@ -296,7 +296,7 @@ class SparkSubmitSuite
 
   test("handles YARN client mode") {
     val clArgs = Seq(
-      "--deploy-mode", "client",
+      "--org.apache.spark.blaze.deploy-mode", "client",
       "--master", "yarn",
       "--executor-memory", "5g",
       "--executor-cores", "5",
@@ -347,7 +347,7 @@ class SparkSubmitSuite
    */
   private def testStandaloneCluster(useRest: Boolean): Unit = {
     val clArgs = Seq(
-      "--deploy-mode", "cluster",
+      "--org.apache.spark.blaze.deploy-mode", "cluster",
       "--master", "spark://h:p",
       "--class", "org.SomeClass",
       "--supervise",
@@ -385,7 +385,7 @@ class SparkSubmitSuite
 
   test("handles standalone client mode") {
     val clArgs = Seq(
-      "--deploy-mode", "client",
+      "--org.apache.spark.blaze.deploy-mode", "client",
       "--master", "spark://h:p",
       "--executor-memory", "5g",
       "--total-executor-cores", "5",
@@ -407,7 +407,7 @@ class SparkSubmitSuite
 
   test("handles mesos client mode") {
     val clArgs = Seq(
-      "--deploy-mode", "client",
+      "--org.apache.spark.blaze.deploy-mode", "client",
       "--master", "mesos://h:p",
       "--executor-memory", "5g",
       "--total-executor-cores", "5",
@@ -429,7 +429,7 @@ class SparkSubmitSuite
 
   test("handles k8s cluster mode") {
     val clArgs = Seq(
-      "--deploy-mode", "cluster",
+      "--org.apache.spark.blaze.deploy-mode", "cluster",
       "--master", "k8s://host:port",
       "--executor-memory", "5g",
       "--class", "org.SomeClass",
@@ -480,8 +480,8 @@ class SparkSubmitSuite
     val clArgs = Seq(
       "--name", "testApp",
       "--master", "yarn",
-      "--deploy-mode", deployMode,
-      "--conf", "spark.hadoop.fs.s3a.impl=org.apache.spark.deploy.TestFileSystem",
+      "--org.apache.spark.blaze.deploy-mode", deployMode,
+      "--conf", "spark.hadoop.fs.s3a.impl=org.apache.spark.org.apache.spark.blaze.deploy.TestFileSystem",
       "--conf", "spark.hadoop.fs.s3a.impl.disable.cache=true",
       s"s3a://${jarUrl.getPath}",
       "arg1", "arg2")
@@ -524,7 +524,7 @@ class SparkSubmitSuite
     val clArgs = Seq(
       "--name", "testApp",
       "--master", "yarn",
-      "--conf", "spark.hadoop.fs.s3a.impl=org.apache.spark.deploy.TestFileSystem",
+      "--conf", "spark.hadoop.fs.s3a.impl=org.apache.spark.org.apache.spark.blaze.deploy.TestFileSystem",
       "--conf", "spark.hadoop.fs.s3a.impl.disable.cache=true",
       s"s3a:///does-not-exist.jar")
 
@@ -533,7 +533,7 @@ class SparkSubmitSuite
 
   test("handles confs with flag equivalents") {
     val clArgs = Seq(
-      "--deploy-mode", "cluster",
+      "--org.apache.spark.blaze.deploy-mode", "cluster",
       "--executor-memory", "5g",
       "--class", "org.SomeClass",
       "--conf", "spark.executor.memory=4g",
@@ -887,7 +887,7 @@ class SparkSubmitSuite
       }
       val clArgs4 = Seq(
         "--master", "yarn",
-        "--deploy-mode", "cluster",
+        "--org.apache.spark.blaze.deploy-mode", "cluster",
         "--properties-file", f4.getPath,
         "hdfs:///tmp/mister.py"
       )
@@ -952,7 +952,7 @@ class SparkSubmitSuite
               "--class", UserClasspathFirstTest.getClass.getName.stripPrefix("$"),
               "--name", "testApp",
               "--master", "yarn",
-              "--deploy-mode", "client",
+              "--org.apache.spark.blaze.deploy-mode", "client",
               "--jars", s"${tmpJarDir.getAbsolutePath}/*.jar",
               "--files", s"${tmpFileDir.getAbsolutePath}/tmpFile*",
               "--py-files", s"${tmpPyFileDir.getAbsolutePath}/tmpPy*",
@@ -1016,7 +1016,7 @@ class SparkSubmitSuite
       "--class", UserClasspathFirstTest.getClass.getName.stripPrefix("$"),
       "--name", "testApp",
       "--master", "yarn",
-      "--deploy-mode", "client",
+      "--org.apache.spark.blaze.deploy-mode", "client",
       "--jars", s"${tmpJarDir.getAbsolutePath}/*.jar",
       "--files", s"${tmpFileDir.getAbsolutePath}/tmpFile*",
       "--py-files", s"${tmpPyFileDir.getAbsolutePath}/tmpPy*",
@@ -1178,7 +1178,7 @@ class SparkSubmitSuite
         "--class", UserClasspathFirstTest.getClass.getName.stripPrefix("$"),
         "--name", "testApp",
         "--master", "yarn",
-        "--deploy-mode", "client",
+        "--org.apache.spark.blaze.deploy-mode", "client",
         "--jars", tmpJarPath,
         "--files", s"s3a://${file.getAbsolutePath}",
         "--py-files", s"s3a://${pyFile.getAbsolutePath}",
@@ -1326,7 +1326,7 @@ class SparkSubmitSuite
       "--class", UserClasspathFirstTest.getClass.getName.stripPrefix("$"),
       "--name", "testApp",
       "--master", "yarn",
-      "--deploy-mode", "client",
+      "--org.apache.spark.blaze.deploy-mode", "client",
       "--jars", s"$tmpS3JarPath,$tmpHttpJarPath"
     ) ++ forceDownloadArgs ++ Seq(s"s3a://$mainResource")
 
@@ -1399,7 +1399,7 @@ class SparkSubmitSuite
         "--class", UserClasspathFirstTest.getClass.getName.stripPrefix("$"),
         "--name", "testApp",
         "--master", "yarn",
-        "--deploy-mode", "client",
+        "--org.apache.spark.blaze.deploy-mode", "client",
         "--py-files", s"s3a://${pyFile.getAbsolutePath}",
         "spark-internal"
       )
@@ -1415,7 +1415,7 @@ class SparkSubmitSuite
         "--class", UserClasspathFirstTest.getClass.getName.stripPrefix("$"),
         "--name", "testApp",
         "--master", "yarn",
-        "--deploy-mode", "client",
+        "--org.apache.spark.blaze.deploy-mode", "client",
         "--conf", s"spark.submit.pyFiles=s3a://${pyFile.getAbsolutePath}",
         "spark-internal"
       )

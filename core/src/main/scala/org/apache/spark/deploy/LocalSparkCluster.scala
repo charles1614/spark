@@ -28,7 +28,7 @@ import org.apache.spark.util.Utils
 
 /**
  * Testing class that creates a Spark standalone process in-cluster (that is, running the
- * spark.deploy.master.Master and spark.deploy.worker.Workers in the same JVMs). Executors launched
+ * spark.org.apache.spark.blaze.deploy.master.Master and spark.org.apache.spark.blaze.deploy.worker.Workers in the same JVMs). Executors launched
  * by the Workers still run in separate JVMs. This can be used to test distributed operation and
  * fault recovery without spinning up a lot of processes.
  */

@@ -1,1 +1,0 @@
-/usr/bin/cc -g CMakeFiles/prun.dir/prun.c.o -o prun  /opt/deps/pmix/lib/libpmix.so /opt/deps/prrte/lib/libprrte.so /usr/lib/libevent_core-2.1.so.7 /usr/lib/libevent_pthreads-2.1.so.7 /usr/lib/libpthread.so.0 

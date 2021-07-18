@@ -25,7 +25,7 @@ fi
 
 # NOTE: This exact class name is matched downstream by SparkSubmit.
 # Any changes need to be reflected there.
-CLASS="org.apache.spark.deploy.master.Master"
+CLASS="org.apache.spark.blaze.deploy.master.Master"
 
 if [[ "$@" = *--help ]] || [[ "$@" = *-h ]]; then
   echo "Usage: ./sbin/start-master.sh [options]"

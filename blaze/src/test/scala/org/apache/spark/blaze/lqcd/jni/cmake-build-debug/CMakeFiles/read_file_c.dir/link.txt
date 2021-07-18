@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC -std=c99 -lsimplelqcd -lm -g -shared -Wl,-soname,libread_file_c.so -o libread_file_c.so CMakeFiles/read_file_c.dir/ReadFileC.c.o CMakeFiles/read_file_c.dir/main.c.o 

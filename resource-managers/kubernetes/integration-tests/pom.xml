@@ -107,7 +107,7 @@
                 <argument>--image-tag-output-file</argument>
                 <argument>${spark.kubernetes.test.imageTagFile}</argument>
 
-                <argument>--deploy-mode</argument>
+                <argument>--org.apache.spark.blaze.deploy-mode</argument>
                 <argument>${spark.kubernetes.test.deployMode}</argument>
 
                 <argument>--spark-tgz</argument>

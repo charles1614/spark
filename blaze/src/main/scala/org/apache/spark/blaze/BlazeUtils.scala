@@ -1,29 +1,36 @@
-// scalastyle:off classforname
+
 package org.apache.spark.blaze
 
+import org.apache.spark.blaze.deploy.mpi.NativeUtils
+
+import java.lang.Thread.sleep
 import java.util.{Collections, Map => JavaMap}
 import javax.annotation.processing.ProcessingEnvironment
+import scala.Console.flush
+import scala.io.Source
 
+// scalastyle:off classforname
+// scalastyle:off println
 object BlazeUtils {
 
   def setJavaEnv(nenv: JavaMap[String, String]): Unit = {
     try {
       val processEnvrionmnetClass = Class.forName("java.lang.ProcessEnvironment")
       val theEnvironmentField = processEnvrionmnetClass.getDeclaredField("theEnvironment")
-//      val environ = processEnvrionmnetClass.getDeclaredMethod("environ")
-//      environ.setAccessible(true)
-//      val cons = processEnvrionmnetClass.getDeclaredConstructor()
-//      cons.setAccessible(true)
-//      val obj = cons.newInstance()
-//      val environval = environ.invoke(obj)
-//      print(environval+ "=============0")
+      //      val environ = processEnvrionmnetClass.getDeclaredMethod("environ")
+      //      environ.setAccessible(true)
+      //      val cons = processEnvrionmnetClass.getDeclaredConstructor()
+      //      cons.setAccessible(true)
+      //      val obj = cons.newInstance()
+      //      val environval = environ.invoke(obj)
+      //      print(environval+ "=============0")
       theEnvironmentField.setAccessible(true)
       val envs = theEnvironmentField.get(null).asInstanceOf[JavaMap[String, String]]
       envs.putAll(nenv)
       val theCaseInsensitiveEnvironment =
         processEnvrionmnetClass.getDeclaredField("theCaseInsensitiveEnvironment")
       theCaseInsensitiveEnvironment.setAccessible(true)
-      var cienv = theCaseInsensitiveEnvironment.get().asInstanceOf[JavaMap[String, String]]
+      var cienv = theCaseInsensitiveEnvironment.get(null).asInstanceOf[JavaMap[String, String]]
       cienv.putAll(nenv)
     } catch {
       case e: NoSuchFieldException =>
@@ -47,5 +54,29 @@ object BlazeUtils {
       case e1: Exception => e1.printStackTrace()
     }
   }
-//  @native def setEnv(): Unit
+
+  import java.util
+
+  def libpath(): Unit = {
+    val javaLibPath = System.getProperty("java.library.path")
+    val envVars = System.getenv
+    println(envVars.get("PATH"))
+    println(javaLibPath)
+    import scala.collection.JavaConverters._
+    for (k <- envVars.keySet.asScala) {
+      println("examining " + k)
+      if (envVars.get(k) == javaLibPath) println(k)
+    }
+  }
+
+
+  def setPmixEnv(): Unit = {
+    for (line <- Source.fromFile("/home/xialb/opt/spark/pmixsrv.env").getLines()) {
+      val key: String = line.split('=')(0)
+      val value: String = line.split('=')(1)
+      val map = new util.HashMap[String, String]()
+      map.put(key, value)
+      NativeUtils.setEnv(map)
+    }
+  }
 }

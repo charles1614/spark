@@ -1,2 +1,0 @@
-/usr/bin/ar qc libSHARED.a CMakeFiles/SHARED.dir/org_apache_spark_blaze_MPILauncher.c.o
-/usr/bin/ranlib libSHARED.a

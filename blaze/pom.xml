@@ -15,130 +15,442 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.univocity</groupId>
-            <artifactId>univocity-parsers</artifactId>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-sketch_${scala.binary.version}</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_${scala.binary.version}</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_${scala.binary.version}</artifactId>
-            <version>${project.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-catalyst_${scala.binary.version}</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-catalyst_${scala.binary.version}</artifactId>
-            <version>${project.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-tags_${scala.binary.version}</artifactId>
+            <!--            <exclusions>-->
+            <!--                <exclusion>-->
+            <!--                    <groupId>org.slf4j</groupId>-->
+            <!--                    <artifactId>slf4j-log4j12</artifactId>-->
+            <!--                </exclusion>-->
+            <!--                <exclusion>-->
+            <!--                    <groupId>log4j</groupId>-->
+            <!--                    <artifactId>log4j</artifactId>-->
+            <!--                </exclusion>-->
+            <!--            </exclusions>-->
         </dependency>
 
-        <!--
-          This spark-tags test-dep is needed even though it isn't used in this module, otherwise testing-cmds that exclude
-          them will yield errors.
-        -->
+        <!--From SPARK CORE-->
         <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-tags_${scala.binary.version}</artifactId>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.orc</groupId>
-            <artifactId>orc-core</artifactId>
-            <classifier>${orc.classifier}</classifier>
+            <groupId>com.thoughtworks.paranamer</groupId>
+            <artifactId>paranamer</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.orc</groupId>
-            <artifactId>orc-mapreduce</artifactId>
-            <classifier>${orc.classifier}</classifier>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.hive</groupId>
-            <artifactId>hive-storage-api</artifactId>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro-mapred</artifactId>
+            <classifier>${avro.mapred.classifier}</classifier>
         </dependency>
         <dependency>
-            <groupId>org.apache.parquet</groupId>
-            <artifactId>parquet-column</artifactId>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.parquet</groupId>
-            <artifactId>parquet-hadoop</artifactId>
+            <groupId>com.twitter</groupId>
+            <artifactId>chill_${scala.binary.version}</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-servlet</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <groupId>com.twitter</groupId>
+            <artifactId>chill-java</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.xbean</groupId>
             <artifactId>xbean-asm7-shaded</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.scalacheck</groupId>
-            <artifactId>scalacheck_${scala.binary.version}</artifactId>
-            <scope>test</scope>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.195</version>
-            <scope>test</scope>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-launcher_${scala.binary.version}</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>test</scope>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-kvstore_${scala.binary.version}</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>test</scope>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-network-common_${scala.binary.version}</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.parquet</groupId>
-            <artifactId>parquet-avro</artifactId>
-            <scope>test</scope>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-network-shuffle_${scala.binary.version}</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <scope>test</scope>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-unsafe_${scala.binary.version}</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--            <dependency>-->
+        <!--                <groupId>javax.activation</groupId>-->
+        <!--                <artifactId>activation</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.apache.curator</groupId>-->
+        <!--                <artifactId>curator-recipes</artifactId>-->
+        <!--            </dependency>-->
+        <!--            &lt;!&ndash; With curator 2.12  SBT/Ivy doesn't get ZK on the build classpath.-->
+        <!--                 Explicitly declaring it as a dependency fixes this. &ndash;&gt;-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.apache.zookeeper</groupId>-->
+        <!--                <artifactId>zookeeper</artifactId>-->
+        <!--            </dependency>-->
+
+        <!--            &lt;!&ndash; Jetty dependencies promoted to compile here so they are shaded-->
+        <!--                 and inlined into spark-core jar &ndash;&gt;-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.eclipse.jetty</groupId>-->
+        <!--                <artifactId>jetty-plus</artifactId>-->
+        <!--                <scope>compile</scope>-->
+        <!--            </dependency>-->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-security</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <scope>test</scope>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-util</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-htmlunit-driver</artifactId>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <!--            <dependency>-->
+        <!--                <groupId>org.eclipse.jetty</groupId>-->
+        <!--                <artifactId>jetty-http</artifactId>-->
+        <!--                <scope>compile</scope>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.eclipse.jetty</groupId>-->
+        <!--                <artifactId>jetty-continuation</artifactId>-->
+        <!--                <scope>compile</scope>-->
+        <!--            </dependency>-->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <!--            <dependency>-->
+        <!--                <groupId>org.eclipse.jetty</groupId>-->
+        <!--                <artifactId>jetty-proxy</artifactId>-->
+        <!--                <scope>compile</scope>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.eclipse.jetty</groupId>-->
+        <!--                <artifactId>jetty-client</artifactId>-->
+        <!--                <scope>compile</scope>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.eclipse.jetty</groupId>-->
+        <!--                <artifactId>jetty-servlets</artifactId>-->
+        <!--                <scope>compile</scope>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>javax.servlet</groupId>-->
+        <!--                <artifactId>javax.servlet-api</artifactId>-->
+        <!--                <version>${javaxservlet.version}</version>-->
+        <!--            </dependency>-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+        </dependency>
+        <!--            <dependency>-->
+        <!--                <groupId>com.google.code.findbugs</groupId>-->
+        <!--                <artifactId>jsr305</artifactId>-->
+        <!--            </dependency>-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+        </dependency>
+        <!--            <dependency>-->
+        <!--                <groupId>org.slf4j</groupId>-->
+        <!--                <artifactId>jcl-over-slf4j</artifactId>-->
+        <!--            </dependency>-->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+        <!--            <dependency>-->
+        <!--                <groupId>com.ning</groupId>-->
+        <!--                <artifactId>compress-lzf</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.xerial.snappy</groupId>-->
+        <!--                <artifactId>snappy-java</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.lz4</groupId>-->
+        <!--                <artifactId>lz4-java</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>com.github.luben</groupId>-->
+        <!--                <artifactId>zstd-jni</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.roaringbitmap</groupId>-->
+        <!--                <artifactId>RoaringBitmap</artifactId>-->
+        <!--            </dependency>-->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+        </dependency>
+        <!--            <dependency>-->
+        <!--                <groupId>org.scala-lang.modules</groupId>-->
+        <!--                <artifactId>scala-xml_${scala.binary.version}</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.scala-lang</groupId>-->
+        <!--                <artifactId>scala-library</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.scala-lang</groupId>-->
+        <!--                <artifactId>scala-reflect</artifactId>-->
+        <!--            </dependency>-->
+        <dependency>
+            <groupId>org.json4s</groupId>
+            <artifactId>json4s-jackson_${scala.binary.version}</artifactId>
+        </dependency>
+        <!--            <dependency>-->
+        <!--                <groupId>org.glassfish.jersey.core</groupId>-->
+        <!--                <artifactId>jersey-client</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.glassfish.jersey.core</groupId>-->
+        <!--                <artifactId>jersey-common</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.glassfish.jersey.core</groupId>-->
+        <!--                <artifactId>jersey-server</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.glassfish.jersey.containers</groupId>-->
+        <!--                <artifactId>jersey-container-servlet</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.glassfish.jersey.containers</groupId>-->
+        <!--                <artifactId>jersey-container-servlet-core</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.glassfish.jersey.inject</groupId>-->
+        <!--                <artifactId>jersey-hk2</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.glassfish.jersey.test-framework.providers</groupId>-->
+        <!--                <artifactId>jersey-test-framework-provider-simple</artifactId>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>io.netty</groupId>-->
+        <!--                <artifactId>netty-all</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>com.clearspring.analytics</groupId>-->
+        <!--                <artifactId>stream</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>io.dropwizard.metrics</groupId>-->
+        <!--                <artifactId>metrics-core</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>io.dropwizard.metrics</groupId>-->
+        <!--                <artifactId>metrics-jvm</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>io.dropwizard.metrics</groupId>-->
+        <!--                <artifactId>metrics-json</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>io.dropwizard.metrics</groupId>-->
+        <!--                <artifactId>metrics-graphite</artifactId>-->
+        <!--                <exclusions>-->
+        <!--                    <exclusion>-->
+        <!--                        <groupId>com.rabbitmq</groupId>-->
+        <!--                        <artifactId>amqp-client</artifactId>-->
+        <!--                    </exclusion>-->
+        <!--                </exclusions>-->
+        <!--            </dependency>-->
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-jmx</artifactId>
+        </dependency>
+        <!--            <dependency>-->
+        <!--                <groupId>com.fasterxml.jackson.core</groupId>-->
+        <!--                <artifactId>jackson-databind</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>com.fasterxml.jackson.module</groupId>-->
+        <!--                <artifactId>jackson-module-scala_${scala.binary.version}</artifactId>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.apache.derby</groupId>-->
+        <!--                <artifactId>derby</artifactId>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <dependency>
+            <groupId>org.apache.ivy</groupId>
+            <artifactId>ivy</artifactId>
+        </dependency>
+        <!--            <dependency>-->
+        <!--                <groupId>oro</groupId>-->
+        <!--                &lt;!&ndash; oro is needed by ivy, but only listed as an optional dependency, so we include it. &ndash;&gt;-->
+        <!--                <artifactId>oro</artifactId>-->
+        <!--                <version>${oro.version}</version>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.seleniumhq.selenium</groupId>-->
+        <!--                <artifactId>selenium-java</artifactId>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.seleniumhq.selenium</groupId>-->
+        <!--                <artifactId>selenium-htmlunit-driver</artifactId>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <!--            &lt;!&ndash; Coerce sbt into honoring these dependency updates: &ndash;&gt;-->
+        <!--            <dependency>-->
+        <!--                <groupId>net.sourceforge.htmlunit</groupId>-->
+        <!--                <artifactId>htmlunit</artifactId>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>net.sourceforge.htmlunit</groupId>-->
+        <!--                <artifactId>htmlunit-core-js</artifactId>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <!--            &lt;!&ndash; at least just for tests, coerce SBT to use the updated httpcore/client version &ndash;&gt;-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.apache.httpcomponents</groupId>-->
+        <!--                <artifactId>httpclient</artifactId>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.apache.httpcomponents</groupId>-->
+        <!--                <artifactId>httpmime</artifactId>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.apache.httpcomponents</groupId>-->
+        <!--                <artifactId>httpcore</artifactId>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <!--            &lt;!&ndash; Added for selenium: &ndash;&gt;-->
+        <!--            <dependency>-->
+        <!--                <groupId>xml-apis</groupId>-->
+        <!--                <artifactId>xml-apis</artifactId>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.hamcrest</groupId>-->
+        <!--                <artifactId>hamcrest-core</artifactId>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.hamcrest</groupId>-->
+        <!--                <artifactId>hamcrest-library</artifactId>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.mockito</groupId>-->
+        <!--                <artifactId>mockito-core</artifactId>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.scalacheck</groupId>-->
+        <!--                <artifactId>scalacheck_${scala.binary.version}</artifactId>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.apache.curator</groupId>-->
+        <!--                <artifactId>curator-test</artifactId>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-minikdc</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--            <dependency>-->
+        <!--                <groupId>net.razorvine</groupId>-->
+        <!--                <artifactId>pyrolite</artifactId>-->
+        <!--                <version>4.30</version>-->
+        <!--                <exclusions>-->
+        <!--                    <exclusion>-->
+        <!--                        <groupId>net.razorvine</groupId>-->
+        <!--                        <artifactId>serpent</artifactId>-->
+        <!--                    </exclusion>-->
+        <!--                </exclusions>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>net.sf.py4j</groupId>-->
+        <!--                <artifactId>py4j</artifactId>-->
+        <!--                <version>0.10.9</version>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.apache.spark</groupId>-->
+        <!--                <artifactId>spark-tags_${scala.binary.version}</artifactId>-->
+        <!--            </dependency>-->
+
+        <!--            <dependency>-->
+        <!--                <groupId>org.apache.spark</groupId>-->
+        <!--                <artifactId>spark-launcher_${scala.binary.version}</artifactId>-->
+        <!--                <version>${project.version}</version>-->
+        <!--                <classifier>tests</classifier>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.apache.spark</groupId>-->
+        <!--                <artifactId>spark-network-shuffle_${scala.binary.version}</artifactId>-->
+        <!--                <version>${project.version}</version>-->
+        <!--                <classifier>tests</classifier>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+
+        <!--            &lt;!&ndash;-->
+        <!--              This spark-tags test-dep is needed even though it isn't used in this module, otherwise testing-cmds that exclude-->
+        <!--              them will yield errors.-->
+        <!--            &ndash;&gt;-->
+        <!--            <dependency>-->
+        <!--                <groupId>org.apache.spark</groupId>-->
+        <!--                <artifactId>spark-tags_${scala.binary.version}</artifactId>-->
+        <!--                <type>test-jar</type>-->
+        <!--                <scope>test</scope>-->
+        <!--            </dependency>-->
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-crypto</artifactId>
+        </dependency>
+
+        <!-- error in spark core-->
+
+        <!-- openmpi 5.0.1 -->
         <dependency>
             <groupId>org.open-mpi</groupId>
             <artifactId>java</artifactId>
@@ -146,8 +458,6 @@
         </dependency>
 
     </dependencies>
-
-
 
 
     <build>
@@ -176,13 +486,15 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.scalatest</groupId>
-                <artifactId>scalatest-maven-plugin</artifactId>
-                <configuration>
-                    <argLine>-ea -Xmx4g -Xss4m -XX:ReservedCodeCacheSize=${CodeCacheSize} -Dio.netty.tryReflectionSetAccessible=true</argLine>
-                </configuration>
-            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>org.scalatest</groupId>-->
+            <!--                <artifactId>scalatest-maven-plugin</artifactId>-->
+            <!--                <configuration>-->
+            <!--                    <argLine>-ea -Xmx4g -Xss4m -XX:ReservedCodeCacheSize=${CodeCacheSize}-->
+            <!--                        -Dio.netty.tryReflectionSetAccessible=true-->
+            <!--                    </argLine>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -213,6 +525,32 @@
                                 <source>src/test/gen-java</source>
                             </sources>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.scalastyle</groupId>
+                <artifactId>scalastyle-maven-plugin</artifactId>
+                <inherited>false</inherited>
+                <version>1.0.0</version>
+                <configuration>
+                    <skip>true</skip>
+                    <!--                                <verbose>false</verbose>-->
+                    <!--                                <failOnViolation>true</failOnViolation>-->
+                    <!--                                <includeTestSourceDirectory>false</includeTestSourceDirectory>-->
+                    <!--                                <failOnWarning>false</failOnWarning>-->
+                    <!--                                <sourceDirectory>${basedir}/src/main/scala</sourceDirectory>-->
+                    <!--                                <testSourceDirectory>${basedir}/src/test/scala</testSourceDirectory>-->
+                    <!--                                <configLocation>${basedir}/scalastyle-config.xml</configLocation>-->
+                    <!--                                <outputFile>${basedir}/target/scalastyle-output.xml</outputFile>-->
+                    <!--                                <inputEncoding>${project.build.sourceEncoding}</inputEncoding>-->
+                    <!--                                <outputEncoding>${project.reporting.outputEncoding}</outputEncoding>-->
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

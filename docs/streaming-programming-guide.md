@@ -1973,7 +1973,7 @@ See the full [source code]({{site.SPARK_GITHUB_URL}}/blob/v{{site.SPARK_VERSION_
 ***
 
 ## Deploying Applications
-This section discusses the steps to deploy a Spark Streaming application.
+This section discusses the steps to org.apache.spark.blaze.deploy a Spark Streaming application.
 
 ### Requirements
 {:.no_toc}
@@ -1988,7 +1988,7 @@ To run a Spark Streaming applications, you need to have the following.
   application, then you will not need to provide Spark and Spark Streaming in the JAR. However,
   if your application uses [advanced sources](#advanced-sources) (e.g. Kafka),
   then you will have to package the extra artifact they link to, along with their dependencies,
-  in the JAR that is used to deploy the application. For example, an application using `KafkaUtils`
+  in the JAR that is used to org.apache.spark.blaze.deploy the application. For example, an application using `KafkaUtils`
   will have to include `spark-streaming-kafka-0-10_{{site.SCALA_BINARY_VERSION}}` and all its
   transitive dependencies in the application JAR.
 
@@ -2011,7 +2011,7 @@ To run a Spark Streaming applications, you need to have the following.
   have different tools to achieve this.
     + *Spark Standalone* - A Spark application driver can be submitted to run within the Spark
       Standalone cluster (see
-      [cluster deploy mode](spark-standalone.html#launching-spark-applications)), that is, the
+      [cluster org.apache.spark.blaze.deploy mode](spark-standalone.html#launching-spark-applications)), that is, the
       application driver itself runs on one of the worker nodes. Furthermore, the
       Standalone cluster manager can be instructed to *supervise* the driver,
       and relaunch it if the driver fails either due to non-zero exit code,

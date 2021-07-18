@@ -215,7 +215,7 @@ private[spark] class ApplicationMaster(
         // other spark processes running on the same box
         System.setProperty(UI_PORT.key, "0")
 
-        // Set the master and deploy mode property to match the requested mode.
+        // Set the master and org.apache.spark.blaze.deploy mode property to match the requested mode.
         System.setProperty("spark.master", "yarn")
         System.setProperty(SUBMIT_DEPLOY_MODE.key, "cluster")
 

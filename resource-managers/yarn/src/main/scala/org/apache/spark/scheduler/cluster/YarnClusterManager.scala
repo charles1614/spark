@@ -33,7 +33,7 @@ private[spark] class YarnClusterManager extends ExternalClusterManager {
     sc.deployMode match {
       case "cluster" => new YarnClusterScheduler(sc)
       case "client" => new YarnScheduler(sc)
-      case _ => throw new SparkException(s"Unknown deploy mode '${sc.deployMode}' for Yarn")
+      case _ => throw new SparkException(s"Unknown org.apache.spark.blaze.deploy mode '${sc.deployMode}' for Yarn")
     }
   }
 
@@ -46,7 +46,7 @@ private[spark] class YarnClusterManager extends ExternalClusterManager {
       case "client" =>
         new YarnClientSchedulerBackend(scheduler.asInstanceOf[TaskSchedulerImpl], sc)
       case  _ =>
-        throw new SparkException(s"Unknown deploy mode '${sc.deployMode}' for Yarn")
+        throw new SparkException(s"Unknown org.apache.spark.blaze.deploy mode '${sc.deployMode}' for Yarn")
     }
   }
 

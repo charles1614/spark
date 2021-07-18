@@ -38,7 +38,7 @@ containers used by the application use the same configuration. If the configurat
 Java system properties or environment variables not managed by YARN, they should also be set in the
 Spark application's configuration (driver, executors, and the AM when running in client mode).
 
-There are two deploy modes that can be used to launch Spark applications on YARN. In `cluster` mode, the Spark driver runs inside an application master process which is managed by YARN on the cluster, and the client can go away after initiating the application. In `client` mode, the driver runs in the client process, and the application master is only used for requesting resources from YARN.
+There are two org.apache.spark.blaze.deploy modes that can be used to launch Spark applications on YARN. In `cluster` mode, the Spark driver runs inside an application master process which is managed by YARN on the cluster, and the client can go away after initiating the application. In `client` mode, the driver runs in the client process, and the application master is only used for requesting resources from YARN.
 
 Unlike other cluster managers supported by Spark in which the master's address is specified in the `--master`
 parameter, in YARN mode the ResourceManager's address is picked up from the Hadoop configuration.
@@ -46,13 +46,13 @@ Thus, the `--master` parameter is `yarn`.
 
 To launch a Spark application in `cluster` mode:
 
-    $ ./bin/spark-submit --class path.to.your.Class --master yarn --deploy-mode cluster [options] <app jar> [app options]
+    $ ./bin/spark-submit --class path.to.your.Class --master yarn --org.apache.spark.blaze.deploy-mode cluster [options] <app jar> [app options]
 
 For example:
 
     $ ./bin/spark-submit --class org.apache.spark.examples.SparkPi \
         --master yarn \
-        --deploy-mode cluster \
+        --org.apache.spark.blaze.deploy-mode cluster \
         --driver-memory 4g \
         --executor-memory 2g \
         --executor-cores 1 \
@@ -64,7 +64,7 @@ The above starts a YARN client program which starts the default Application Mast
 
 To launch a Spark application in `client` mode, do the same, but replace `cluster` with `client`. The following shows how you can run `spark-shell` in `client` mode:
 
-    $ ./bin/spark-shell --master yarn --deploy-mode client
+    $ ./bin/spark-shell --master yarn --org.apache.spark.blaze.deploy-mode client
 
 ## Adding Other JARs
 
@@ -72,7 +72,7 @@ In `cluster` mode, the driver runs on a different machine than the client, so `S
 
     $ ./bin/spark-submit --class my.main.Class \
         --master yarn \
-        --deploy-mode cluster \
+        --org.apache.spark.blaze.deploy-mode cluster \
         --jars my-other-jar.jar,my-other-other-jar.jar \
         my-main-jar.jar \
         app_arg1 app_arg2
@@ -697,7 +697,7 @@ spark.yarn.appMasterEnv.HADOOP_JAAS_DEBUG true
 spark.yarn.am.extraJavaOptions -Dsun.security.krb5.debug=true -Dsun.security.spnego.debug=true
 ```
 
-Finally, if the log level for `org.apache.spark.deploy.yarn.Client` is set to `DEBUG`, the log
+Finally, if the log level for `org.apache.spark.org.apache.spark.blaze.deploy.yarn.Client` is set to `DEBUG`, the log
 will include a list of all tokens obtained, and their expiry details
 
 
@@ -778,7 +778,7 @@ do the following:
 - On the application side, set <code>spark.yarn.historyServer.allowTracking=true</code> in Spark's
   configuration. This will tell Spark to use the history server's URL as the tracking URL if
   the application's UI is disabled.
-- On the Spark History Server, add <code>org.apache.spark.deploy.yarn.YarnProxyRedirectFilter</code>
+- On the Spark History Server, add <code>org.apache.spark.org.apache.spark.blaze.deploy.yarn.YarnProxyRedirectFilter</code>
   to the list of filters in the <code>spark.ui.filters</code> configuration.
 
 Be aware that the history server information may not be up-to-date with the application's state.

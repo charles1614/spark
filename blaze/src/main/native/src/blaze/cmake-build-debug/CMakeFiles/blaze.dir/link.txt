@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -g -shared -Wl,-soname,libblaze.so -o libblaze.so CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o  -lpmix -lprrte /usr/lib/libevent_core-2.1.so.7 -lpmix -lprrte 

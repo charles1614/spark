@@ -186,7 +186,7 @@ CORE_COMPONENT = "Core"
 known_components = {
     "block manager": CORE_COMPONENT,
     "build": CORE_COMPONENT,
-    "deploy": CORE_COMPONENT,
+    "org.apache.spark.blaze.deploy": CORE_COMPONENT,
     "documentation": CORE_COMPONENT,
     "examples": CORE_COMPONENT,
     "graphx": "GraphX",

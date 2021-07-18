@@ -266,7 +266,7 @@ The following settings cover enabling encryption for data written to disk:
 ## Authentication and Authorization
 
 Enabling authentication for the Web UIs is done using [javax servlet filters](https://docs.oracle.com/javaee/6/api/javax/servlet/Filter.html).
-You will need a filter that implements the authentication method you want to deploy. Spark does not
+You will need a filter that implements the authentication method you want to org.apache.spark.blaze.deploy. Spark does not
 provide any built-in authentication filters.
 
 Spark also supports access control to the UI when an authentication filter is present. Each
@@ -890,7 +890,7 @@ achieved by setting `spark.kubernetes.hadoop.configMapName` to a pre-existing Co
 ```bash
 /usr/bin/kinit -kt <keytab_file> <username>/<krb5 realm>
 /opt/spark/bin/spark-submit \
-    --deploy-mode cluster \
+    --org.apache.spark.blaze.deploy-mode cluster \
     --class org.apache.spark.examples.HdfsTest \
     --master k8s://<KUBERNETES_MASTER_ENDPOINT> \
     --conf spark.executor.instances=1 \
@@ -903,7 +903,7 @@ achieved by setting `spark.kubernetes.hadoop.configMapName` to a pre-existing Co
 2. Submitting with a local Keytab and Principal
 ```bash
 /opt/spark/bin/spark-submit \
-    --deploy-mode cluster \
+    --org.apache.spark.blaze.deploy-mode cluster \
     --class org.apache.spark.examples.HdfsTest \
     --master k8s://<KUBERNETES_MASTER_ENDPOINT> \
     --conf spark.executor.instances=1 \
@@ -919,7 +919,7 @@ achieved by setting `spark.kubernetes.hadoop.configMapName` to a pre-existing Co
 3. Submitting with pre-populated secrets, that contain the Delegation Token, already existing within the namespace
 ```bash
 /opt/spark/bin/spark-submit \
-    --deploy-mode cluster \
+    --org.apache.spark.blaze.deploy-mode cluster \
     --class org.apache.spark.examples.HdfsTest \
     --master k8s://<KUBERNETES_MASTER_ENDPOINT> \
     --conf spark.executor.instances=1 \
@@ -935,7 +935,7 @@ achieved by setting `spark.kubernetes.hadoop.configMapName` to a pre-existing Co
 3b. Submitting like in (3) however specifying a pre-created krb5 ConfigMap and pre-created `HADOOP_CONF_DIR` ConfigMap
 ```bash
 /opt/spark/bin/spark-submit \
-    --deploy-mode cluster \
+    --org.apache.spark.blaze.deploy-mode cluster \
     --class org.apache.spark.examples.HdfsTest \
     --master k8s://<KUBERNETES_MASTER_ENDPOINT> \
     --conf spark.executor.instances=1 \

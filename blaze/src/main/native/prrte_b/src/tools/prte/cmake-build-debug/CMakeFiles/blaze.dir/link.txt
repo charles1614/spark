@@ -1,1 +1,0 @@
-/usr/bin/cc -fPIC -g -shared -Wl,-soname,libblaze.so -o libblaze.so CMakeFiles/blaze.dir/org_apache_spark_blaze_MPILauncher.c.o CMakeFiles/blaze.dir/prte.c.o   -L/opt/deps/pmix/lib  -L/opt/deps/prrte/lib  -Wl,-rpath,/opt/deps/pmix/lib:/opt/deps/prrte/lib /opt/deps/pmix/lib/libpmix.so -lpmix -lprrte 

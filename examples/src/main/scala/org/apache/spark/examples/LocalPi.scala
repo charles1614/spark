@@ -23,12 +23,15 @@ import scala.math.random
 object LocalPi {
   def main(args: Array[String]): Unit = {
     var count = 0
-    for (i <- 1 to 100000) {
+    val start = System.nanoTime()
+    for (i <- 1 to Int.MaxValue) {
       val x = random * 2 - 1
       val y = random * 2 - 1
-      if (x*x + y*y <= 1) count += 1
+      if (x * x + y * y <= 1) count += 1
     }
+    val end = System.nanoTime()
     println(s"Pi is roughly ${4 * count / 100000.0}")
+    println(s"elapse time is ${(end - start) / 1000000} ms")
   }
 }
 // scalastyle:on println

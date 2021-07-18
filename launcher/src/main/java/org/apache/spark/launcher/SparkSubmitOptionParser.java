@@ -38,7 +38,7 @@ class SparkSubmitOptionParser {
   // easily use these constants without having to create dummy implementations of this class.
   protected final String CLASS = "--class";
   protected final String CONF = "--conf";
-  protected final String DEPLOY_MODE = "--deploy-mode";
+  protected final String DEPLOY_MODE = "--org.apache.spark.blaze.deploy-mode";
   protected final String DRIVER_CLASS_PATH = "--driver-class-path";
   protected final String DRIVER_CORES = "--driver-cores";
   protected final String DRIVER_JAVA_OPTIONS =  "--driver-java-options";
