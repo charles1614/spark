@@ -18,9 +18,8 @@
 // scalastyle:off println
 package org.apache.spark.examples.ml
 
-import scopt.OptionParser
-
 import org.apache.spark.examples.mllib.AbstractParams
+import scopt.OptionParser
 import org.apache.spark.ml.regression.LinearRegression
 import org.apache.spark.sql.{DataFrame, SparkSession}
 

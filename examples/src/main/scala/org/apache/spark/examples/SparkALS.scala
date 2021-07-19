@@ -19,7 +19,7 @@
 package org.apache.spark.examples
 
 import org.apache.commons.math3.linear._
-
+import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
 /**
@@ -89,6 +89,7 @@ object SparkALS {
   def main(args: Array[String]): Unit = {
 
     var slices = 0
+        val conf = new SparkConf().set("spark.master", "spark://192.168.32.197:7077");
 
     val options = (0 to 4).map(i => if (i < args.length) Some(args(i)) else None)
 
@@ -111,6 +112,7 @@ object SparkALS {
     val spark = SparkSession
       .builder
       .appName("SparkALS")
+      .config(conf)
       .getOrCreate()
 
     val sc = spark.sparkContext

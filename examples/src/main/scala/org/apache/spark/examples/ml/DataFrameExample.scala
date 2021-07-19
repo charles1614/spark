@@ -18,11 +18,10 @@
 // scalastyle:off println
 package org.apache.spark.examples.ml
 
-import java.io.File
-
-import scopt.OptionParser
-
 import org.apache.spark.examples.mllib.AbstractParams
+
+import java.io.File
+import scopt.OptionParser
 import org.apache.spark.ml.linalg.Vector
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.stat.MultivariateOnlineSummarizer

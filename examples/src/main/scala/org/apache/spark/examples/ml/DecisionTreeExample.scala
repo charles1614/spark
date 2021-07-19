@@ -18,13 +18,11 @@
 // scalastyle:off println
 package org.apache.spark.examples.ml
 
-import java.util.Locale
-
-import scala.collection.mutable
-
-import scopt.OptionParser
-
 import org.apache.spark.examples.mllib.AbstractParams
+
+import java.util.Locale
+import scala.collection.mutable
+import scopt.OptionParser
 import org.apache.spark.ml.{Pipeline, PipelineStage, Transformer}
 import org.apache.spark.ml.classification.{DecisionTreeClassificationModel, DecisionTreeClassifier}
 import org.apache.spark.ml.feature.{StringIndexer, VectorIndexer}

@@ -37,7 +37,7 @@ fi
 
 # NOTE: This exact class name is matched downstream by SparkSubmit.
 # Any changes need to be reflected there.
-CLASS="org.apache.spark.blaze.deploy.worker.Worker"
+CLASS="org.apache.spark.deploy.worker.Worker"
 
 if [[ $# -lt 1 ]] || [[ "$@" = *--help ]] || [[ "$@" = *-h ]]; then
   echo "Usage: ./sbin/start-slave.sh <master> [options]"

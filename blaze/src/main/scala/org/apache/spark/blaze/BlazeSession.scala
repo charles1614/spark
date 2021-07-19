@@ -142,7 +142,7 @@ object BlazeSession extends Logging {
      */
     def master(master: String): Builder = config("spark.master", master)
 
-    def appName(name: String): Builder = config("blaze.app.name", name)
+    def appName(name: String): Builder = config("spark.app.name", name)
 
     private def assertOnDriver() = {
       // TODO: only TaskContest be examined, MPITaskContext also need to be examined

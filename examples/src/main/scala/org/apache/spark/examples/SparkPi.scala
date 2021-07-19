@@ -42,7 +42,8 @@ object SparkPi {
 
   def main(args: Array[String]): Unit = {
 
-    val conf = new SparkConf().set("spark.master", "spark://192.168.32.197:7077");
+    val conf = new SparkConf().set("spark.master", "spark://192.168.32.197:7077")
+      .setJars(Array[String]("/home/xialb/opt/spark/examples/target/scala-2.12/jars/spark-examples_2.12-3.0.3-SNAPSHOT.jar"))
 
     val spark = SparkSession
       .builder
@@ -61,8 +62,7 @@ object SparkPi {
 
 
     val start = System.nanoTime()
-//    val slices = if (args.length > 0) args(0).toInt else 2
-    val slices = 8
+    val slices = if (args.length > 0) args(0).toInt else 2
     val n = math.min(100000L * slices, Int.MaxValue).toInt // avoid overflow
     val count = spark.sparkContext.parallelize(1 until n, slices).map { i =>
       val x = random * 2 - 1

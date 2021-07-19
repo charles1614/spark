@@ -3,11 +3,9 @@ package org.apache.spark.blaze
 
 import org.apache.spark.blaze.deploy.mpi.NativeUtils
 
-import java.lang.Thread.sleep
 import java.util.{Collections, Map => JavaMap}
-import javax.annotation.processing.ProcessingEnvironment
-import scala.Console.flush
 import scala.io.Source
+import org.apache.spark.blaze.deploy.mpi.NativeUtils
 
 // scalastyle:off classforname
 // scalastyle:off println
@@ -71,12 +69,20 @@ object BlazeUtils {
 
 
   def setPmixEnv(): Unit = {
-    for (line <- Source.fromFile("/home/xialb/opt/spark/pmixsrv.env").getLines()) {
+    for (line <- Source.fromFile("/home/xialb/opt/spark/sbin/pmixsrv.env").getLines()) {
       val key: String = line.split('=')(0)
       val value: String = line.split('=')(1)
       val map = new util.HashMap[String, String]()
+//      print(s"key: ${key}, value: ${value}\n")
       map.put(key, value)
       NativeUtils.setEnv(map)
     }
+  }
+
+  def setRank(rank: String): Unit = {
+    val map = new util.HashMap[String, String]()
+    map.put("PMIX_RANK", rank)
+    print(s"rank: ${rank}")
+    NativeUtils.setEnv(map)
   }
 }
