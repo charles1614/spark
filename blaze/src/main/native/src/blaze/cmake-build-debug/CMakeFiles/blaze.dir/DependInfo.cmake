@@ -5,6 +5,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
+  "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prun.c" "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/cmake-build-debug/CMakeFiles/blaze.dir/include/prun.c.o"
   "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c" "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/cmake-build-debug/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
@@ -17,6 +18,8 @@ set(CMAKE_TARGET_DEFINITIONS_C
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
   "/opt/deps/prrte"
+  "/docker/git/ompi/3rd-party/prrte"
+  "/docker/git/ompi/3rd-party/prrte/src/include"
   "../include"
   )
 set(CMAKE_DEPENDS_CHECK_CXX
@@ -33,6 +36,8 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/opt/deps/prrte"
   "/opt/deps/prrte/include"
+  "/docker/git/ompi/3rd-party/prrte"
+  "/docker/git/ompi/3rd-party/prrte/src/include"
   "../include"
   "/opt/deps/openpmix/include"
   "/usr/lib/jvm/java-8-openjdk/include"

@@ -6,33 +6,3 @@
 
 #IncludeRegexTransform: 
 
-/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc
-jni.h
--
-string.h
--
-unistd.h
--
-map
--
-string
--
-utility
--
-iostream
--
-vector
--
-dlfcn.h
--
-
-/usr/lib/jvm/java-8-openjdk/include/jni.h
-stdio.h
--
-stdarg.h
--
-jni_md.h
-/usr/lib/jvm/java-8-openjdk/include/jni_md.h
-
-/usr/lib/jvm/java-8-openjdk/include/linux/jni_md.h
-

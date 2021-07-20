@@ -6,10 +6,11 @@ import org.apache.spark.blaze.deploy.mpi.NativeUtils
 import java.util.{Collections, Map => JavaMap}
 import scala.io.Source
 import org.apache.spark.blaze.deploy.mpi.NativeUtils
+import org.apache.spark.internal.Logging
 
 // scalastyle:off classforname
 // scalastyle:off println
-object BlazeUtils {
+object BlazeUtils extends Logging{
 
   def setJavaEnv(nenv: JavaMap[String, String]): Unit = {
     try {
@@ -69,7 +70,7 @@ object BlazeUtils {
 
 
   def setPmixEnv(): Unit = {
-    for (line <- Source.fromFile("/home/xialb/opt/spark/sbin/pmixsrv.env").getLines()) {
+    for (line <- Source.fromFile("/home/xialb/opt/spark/pmixsrv.env").getLines()) {
       val key: String = line.split('=')(0)
       val value: String = line.split('=')(1)
       val map = new util.HashMap[String, String]()
@@ -82,7 +83,7 @@ object BlazeUtils {
   def setRank(rank: String): Unit = {
     val map = new util.HashMap[String, String]()
     map.put("PMIX_RANK", rank)
-    print(s"rank: ${rank}")
+    logDebug(s"executor start rank ${rank}")
     NativeUtils.setEnv(map)
   }
 }

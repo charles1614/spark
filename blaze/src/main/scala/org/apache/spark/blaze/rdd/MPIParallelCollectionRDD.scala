@@ -5,7 +5,7 @@ package org.apache.spark.blaze.rdd
 import scala.collection.Map
 import scala.reflect.ClassTag
 import org.apache.spark.SparkContext
-import org.apache.spark.blaze.deploy.mpi.MPIRun
+import org.apache.spark.blaze.deploy.mpi.{MPIRun, NativeUtils}
 import org.apache.spark.rdd.{MapPartitionsRDD, ParallelCollectionRDD, RDD}
 
 import scala.sys.exit
@@ -41,11 +41,12 @@ private[spark] class MPIParallelCollectionRDD[T: ClassTag](
   }
 
   def setupMPIJobNamespace(): Unit ={
+//    NativeUtils.loadLibrary("")
     val partitions = super.getPartitions
     // TODO: mpi use partitions.length as mpi job cores
     val np = partitions.length
     logInfo(s"attempt to start ${np} cores for MPIJob")
-    val cmd = Array[String]("-n", np.toString, "hostname")
+    val cmd = Array[String]("prun", "-n", np.toString, "hostname")
     val rc = MPIRun.launch(cmd)
     if (0 !=  rc) {
       logError("setupMPIJobNamespace Failure")

@@ -142,6 +142,33 @@ blaze/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/build
 .PHONY : blaze/fast
 
+include/prun.o: include/prun.c.o
+
+.PHONY : include/prun.o
+
+# target to build an object file
+include/prun.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/include/prun.c.o
+.PHONY : include/prun.c.o
+
+include/prun.i: include/prun.c.i
+
+.PHONY : include/prun.i
+
+# target to preprocess a source file
+include/prun.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/include/prun.c.i
+.PHONY : include/prun.c.i
+
+include/prun.s: include/prun.c.s
+
+.PHONY : include/prun.s
+
+# target to generate assembly for a file
+include/prun.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/include/prun.c.s
+.PHONY : include/prun.c.s
+
 org_apache_spark_blaze_deploy_mpi_NativeUtils.o: org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o
 
 .PHONY : org_apache_spark_blaze_deploy_mpi_NativeUtils.o
@@ -205,6 +232,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... blaze"
+	@echo "... include/prun.o"
+	@echo "... include/prun.i"
+	@echo "... include/prun.s"
 	@echo "... org_apache_spark_blaze_deploy_mpi_NativeUtils.o"
 	@echo "... org_apache_spark_blaze_deploy_mpi_NativeUtils.i"
 	@echo "... org_apache_spark_blaze_deploy_mpi_NativeUtils.s"
