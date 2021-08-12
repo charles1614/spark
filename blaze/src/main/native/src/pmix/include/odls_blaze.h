@@ -34,6 +34,7 @@
 #include "src/mca/mca.h"
 
 #include "src/mca/odls/odls.h"
+#include "src/mca/odls/base/odls_private.h"
 
 BEGIN_C_DECLS
 
@@ -49,7 +50,8 @@ int prte_odls_blaze_component_query(prte_mca_base_module_t **module, int *priori
  */
 extern prte_odls_base_module_t prte_odls_blaze_module;
 PRTE_MODULE_EXPORT extern prte_odls_base_component_t mca_odls_blaze_component;
-
+PRTE_EXPORT int prte_odls_blaze_default_kill_local_procs(prte_pointer_array_t *procs,
+                                             prte_odls_base_kill_local_fn_t kill_local);
 END_C_DECLS
 
 #endif /* PRTE_ODLS_SPARKMPI_H */

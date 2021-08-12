@@ -75,43 +75,76 @@
 
 #include <stdlib.h>
 #include <string.h>
+
 #ifdef HAVE_UNISTD_H
+
 #    include <unistd.h>
+
 #endif
+
 #include <errno.h>
+
 #ifdef HAVE_SYS_TYPES_H
+
 #    include <sys/types.h>
+
 #endif
 #ifdef HAVE_SYS_WAIT_H
+
 #    include <sys/wait.h>
+
 #endif
+
 #include <signal.h>
+
 #ifdef HAVE_FCNTL_H
+
 #    include <fcntl.h>
+
 #endif
 #ifdef HAVE_SYS_TIME_H
+
 #    include <sys/time.h>
+
 #endif
 #ifdef HAVE_SYS_PARAM_H
+
 #    include <sys/param.h>
+
 #endif
 #ifdef HAVE_NETDB_H
+
 #    include <netdb.h>
+
 #endif
+
 #include <stdlib.h>
+
 #ifdef HAVE_SYS_STAT_H
+
 #    include <sys/stat.h>
+
 #endif /* HAVE_SYS_STAT_H */
+
 #include <stdarg.h>
+
 #ifdef HAVE_SYS_SELECT_H
+
 #    include <sys/select.h>
+
 #endif
 #ifdef HAVE_DIRENT_H
+
 #    include <dirent.h>
+
 #endif
+
 #include <ctype.h>
+
 #ifdef HAVE_SYS_PTRACE_H
+
 #    include <sys/ptrace.h>
+
 #endif
 
 #include "src/class/prte_pointer_array.h"
@@ -124,7 +157,9 @@
 #include "src/mca/rtc/rtc.h"
 #include "src/mca/state/state.h"
 #include "src/runtime/prte_globals.h"
+#include "src/runtime/prte_wait.h"
 #include "src/util/name_fns.h"
+#include "src/util/session_dir.h"
 
 #include "src/mca/odls/base/base.h"
 #include "src/mca/odls/base/odls_private.h"
@@ -134,8 +169,11 @@
  * Module functions (function pointers used in a struct)
  */
 static int prte_odls_blaze_launch_local_procs(pmix_data_buffer_t *data);
+
 static int prte_odls_blaze_kill_local_procs(prte_pointer_array_t *procs);
+
 static int prte_odls_blaze_signal_local_procs(const pmix_proc_t *proc, int32_t signal);
+
 static int prte_odls_blaze_restart_proc(prte_proc_t *child);
 
 /*
@@ -194,12 +232,255 @@ int prte_odls_blaze_kill_local_procs(prte_pointer_array_t *procs) {
     int rc;
 
     if (PRTE_SUCCESS
-        != (rc = prte_odls_base_default_kill_local_procs(procs, odls_blaze_kill_local))) {
+        != (rc = prte_odls_blaze_default_kill_local_procs(procs, odls_blaze_kill_local))) {
         PRTE_ERROR_LOG(rc);
         return rc;
     }
     return PRTE_SUCCESS;
 }
+
+/* Blaze kill_local_procs
+ * donnot actually kill_local_proc, but active NORMALLY TERMINATED state machine
+ * change pid judgement */
+typedef struct {
+    prte_list_item_t super;
+    prte_proc_t *child;
+} prte_odls_quick_caddy_t;
+
+static void qcdcon(prte_odls_quick_caddy_t *p) {
+    p->child = NULL;
+}
+
+static void qcddes(prte_odls_quick_caddy_t *p) {
+    if (NULL != p->child) {
+        PRTE_RELEASE(p->child);
+    }
+}
+
+PRTE_CLASS_INSTANCE(prte_odls_quick_caddy_t, prte_list_item_t, qcdcon, qcddes);
+
+int prte_odls_blaze_default_kill_local_procs(prte_pointer_array_t *procs,
+                                             prte_odls_base_kill_local_fn_t kill_local) {
+    prte_proc_t *child;
+    prte_list_t procs_killed;
+    prte_proc_t *proc, proctmp;
+    int i, j, ret;
+    prte_pointer_array_t procarray, *procptr;
+    bool do_cleanup;
+    prte_odls_quick_caddy_t *cd;
+
+    PRTE_CONSTRUCT(&procs_killed, prte_list_t);
+
+    /* if the pointer array is NULL, then just kill everything */
+    if (NULL == procs) {
+        PRTE_OUTPUT_VERBOSE((5, prte_odls_base_framework.framework_output,
+                "%s odls:kill_local_proc working on WILDCARD",
+                PRTE_NAME_PRINT(PRTE_PROC_MY_NAME)));
+        PRTE_CONSTRUCT(&procarray, prte_pointer_array_t);
+        prte_pointer_array_init(&procarray, 1, 1, 1);
+        PRTE_CONSTRUCT(&proctmp, prte_proc_t);
+        PMIX_LOAD_PROCID(&proctmp.name, NULL, PMIX_RANK_WILDCARD);
+        prte_pointer_array_add(&procarray, &proctmp);
+        procptr = &procarray;
+        do_cleanup = true;
+    } else {
+        PRTE_OUTPUT_VERBOSE((5, prte_odls_base_framework.framework_output,
+                "%s odls:kill_local_proc working on provided array",
+                PRTE_NAME_PRINT(PRTE_PROC_MY_NAME)));
+        procptr = procs;
+        do_cleanup = false;
+    }
+
+    /* cycle through the provided array of processes to kill */
+    for (i = 0; i < procptr->size; i++) {
+        if (NULL == (proc = (prte_proc_t *) prte_pointer_array_get_item(procptr, i))) {
+            continue;
+        }
+        for (j = 0; j < prte_local_children->size; j++) {
+            if (NULL
+                == (child = (prte_proc_t *) prte_pointer_array_get_item(prte_local_children, j))) {
+                continue;
+            }
+
+            PRTE_OUTPUT_VERBOSE((5, prte_odls_base_framework.framework_output,
+                    "%s odls:kill_local_proc checking child process %s",
+                    PRTE_NAME_PRINT(PRTE_PROC_MY_NAME),
+                    PRTE_NAME_PRINT(&child->name)));
+
+            /* do we have a child from the specified job? Because the
+             *  job could be given as a WILDCARD value, we must
+             *  check for that as well as for equality.
+             */
+            if (!PMIX_NSPACE_INVALID(proc->name.nspace)
+                && !PMIX_CHECK_NSPACE(proc->name.nspace, child->name.nspace)) {
+
+                PRTE_OUTPUT_VERBOSE((5, prte_odls_base_framework.framework_output,
+                        "%s odls:kill_local_proc child %s is not part of job %s",
+                        PRTE_NAME_PRINT(PRTE_PROC_MY_NAME),
+                        PRTE_NAME_PRINT(&child->name),
+                        PRTE_JOBID_PRINT(proc->name.nspace)));
+                continue;
+            }
+
+            /* see if this is the specified proc - could be a WILDCARD again, so check
+             * appropriately
+             */
+            if (PMIX_RANK_WILDCARD != proc->name.rank && proc->name.rank != child->name.rank) {
+
+                PRTE_OUTPUT_VERBOSE((5, prte_odls_base_framework.framework_output,
+                        "%s odls:kill_local_proc child %s is not covered by rank %s",
+                        PRTE_NAME_PRINT(PRTE_PROC_MY_NAME),
+                        PRTE_NAME_PRINT(&child->name),
+                        PRTE_VPID_PRINT(proc->name.rank)));
+                continue;
+            }
+
+            /* is this process alive? if not, then nothing for us
+             * to do to it
+             * child pid is 0; TODO: should modify child pid setting
+             */
+//            if (!PRTE_FLAG_TEST(child, PRTE_PROC_FLAG_ALIVE) || 0 == child->pid) {
+            if (!PRTE_FLAG_TEST(child, PRTE_PROC_FLAG_ALIVE)) {
+
+                PRTE_OUTPUT_VERBOSE((5, prte_odls_base_framework.framework_output,
+                        "%s odls:kill_local_proc child %s is not alive",
+                        PRTE_NAME_PRINT(PRTE_PROC_MY_NAME),
+                        PRTE_NAME_PRINT(&child->name)));
+
+                /* ensure, though, that the state is terminated so we don't lockup if
+                 * the proc never started
+                 */
+                if (PRTE_PROC_STATE_UNDEF == child->state || PRTE_PROC_STATE_INIT == child->state
+                    || PRTE_PROC_STATE_RUNNING == child->state) {
+                    /* we can't be sure what happened, but make sure we
+                     * at least have a value that will let us eventually wakeup
+                     */
+                    child->state = PRTE_PROC_STATE_TERMINATED;
+                    /* ensure we realize that the waitpid will never come, if
+                     * it already hasn't
+                     */
+                    PRTE_FLAG_SET(child, PRTE_PROC_FLAG_WAITPID);
+                    child->pid = 0;
+                    goto CLEANUP;
+                } else {
+                    continue;
+                }
+            }
+
+            /* ensure the stdin IOF channel for this child is closed. The other
+             * channels will automatically close when the proc is killed
+             */
+            if (NULL != prte_iof.close) {
+                prte_iof.close(&child->name, PRTE_IOF_STDIN);
+            }
+
+            /* cancel the waitpid callback as this induces unmanageable race
+             * conditions when we are deliberately killing the process
+             */
+            prte_wait_cb_cancel(child);
+
+            /* First send a SIGCONT in case the process is in stopped state.
+               If it is in a stopped state and we do not first change it to
+               running, then SIGTERM will not get delivered.  Ignore return
+               value. */
+            PRTE_OUTPUT_VERBOSE((5, prte_odls_base_framework.framework_output,
+                    "%s SENDING SIGCONT TO %s", PRTE_NAME_PRINT(PRTE_PROC_MY_NAME),
+                    PRTE_NAME_PRINT(&child->name)));
+            cd = PRTE_NEW(prte_odls_quick_caddy_t);
+            PRTE_RETAIN(child);
+            cd->child = child;
+            prte_list_append(&procs_killed, &cd->super);
+//            kill_local(child->pid, SIGCONT);
+            continue;
+
+            CLEANUP:
+            /* ensure the child's session directory is cleaned up */
+            prte_session_dir_finalize(&child->name);
+            /* check for everything complete - this will remove
+             * the child object from our local list
+             */
+            if (!prte_finalizing && PRTE_FLAG_TEST(child, PRTE_PROC_FLAG_IOF_COMPLETE)
+                && PRTE_FLAG_TEST(child, PRTE_PROC_FLAG_WAITPID)) {
+                PRTE_ACTIVATE_PROC_STATE(&child->name, child->state);
+            }
+        }
+    }
+
+    /* if we are issuing signals, then we need to wait a little
+     * and send the next in sequence */
+    if (0 < prte_list_get_size(&procs_killed)) {
+        /* Wait a little. Do so in a loop since sleep() can be interrupted by a
+         * signal. Most likely SIGCHLD in this case */
+        ret = prte_odls_globals.timeout_before_sigkill;
+        while (ret > 0) {
+            PRTE_OUTPUT_VERBOSE((5, prte_odls_base_framework.framework_output,
+                    "%s Sleep %d sec (total = %d)", PRTE_NAME_PRINT(PRTE_PROC_MY_NAME),
+                    ret, prte_odls_globals.timeout_before_sigkill));
+            ret = sleep(ret);
+        }
+        /* issue a SIGTERM to all */
+        PRTE_LIST_FOREACH(cd, &procs_killed, prte_odls_quick_caddy_t) {
+            PRTE_OUTPUT_VERBOSE((5, prte_odls_base_framework.framework_output,
+                    "%s SENDING SIGTERM TO %s", PRTE_NAME_PRINT(PRTE_PROC_MY_NAME),
+                    PRTE_NAME_PRINT(&cd->child->name)));
+//            kill_local(cd->child->pid, SIGTERM);
+            printf("[debug] ===== Kill_local dummy invoke ");
+        }
+        /* Wait a little. Do so in a loop since sleep() can be interrupted by a
+         * signal. Most likely SIGCHLD in this case */
+        ret = prte_odls_globals.timeout_before_sigkill;
+        while (ret > 0) {
+            PRTE_OUTPUT_VERBOSE((5, prte_odls_base_framework.framework_output,
+                    "%s Sleep %d sec (total = %d)", PRTE_NAME_PRINT(PRTE_PROC_MY_NAME),
+                    ret, prte_odls_globals.timeout_before_sigkill));
+            ret = sleep(ret);
+        }
+
+        /* issue a SIGKILL to all */
+        PRTE_LIST_FOREACH(cd, &procs_killed, prte_odls_quick_caddy_t) {
+            PRTE_OUTPUT_VERBOSE((5, prte_odls_base_framework.framework_output,
+                    "%s SENDING SIGKILL TO %s", PRTE_NAME_PRINT(PRTE_PROC_MY_NAME),
+                    PRTE_NAME_PRINT(&cd->child->name)));
+//            kill_local(cd->child->pid, SIGKILL);
+            printf("[debug] ===== Kill_local dummy invoke ");
+            /* indicate the waitpid fired as this is effectively what
+             * has happened
+             */
+            PRTE_FLAG_SET(cd->child, PRTE_PROC_FLAG_IOF_COMPLETE);
+            PRTE_FLAG_SET(cd->child, PRTE_PROC_FLAG_WAITPID);
+
+            /* Since we are not going to wait for this process, make sure
+             * we mark it as not-alive so that we don't wait for it
+             * in orted_cmd
+             */
+            PRTE_FLAG_UNSET(cd->child, PRTE_PROC_FLAG_ALIVE);
+            cd->child->pid = 0;
+
+            /* mark the child as "killed" */
+            cd->child->state = PRTE_PROC_STATE_KILLED_BY_CMD; /* we ordered it to die */
+
+            /* ensure the child's session directory is cleaned up */
+            prte_session_dir_finalize(&cd->child->name);
+            /* check for everything complete - this will remove
+             * the child object from our local list
+             */
+            if (!prte_finalizing && PRTE_FLAG_TEST(cd->child, PRTE_PROC_FLAG_IOF_COMPLETE)
+                && PRTE_FLAG_TEST(cd->child, PRTE_PROC_FLAG_WAITPID)) {
+                PRTE_ACTIVATE_PROC_STATE(&cd->child->name, cd->child->state);
+            }
+        }
+    }
+    PRTE_LIST_DESTRUCT(&procs_killed);
+
+    /* cleanup arrays, if required */
+    if (do_cleanup) {
+        PRTE_DESTRUCT(&procarray);
+        PRTE_DESTRUCT(&proctmp);
+    }
+
+    return PRTE_SUCCESS;
+}
+
 
 static void set_handler_default(int sig) {
 
@@ -638,14 +919,6 @@ static int odls_blaze_fork_local_proc(void *cdptr) {
 
     FILE *f = fopen("pmixsrv.env", "w");
     while (*envp) {
-        if ((pos = strstr(*envp, "OMPI_MCA_prte_local_daemon_uri"))) {
-            fprintf(f, "%s\n", *envp++);
-            continue;
-        }
-        if ((pos = strstr(*envp, "OMPI_MCA_prte_hnp_uri"))) {
-            fprintf(f, "%s\n", *envp++);
-            continue;
-        }
         if ((pos = strstr(*envp, "PMIX_NAMESPACE"))) {
             fprintf(f, "%s\n", *envp++);
             continue;
@@ -662,6 +935,7 @@ static int odls_blaze_fork_local_proc(void *cdptr) {
         *envp++;
     }
     fclose(f);
+
 
     return PRTE_SUCCESS;
 }

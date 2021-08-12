@@ -4,16 +4,6 @@ import org.apache.spark.blaze.JavaLoggingWrapper;
 
 public class MPIRun extends JavaLoggingWrapper {
 
-    public static void main(String[] args) {
-        String[] app = new String[4];
-        app[0] = "prun";
-        app[1] = "-n";
-        app[2] = "2";
-        app[3] = "hostname";
-        MPIRun mpiRun = new MPIRun();
-        mpiRun.exec(app);
-    }
-
     public static int launch(String[] args) {
         MPIRun mpiRun = new MPIRun();
         int rc = mpiRun.exec(args);

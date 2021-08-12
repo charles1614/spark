@@ -30,8 +30,8 @@ object LocalPi {
       if (x * x + y * y <= 1) count += 1
     }
     val end = System.nanoTime()
-    println(s"Pi is roughly ${4 * count / 100000.0}")
-    println(s"elapse time is ${(end - start) / 1000000} ms")
+    println(s"Pi is roughly ${4.toDouble * count / (Int.MaxValue)}")
+    println(s"Elapse time is ${(end.toDouble - start) / 1000000000} ms")
   }
 }
 // scalastyle:on println

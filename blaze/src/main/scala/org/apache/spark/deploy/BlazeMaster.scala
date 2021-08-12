@@ -34,7 +34,7 @@ private[deploy] object BlazeMaster extends Logging {
     val conf = new SparkConf
 
     conf.set("spark.local.ip", "192.168.32.197")
-//      .set("spark.master.host", "192.168.32.197")
+    //      .set("spark.master.host", "192.168.32.197")
     val args = new MasterArguments(argStrings, conf)
     val (rpcEnv, _, _) = startRpcEnvAndEndpoint(args.host, args.port, args.webUiPort, conf)
     startMPIRuntimeEnv()
@@ -80,8 +80,8 @@ private[deploy] object BlazeMaster extends Logging {
     for (host <- Source.fromFile(slave).getLines()) {
       breakable {
         if (host.matches("^[a-zA-Z].*$")) {
-          logInfo(s"Start MPIEnv in host ${host}")
           hosts += (host + ":" + cores)
+          logInfo(s"Start MPIEnv in host ${hosts}")
         } else {
           break()
         }

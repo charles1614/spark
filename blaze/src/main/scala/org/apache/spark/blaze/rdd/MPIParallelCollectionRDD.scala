@@ -40,6 +40,11 @@ private[spark] class MPIParallelCollectionRDD[T: ClassTag](
     mpiJobNsThread
   }
 
+  def finalizeMPINamespace(): Unit = {
+    var ns = NativeUtils.namespaceQuery()
+    NativeUtils.namespaceFinalize(ns);
+  }
+
   def setupMPIJobNamespace(): Unit ={
 //    NativeUtils.loadLibrary("")
     val partitions = super.getPartitions

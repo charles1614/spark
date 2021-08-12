@@ -11,9 +11,16 @@
  */
 
 #include <stdio.h>
-#include <pmix_common.h>
 #include <fcntl.h>
+#include <signal.h>
+#include <stdlib.h>
+#include "state/state.h"
+#include <pmix.h>
+#include "plm/plm_types.h"
+#include <pmix_common.h>
 #include "mpi.h"
+//#include "src/include/pmix_globals.h"
+
 
 
 int main(int argc, char *argv[]) {
@@ -64,7 +71,18 @@ int main(int argc, char *argv[]) {
     MPI_Get_library_version(version, &len);
     printf("Hello, world, I am %d of %d, (%s, %d)\n",
            rank, size, version, len);
-    MPI_Finalize();
 
+//    pmix_proc_t pp;
+//    struct pmix_info pinfo;
+//    pmix_status_t ret;
+//    bool flag = true;
+//    PMIX_INFO_LOAD(&pinfo, PMIX_JOB_CTRL_TERMINATE, &flag, PMIX_BOOL);
+//    ret = PMIx_Job_control(NULL, 0, &pinfo, 1, NULL, NULL);
+//    if(PMIX_SUCCESS != ret){
+//        fprintf(stderr, "JOB ctrl error");
+//    }
+
+//    PRTE_ACTIVATE_PROC_STATE(&prte_process_info.myproc, PRTE_PROC_STATE_TERMINATED);
+    MPI_Finalize();
     return 0;
 }

@@ -10,7 +10,7 @@ import org.apache.spark.internal.Logging
 
 // scalastyle:off classforname
 // scalastyle:off println
-object BlazeUtils extends Logging{
+object BlazeUtils extends Logging {
 
   def setJavaEnv(nenv: JavaMap[String, String]): Unit = {
     try {
@@ -70,7 +70,7 @@ object BlazeUtils extends Logging{
 
 
   def setPmixEnv(): Unit = {
-    for (line <- Source.fromFile("/home/xialb/opt/spark/pmixsrv.env").getLines()) {
+    for (line <- Source.fromFile("/home/xialb/opt/spark/sbin/pmixsrv.env").getLines()) {
       val key: String = line.split('=')(0)
       val value: String = line.split('=')(1)
       val map = new util.HashMap[String, String]()
@@ -83,7 +83,11 @@ object BlazeUtils extends Logging{
   def setRank(rank: String): Unit = {
     val map = new util.HashMap[String, String]()
     map.put("PMIX_RANK", rank)
-    logDebug(s"executor start rank ${rank}")
+    logDebug(s"Executor start rank ${rank}")
     NativeUtils.setEnv(map)
+  }
+
+  def getElapseTime(s: Long, e: Long, des: String = ""): Unit = {
+    logInfo(s"${des}: Elapse time is ${(e - s)/1000} ms")
   }
 }

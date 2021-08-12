@@ -8,20 +8,6 @@ import java.net.UnknownHostException;
 
 public class MPILauncher extends JavaLoggingWrapper {
 
-    //    private static final Log LOG = LogFactory.getLog(MPILauncher.class);
-    public static void main(String[] args) {
-        String[] argv = new String[3];
-        argv[0] = "prte";
-        argv[1] = "-H";
-        argv[2] = "lenovo:2";
-
-        String[] strings = new String[1];
-        strings[0] = "/home/xialb/lib/libblaze.so";
-        NativeUtils.loadLibrary(strings);
-        MPILauncher mpiLauncher = new MPILauncher();
-        mpiLauncher.mpiRTE(argv);
-    }
-
     public static int launch(String[] hosts) {
         MPILauncher mpiLauncher = new MPILauncher();
         int rc = mpiLauncher.mpiRTE(hosts);
