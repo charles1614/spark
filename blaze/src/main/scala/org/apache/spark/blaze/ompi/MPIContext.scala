@@ -37,7 +37,7 @@ import org.apache.spark.scheduler.{DAGScheduler, EventLoggingListener, LiveListe
 import org.apache.spark.shuffle.api.ShuffleDriverComponents
 import org.apache.spark.status.AppStatusStore
 import org.apache.spark.ui.{ConsoleProgressBar, SparkUI}
-import org.apache.spark.util.{CallSite, Utils}
+import org.apache.spark.util.{CallSite, ShutdownHookManager, Utils}
 import org.apache.spark.util.logging.DriverLogger
 
 
@@ -52,7 +52,7 @@ class MPIContext extends Logging {
   private val creationSite: CallSite = Utils.getCallSite()
 
   def stop(): Unit = {
-    // TODO: stop MPIContext
+    // TODO: stop MPIContext, deregister namespace
   }
 
   /* ------------------------------------------------------------------------------------- *
@@ -66,23 +66,11 @@ class MPIContext extends Logging {
   private var _namespace: String = _
   private var _ranks: Int = _
   private var _mpienv: String = _
-  private def srvPeer: Peer = {
-    getSrvPeer();
-  }
-  private def myPeer: Peer ={
-    new Peer(_namespace, _ranks)
-  }
-  private def namespace: String = {
-    _namespace = getNamespace();
-    _namespace
-  }
-  private def ranks: Int = {
-    _ranks = getRanks();
-    _ranks
-  }
+
 
   // RDD need SparkContext
   private var sc: SparkContext = _
+  private var mc: MPIContext = _
   private var _conf: SparkConf = _
   private var _eventLogDir: Option[URI] = None
   private var _eventLogCodec: Option[String] = None
@@ -112,6 +100,29 @@ class MPIContext extends Logging {
   private var _resources: scala.collection.immutable.Map[String, ResourceInformation] = _
   private var _shuffleDriverComponents: ShuffleDriverComponents = _
   private var _plugins: Option[PluginContainer] = None
+
+  /* ------------------------------------------------------------------------------------- *
+ | Accessors and public fields. These provide access to the internal state of the        |
+ | context.                                                                              |
+ * ------------------------------------------------------------------------------------- */
+
+  def srvPeer: Peer = {
+    getSrvPeer();
+  }
+  def myPeer: Peer ={
+    new Peer(_namespace, _ranks)
+  }
+  def namespace: String = {
+    _namespace = getNamespace();
+    _namespace
+  }
+  def ranks: Int = {
+    _ranks = getRanks();
+    _ranks
+  }
+
+
+
 
   private[spark] def taskScheduler: TaskScheduler = _taskScheduler
 

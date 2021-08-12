@@ -57,6 +57,22 @@ JNIEXPORT jobject JNICALL Java_org_apache_spark_blaze_deploy_mpi_NativeUtils_get
 
 /*
  * Class:     org_apache_spark_blaze_deploy_mpi_NativeUtils
+ * Method:    namespaceFinalize
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT int JNICALL Java_org_apache_spark_blaze_deploy_mpi_NativeUtils_namespaceFinalize
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     org_apache_spark_blaze_deploy_mpi_NativeUtils
+ * Method:    namespaceQuery
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_org_apache_spark_blaze_deploy_mpi_NativeUtils_namespaceQuery
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     org_apache_spark_blaze_deploy_mpi_NativeUtils
  * Method:    loadLibrary
  * Signature: ([Ljava/lang/String;)V
  */

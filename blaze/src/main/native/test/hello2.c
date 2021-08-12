@@ -63,5 +63,7 @@ int main(int argc, char *argv[]) {
            rank, size, version, len);
     MPI_Finalize();
 
+    exit(0);
+
     return 0;
 }

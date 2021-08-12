@@ -22,19 +22,17 @@ import java.net.URL
 import java.nio.ByteBuffer
 import java.util.Locale
 import java.util.concurrent.atomic.AtomicBoolean
-
 import scala.collection.mutable
 import scala.util.{Failure, Success}
 import scala.util.control.NonFatal
-
 import org.json4s.DefaultFormats
-
 import org.apache.spark._
 import org.apache.spark.TaskState.TaskState
 import org.apache.spark.deploy.SparkHadoopUtil
 import org.apache.spark.deploy.worker.WorkerWatcher
 import org.apache.spark.internal.Logging
 import org.apache.spark.internal.config._
+import org.apache.spark.mpi.NativeUtil
 import org.apache.spark.resource.ResourceInformation
 import org.apache.spark.resource.ResourceProfile
 import org.apache.spark.resource.ResourceProfile._
@@ -175,7 +173,14 @@ private[spark] class CoarseGrainedExecutorBackend(
 
     case StopExecutor =>
       stopping.set(true)
-      logInfo("Driver commanded a shutdown")
+
+      logInfo("Driver commanded a shutdown load")
+      System.load("/home/xialb/lib/libblaze.so")
+      val ns: String = NativeUtil.namespaceQuery()
+      logInfo(ns)
+      logInfo("Stop namespace")
+      NativeUtil.namespaceFinalize(ns)
+
       // Cannot shutdown here because an ack may need to be sent back to the caller. So send
       // a message to self to actually do the shutdown.
       self.send(Shutdown)
@@ -269,6 +274,7 @@ private[spark] object CoarseGrainedExecutorBackend extends Logging {
         arguments.bindAddress, arguments.hostname, arguments.cores, arguments.userClassPath, env,
         arguments.resourcesFileOpt, resourceProfile)
     }
+//    print("hey ! start \n")
     run(parseArguments(args, this.getClass.getCanonicalName.stripSuffix("$")), createFn)
     System.exit(0)
   }

@@ -102,6 +102,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/pmix_internal.h">
+			<Option target="blaze"/>
+		</Unit>
 		<Unit filename="/home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prun.c">
 			<Option target="blaze"/>
 		</Unit>
@@ -115,6 +118,12 @@
 			<Option target="blaze"/>
 		</Unit>
 		<Unit filename="/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.h">
+			<Option target="blaze"/>
+		</Unit>
+		<Unit filename="/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c">
+			<Option target="blaze"/>
+		</Unit>
+		<Unit filename="/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_util_mpi.h">
 			<Option target="blaze"/>
 		</Unit>
 		<Unit filename="/home/xialb/opt/spark/blaze/src/main/native/src/blaze/CMakeLists.txt">

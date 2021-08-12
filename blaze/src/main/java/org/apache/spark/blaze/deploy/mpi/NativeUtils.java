@@ -20,5 +20,9 @@ public class NativeUtils {
 
     public static native Map<String, String> getEnv(String prefix);
 
+    public static native int namespaceFinalize(String namespace);
+
+    public static native String namespaceQuery();
+
     public static native void loadLibrary(String[] argv);
 }

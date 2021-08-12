@@ -1,3 +1,7 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
   "C"
@@ -7,6 +11,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_C
   "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prun.c" "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/cmake-build-debug/CMakeFiles/blaze.dir/include/prun.c.o"
   "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c" "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/cmake-build-debug/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o"
+  "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c" "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/cmake-build-debug/CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
@@ -38,10 +43,14 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/opt/deps/prrte/include"
   "/docker/git/ompi/3rd-party/prrte"
   "/docker/git/ompi/3rd-party/prrte/src/include"
-  "../include"
   "/opt/deps/openpmix/include"
+  "../include"
   "/usr/lib/jvm/java-8-openjdk/include"
   "/usr/lib/jvm/java-8-openjdk/include/linux"
+  )
+
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
   )
 
 # Targets to which this target links.

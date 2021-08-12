@@ -9,27 +9,25 @@ import scala.util.Random
 
 import mpi.{Comm, MPI, MPIException}
 
+import org.apache.spark.BlazeSession
 import org.apache.spark.SparkConf
-import org.apache.spark.blaze.{BlazeSession, BlazeUtils}
+import org.apache.spark.blaze.BlazeUtils
 import org.apache.spark.blaze.deploy.mpi.NativeUtils
 import org.apache.spark.blaze.ompi.MPIConf
-
 
 
 /** Computes an approximation to pi */
 object MPIPi {
 
   @throws[MPIException]
-  def mpiop(mpargs: Array[String]): Unit = {
-
-    BlazeUtils.setPmixEnv()
-    BlazeUtils.setRank(mpargs(0))
+  def mpiop(mpargs: Array[String]): Double = {
 
     MPI.Init(mpargs)
+
     val myrank = MPI.COMM_WORLD.getRank
     val size = MPI.COMM_WORLD.getSize
 
-    val points = 10000;
+    val points = 100000;
     var ppn: Int = 0
     if (myrank != 0) {
       ppn = points / size
@@ -50,11 +48,12 @@ object MPIPi {
     MPI.COMM_WORLD.send(send, 1, MPI.INT, 0, 50)
     MPI.COMM_WORLD.reduce(send, recv, 1, MPI.INT, MPI.SUM, 0)
 
+    var res: Double = 0
     if (myrank == 0) {
-      print(recv(0).toDouble / points * 4)
+      res = (recv(0).toDouble / points * 4)
     }
     MPI.Finalize()
-
+    res
   }
 
 
@@ -65,21 +64,38 @@ object MPIPi {
       .setJars(Array[String]("/home/xialb/opt/spark/blaze/target/spark-blaze_2.12-3.0.3-SNAPSHOT.jar"))
       .set("spark.executor.cores", "1")
 
+    val bstart = System.currentTimeMillis()
+
     val blaze = BlazeSession
       .builder
       .appName("blazePi")
       .config(conf)
       .getOrCreate()
 
-    val slices = if (args.length > 0) args(0).toInt else 2
+//    val slices = if (args.length > 0) args(0).toInt else 7
 
-    val mc = blaze.mpiContext
-    mc.setLogLevel("INFO")
-    mc.parallelize(0 until 2, slices).map(i => {
+    val bc = blaze.blazeContext
+
+    val binit = System.currentTimeMillis()
+
+    bc.setLogLevel("INFO")
+
+    val bstart_p = System.currentTimeMillis()
+
+    val pi = bc.parallelize(0 until 7, 7).map(i => {
       val argv = Array(i.toString)
       mpiop(argv)
     }).collect()
 
+    val bstop_p = System.currentTimeMillis()
+
+    pi.map(i => println(s"pi array ${i}"))
+
+    BlazeUtils.getElapseTime(bstart, binit, "Blaze Init")
+    BlazeUtils.getElapseTime(bstart_p, bstop_p, "Blaze Compute")
+
     blaze.stop()
+    println("MPIPI has exited")
+    System.exit(0)
   }
 }
