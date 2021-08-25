@@ -56,6 +56,7 @@ private[spark] class MPIMapPartitionsRDD[U: ClassTag, T: ClassTag](
       .read()
       .asInstanceOf[Iterator[(Int, T)]]
     val iter = itermid.map(x => x._2)
+//    iter.foreach(x => print(s"${split.index}: ${x} \n"))
     val ret = f(context, split.index, iter)
     ret
   }

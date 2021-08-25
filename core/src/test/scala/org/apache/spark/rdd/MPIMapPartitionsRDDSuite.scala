@@ -53,7 +53,7 @@ class MPIMapPartitionsRDDSuite extends SparkFunSuite with SharedSparkContext {
   }
 
   test("mpimap") {
-    System.load("/home/xialb/lib/libblaze.so")
+//    System.load("/home/xialb/lib/libblaze.so")
     sc.setLogLevel("INFO")
     sc.parallelize(0 to 1, 2).mpimap(i => print(i)).barrier().mapPartitions(iter => iter)
     while(true)

@@ -1,7 +1,5 @@
 package org.apache.spark.mpi;
 
-import org.apache.spark.internal.Logging;
-
 public class MPIRun extends JavaLoggingWrapper {
 
     public static int launch(String[] args) {
@@ -13,7 +11,7 @@ public class MPIRun extends JavaLoggingWrapper {
     public int exec(String[] args) {
         int argc = args.length;
         // -n [num] hostname
-        if (argc != 4) {
+        if (argc != 6) {
             throw new RuntimeException("MPI job Nssdpace setting need 3 args: -n [num] exe");
         }
         logInfo(() -> "MPIJob is starting with " + args[2] + " cores");

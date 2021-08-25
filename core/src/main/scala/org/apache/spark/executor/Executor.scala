@@ -66,12 +66,12 @@ private[spark] class Executor(
   extends Logging {
 
   logInfo(s"Starting executor ID $executorId on host $executorHostname")
-  logInfo(s"start MPI rank $executorId on host $executorHostname")
-
-
-  System.load("/home/xialb/lib/libblaze.so")
-  MPIUtil.setPmixEnv()
-  MPIUtil.setRank(executorId)
+//  logInfo(s"start MPI rank $executorId on host $executorHostname")
+//
+//
+//  System.load("/home/xialb/lib/libblaze.so")
+//  MPIUtil.setPmixEnv()
+////  MPIUtil.setRank(executorId)
 
   private val executorShutdown = new AtomicBoolean(false)
   ShutdownHookManager.addShutdownHook(
@@ -245,7 +245,11 @@ private[spark] class Executor(
   def launchTask(context: ExecutorBackend, taskDescription: TaskDescription): Unit = {
     // setup mpi task env
     logInfo(s"task ${taskDescription.partitionId} MPI Environment")
-    MPIUtil.setMPIEnv(taskDescription)
+    logInfo(s"start MPI rank ${taskDescription.partitionId} on host $executorHostname")
+//    MPIUtil.setMPIEnv(taskDescription)
+    MPIUtil.setPmixEnv()
+    MPIUtil.setRank(taskDescription.partitionId.toString)
+
     val tr = new TaskRunner(context, taskDescription)
     runningTasks.put(taskDescription.taskId, tr)
     threadPool.execute(tr)

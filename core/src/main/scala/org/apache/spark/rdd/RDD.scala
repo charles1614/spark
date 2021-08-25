@@ -1992,7 +1992,9 @@ abstract class RDD[T: ClassTag](
   /** mpi map */
   def mpimap[U: ClassTag](f: T => U): RDD[U] = withScope {
     logInfo("======== Initialize MPI Namespace ===========")
+    System.load("/home/xialb/lib/libblaze.so")
     launchMPIJobNamespace()
+
     val cleanF = sc.clean(f)
     new MPIMapPartitionsRDD[U, T](this, (_, _, iter) => iter.map(cleanF), isFromBarrier = true)
   }
@@ -2023,7 +2025,7 @@ abstract class RDD[T: ClassTag](
     // TODO: mpi use partitions.length as mpi job cores
     val np = partitions.length
     logInfo(s"attempt to start ${np} cores for MPIJob")
-    val cmd = Array[String]("prun", "-n", np.toString, "hostname")
+    val cmd = Array[String]("prun", "--map-by", ":OVERSUBSCRIBE", "-n", np.toString, "hostname")
     val rc = MPIRun.launch(cmd)
     if (0 !=  rc) {
       logError("setupMPIJobNamespace Failure")
@@ -2051,7 +2053,9 @@ object RDD {
   // compatibility and forward to the following functions directly.
 
   implicit def rddToKeyValueRDD[V](rdd: RDD[V]): RDD[_ <: Product2[Int, V]] = {
-    rdd.map(i => (1, i))
+    rdd.mapPartitionsWithIndex((index, iter) => {
+      iter.map(x => (index, x))
+    })
   }
 
   implicit def rddToPairRDDFunctions[K, V](rdd: RDD[(K, V)])
