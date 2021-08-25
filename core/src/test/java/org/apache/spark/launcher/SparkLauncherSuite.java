@@ -95,7 +95,7 @@ public class SparkLauncherSuite extends BaseSuite {
     assertEquals("python3.5", launcher.builder.conf.get(package$.MODULE$.PYSPARK_PYTHON().key()));
   }
 
-//  @Test
+  @Test
   public void testChildProcLauncher() throws Exception {
     // This test is failed on Windows due to the failure of initiating executors
     // by the path length limitation. See SPARK-18718.

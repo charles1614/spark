@@ -1,12 +1,12 @@
 
 package org.apache.spark.mpi
 
-
-import java.util.{Collections, Map => JavaMap}
-
 import scala.io.Source
 
 import org.apache.spark.internal.Logging
+import org.apache.spark.scheduler.TaskDescription
+
+class JavaLoggingWrapper extends Logging
 
 object MPIUtil extends Logging {
 
@@ -21,6 +21,11 @@ object MPIUtil extends Logging {
       map.put(key, value)
       NativeUtil.setEnv(map)
     }
+  }
+
+  def setMPIEnv(taskDesc: TaskDescription): Unit = {
+    import collection.JavaConverters._
+    NativeUtil.setEnv(taskDesc.mpienv.asJava)
   }
 
   def setRank(rank: String): Unit = {

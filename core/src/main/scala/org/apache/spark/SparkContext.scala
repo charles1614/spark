@@ -278,6 +278,9 @@ class SparkContext(config: SparkConf) extends Logging {
   private[spark] val addedFiles = new ConcurrentHashMap[String, Long]().asScala
   private[spark] val addedJars = new ConcurrentHashMap[String, Long]().asScala
 
+  // mpi env
+  private[spark] val mpienv = new ConcurrentHashMap[String, String]().asScala
+
   // Keeps track of all persisted RDDs
   private[spark] val persistentRdds = {
     val map: ConcurrentMap[Int, RDD[_]] = new MapMaker().weakValues().makeMap[Int, RDD[_]]()

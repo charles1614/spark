@@ -59,6 +59,7 @@
 					<Add directory="/opt/deps/prrte/include"/>
 					<Add directory="/usr/lib/jvm/java-8-openjdk/include"/>
 					<Add directory="/usr/lib/jvm/java-8-openjdk/include/linux"/>
+					<Add directory="/opt/deps/flex/include"/>
 					<Add directory="/opt/deps/openpmix/include"/>
 					<Add directory="."/>
 				</Compiler>
@@ -91,6 +92,7 @@
 					<Add directory="/opt/deps/prrte/include"/>
 					<Add directory="/usr/lib/jvm/java-8-openjdk/include"/>
 					<Add directory="/usr/lib/jvm/java-8-openjdk/include/linux"/>
+					<Add directory="/opt/deps/flex/include"/>
 					<Add directory="/opt/deps/openpmix/include"/>
 					<Add directory="."/>
 				</Compiler>
@@ -123,7 +125,7 @@
 		<Unit filename="/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c">
 			<Option target="blaze"/>
 		</Unit>
-		<Unit filename="/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_util_mpi.h">
+		<Unit filename="/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.h">
 			<Option target="blaze"/>
 		</Unit>
 		<Unit filename="/home/xialb/opt/spark/blaze/src/main/native/src/blaze/CMakeLists.txt">

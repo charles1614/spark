@@ -17,15 +17,13 @@
 
 package org.apache.spark.scheduler
 
-import java.io.{DataInputStream, DataOutputStream}
+import java.io.{DataInputStream, DataOutputStream, ObjectInputStream, ObjectOutputStream}
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.util.Properties
-
 import scala.collection.JavaConverters._
-import scala.collection.immutable
+import scala.collection.{immutable, mutable}
 import scala.collection.mutable.{ArrayBuffer, HashMap, Map}
-
 import org.apache.spark.resource.ResourceInformation
 import org.apache.spark.util.{ByteBufferInputStream, ByteBufferOutputStream, Utils}
 
@@ -53,6 +51,7 @@ private[spark] class TaskDescription(
     val name: String,
     val index: Int,    // Index within this task's TaskSet
     val partitionId: Int,
+    val mpienv: Map[String, String],
     val addedFiles: Map[String, Long],
     val addedJars: Map[String, Long],
     val properties: Properties,
@@ -85,6 +84,7 @@ private[spark] object TaskDescription {
   def encode(taskDescription: TaskDescription): ByteBuffer = {
     val bytesOut = new ByteBufferOutputStream(4096)
     val dataOut = new DataOutputStream(bytesOut)
+    val objOut = new ObjectOutputStream(bytesOut)
 
     dataOut.writeLong(taskDescription.taskId)
     dataOut.writeInt(taskDescription.attemptNumber)
@@ -92,6 +92,8 @@ private[spark] object TaskDescription {
     dataOut.writeUTF(taskDescription.name)
     dataOut.writeInt(taskDescription.index)
     dataOut.writeInt(taskDescription.partitionId)
+
+    objOut.writeObject(taskDescription.mpienv)
 
     // Write files.
     serializeStringLongMap(taskDescription.addedFiles, dataOut)
@@ -153,13 +155,19 @@ private[spark] object TaskDescription {
   }
 
   def decode(byteBuffer: ByteBuffer): TaskDescription = {
-    val dataIn = new DataInputStream(new ByteBufferInputStream(byteBuffer))
+    val byteIn = new ByteBufferInputStream(byteBuffer)
+    val dataIn = new DataInputStream(byteIn)
+    val objIn = new ObjectInputStream(byteIn)
+
     val taskId = dataIn.readLong()
     val attemptNumber = dataIn.readInt()
     val executorId = dataIn.readUTF()
     val name = dataIn.readUTF()
     val index = dataIn.readInt()
     val partitionId = dataIn.readInt()
+
+    // Read mpienv Map
+    val mpienv = objIn.readObject().asInstanceOf[mutable.HashMap[String, String]]
 
     // Read files.
     val taskFiles = deserializeStringLongMap(dataIn)
@@ -184,7 +192,7 @@ private[spark] object TaskDescription {
     // Create a sub-buffer for the serialized task into its own buffer (to be deserialized later).
     val serializedTask = byteBuffer.slice()
 
-    new TaskDescription(taskId, attemptNumber, executorId, name, index, partitionId, taskFiles,
-      taskJars, properties, resources, serializedTask)
+    new TaskDescription(taskId, attemptNumber, executorId, name,
+      index, partitionId, mpienv, taskFiles, taskJars, properties, resources, serializedTask)
   }
 }

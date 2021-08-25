@@ -380,6 +380,28 @@ private[spark] class DAGScheduler(
     }
   }
 
+  def getOrCreateMPIMapStage(mpiDep: MPIDependency[_], firstJobId: Int): ShuffleMapStage = {
+    shuffleIdToMapStage.get(mpiDep.shuffleId) match {
+      case Some(stage) =>
+        stage
+
+      case None =>
+        // Create stages for all missing ancestor shuffle dependencies.
+        getMissingAncestorShuffleDependencies(mpiDep.rdd).foreach { dep =>
+          // Even though getMissingAncestorShuffleDependencies only returns shuffle dependencies
+          // that were not already in shuffleIdToMapStage, it's possible that by the time we
+          // get to a particular dependency in the foreach loop, it's been added to
+          // shuffleIdToMapStage by the stage creation process for an earlier dependency. See
+          // SPARK-13902 for more information.
+          if (!shuffleIdToMapStage.contains(dep.shuffleId)) {
+            createShuffleMapStage(dep, firstJobId)
+          }
+        }
+        // Finally, create a stage for the given shuffle dependency.
+        createShuffleMapStage(mpiDep, firstJobId)
+    }
+  }
+
   /**
    * Check to make sure we don't launch a barrier stage with unsupported RDD chain pattern. The
    * following patterns are not supported:
@@ -589,6 +611,13 @@ private[spark] class DAGScheduler(
         if (rddHasUncachedPartitions) {
           for (dep <- rdd.dependencies) {
             dep match {
+              case mpiDep: MPIDependency[_] =>
+                rdd.mpiStage_ = true
+//                val mapStage = getOrCreateShuffleMapStage(mpiDep, stage.firstJobId)
+                val mapStage = getOrCreateMPIMapStage(mpiDep, stage.firstJobId)
+                if (!mapStage.isAvailable) {
+                  missing += mapStage
+                }
               case shufDep: ShuffleDependency[_, _, _] =>
                 val mapStage = getOrCreateShuffleMapStage(shufDep, stage.firstJobId)
                 if (!mapStage.isAvailable) {
@@ -1136,6 +1165,7 @@ private[spark] class DAGScheduler(
     // The operation here can make sure for the partially completed intermediate stage,
     // `findMissingPartitions()` returns all partitions every time.
     stage match {
+//      case mms: MPIMapStage =>
       case sms: ShuffleMapStage if stage.isIndeterminate && !sms.isAvailable =>
         mapOutputTracker.unregisterAllMapOutput(sms.shuffleDep.shuffleId)
       case _ =>

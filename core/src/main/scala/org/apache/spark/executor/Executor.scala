@@ -243,6 +243,9 @@ private[spark] class Executor(
   private[executor] def numRunningTasks: Int = runningTasks.size()
 
   def launchTask(context: ExecutorBackend, taskDescription: TaskDescription): Unit = {
+    // setup mpi task env
+    logInfo(s"task ${taskDescription.partitionId} MPI Environment")
+    MPIUtil.setMPIEnv(taskDescription)
     val tr = new TaskRunner(context, taskDescription)
     runningTasks.put(taskDescription.taskId, tr)
     threadPool.execute(tr)

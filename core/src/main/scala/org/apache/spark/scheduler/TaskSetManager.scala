@@ -64,6 +64,9 @@ private[spark] class TaskSetManager(
   private val addedJars = HashMap[String, Long](sched.sc.addedJars.toSeq: _*)
   private val addedFiles = HashMap[String, Long](sched.sc.addedFiles.toSeq: _*)
 
+  // add mpi env
+  private val mpienv = HashMap[String, String](sched.sc.mpienv.toSeq: _*)
+
   val maxResultSize = conf.get(config.MAX_RESULT_SIZE)
 
   // Serializer for closures and tasks.
@@ -478,6 +481,7 @@ private[spark] class TaskSetManager(
           taskName,
           index,
           task.partitionId,
+          mpienv,
           addedFiles,
           addedJars,
           task.localProperties,

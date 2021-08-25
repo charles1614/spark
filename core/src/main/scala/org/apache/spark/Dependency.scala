@@ -130,3 +130,28 @@ class RangeDependency[T](rdd: RDD[T], inStart: Int, outStart: Int, length: Int)
     }
   }
 }
+
+
+@DeveloperApi
+class MPIDependency[V: ClassTag](
+//                        @transient private val _rdd: RDD[_ <: Product2[K, V]],
+// implicit convert to KeyValue RDD
+                        rdd: RDD[V],
+                        partitioner: Partitioner,
+                        serializer: Serializer = SparkEnv.get.serializer,
+                        keyOrdering: Option[Ordering[Int]] = None,
+                        aggregator: Option[Aggregator[Int, V, V]] = None,
+                        mapSideCombine: Boolean = false,
+                        shuffleWriterProcessor: ShuffleWriteProcessor = new ShuffleWriteProcessor)
+      extends ShuffleDependency[Int, V, V](rdd, partitioner, serializer, keyOrdering,
+        aggregator, mapSideCombine, shuffleWriterProcessor) {
+  /**
+   * Get the parent partitions for a child partition.
+   *
+   * @param partitionId a partition of the child RDD
+   * @return the partitions of the parent RDD that the child partition depends upon
+   */
+   def getParents(partitionId: Int): Seq[Int] = {
+    List(partitionId)
+  }
+}

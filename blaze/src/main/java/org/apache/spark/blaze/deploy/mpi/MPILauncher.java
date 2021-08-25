@@ -19,7 +19,7 @@ public class MPILauncher extends JavaLoggingWrapper {
         logInfo(() -> {
             try {
                 return "MPI RunTimeEnv is running in host "
-                        + InetAddress.getLocalHost().getHostName();
+                        + InetAddress.getLocalHost().getHostName() + " hosts: " + argv;
             } catch (UnknownHostException e) {
                 e.printStackTrace();
                 return "Unknown host";

@@ -424,7 +424,7 @@ int prte_odls_blaze_default_kill_local_procs(prte_pointer_array_t *procs,
                     "%s SENDING SIGTERM TO %s", PRTE_NAME_PRINT(PRTE_PROC_MY_NAME),
                     PRTE_NAME_PRINT(&cd->child->name)));
 //            kill_local(cd->child->pid, SIGTERM);
-            printf("[debug] ===== Kill_local dummy invoke ");
+            printf("[debug] ===== Kill_local dummy invoke \n");
         }
         /* Wait a little. Do so in a loop since sleep() can be interrupted by a
          * signal. Most likely SIGCHLD in this case */

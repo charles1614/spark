@@ -2,8 +2,8 @@ package org.apache.spark.blaze.deploy.mpi;
 
 //import org.junit.Test;
 
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class NativeUtilsTest {
 
@@ -56,7 +56,7 @@ public class NativeUtilsTest {
 //            MPILauncher mpiLauncher = new MPILauncher();
 //            mpiLauncher.mpiRTE(argv);
 //    }
-//
+//    @Test
 //    public void mpirun() {
 //        String[] app = new String[4];
 //        app[0] = "prun";
@@ -64,6 +64,7 @@ public class NativeUtilsTest {
 //        app[2] = "2";
 //        app[3] = "hostname";
 //        MPIRun mpiRun = new MPIRun();
-//        mpiRun.exec(app);
+//        int rc = mpiRun.exec(app);
+//        assert(rc == 0);
 //    }
 }

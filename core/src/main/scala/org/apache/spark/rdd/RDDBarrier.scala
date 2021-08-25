@@ -54,6 +54,20 @@ class RDDBarrier[T: ClassTag] private[spark] (rdd: RDD[T]) {
     )
   }
 
+  @Experimental
+  @Since("2.4.0")
+  def mpimapPartitions[S: ClassTag](
+                                  f: Iterator[T] => Iterator[S],
+                                  preservesPartitioning: Boolean = false): RDD[S] = rdd.withScope {
+    val cleanedF = rdd.sparkContext.clean(f)
+    new MPIMapPartitionsRDD(
+      rdd,
+      (context: TaskContext, index: Int, iter: Iterator[T]) => cleanedF(iter),
+      preservesPartitioning,
+      isFromBarrier = true
+    )
+  }
+
   /**
    * :: Experimental ::
    * Returns a new RDD by applying a function to each partition of the wrapped RDD, while tracking

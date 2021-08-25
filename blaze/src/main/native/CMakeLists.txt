@@ -1,3 +1,6 @@
 cmake_minimum_required(VERSION 3.17)
 
 project(native)
+
+add_subdirectory(src/blaze)
+add_subdirectory(src/pmix)

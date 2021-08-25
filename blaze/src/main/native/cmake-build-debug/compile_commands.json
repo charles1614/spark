@@ -1,0 +1,32 @@
+[
+{
+  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze",
+  "command": "/usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 -Dblaze_EXPORTS -I/opt/deps/prrte -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src/include -I/home/xialb/opt/spark/blaze/src/main/native/src/blaze/include -g -fPIC -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c",
+  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c"
+},
+{
+  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze",
+  "command": "/usr/bin/c++ -Dblaze_EXPORTS -I/opt/deps/prrte -I/opt/deps/prrte/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src/include -I/opt/deps/openpmix/include -I/home/xialb/opt/spark/blaze/src/main/native/src/blaze/include -I/usr/lib/jvm/java-8-openjdk/include -I/usr/lib/jvm/java-8-openjdk/include/linux -g -fPIC -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc",
+  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc"
+},
+{
+  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze",
+  "command": "/usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 -Dblaze_EXPORTS -I/opt/deps/prrte -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src/include -I/home/xialb/opt/spark/blaze/src/main/native/src/blaze/include -g -fPIC -o CMakeFiles/blaze.dir/include/prun.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prun.c",
+  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prun.c"
+},
+{
+  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze",
+  "command": "/usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 -Dblaze_EXPORTS -I/opt/deps/prrte -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src/include -I/home/xialb/opt/spark/blaze/src/main/native/src/blaze/include -g -fPIC -o CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c",
+  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c"
+},
+{
+  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
+  "command": "/usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 -Dmca_odls_blaze_EXPORTS -I/home/xialb/opt/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_module.c",
+  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_module.c"
+},
+{
+  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
+  "command": "/usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 -Dmca_odls_blaze_EXPORTS -I/home/xialb/opt/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c",
+  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c"
+}
+]

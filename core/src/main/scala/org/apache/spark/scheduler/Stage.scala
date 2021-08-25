@@ -70,6 +70,9 @@ private[scheduler] abstract class Stage(
   /** The ID to use for the next new attempt for this stage. */
   private var nextAttemptId: Int = 0
 
+  /** The job namespace for this stage */
+    private var namespaceId: String = "spark-"
+
   val name: String = callSite.shortForm
   val details: String = callSite.longForm
 

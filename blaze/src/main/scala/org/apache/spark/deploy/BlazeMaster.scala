@@ -33,7 +33,7 @@ private[deploy] object BlazeMaster extends Logging {
     Utils.initDaemon(log)
     val conf = new SparkConf
 
-    conf.set("spark.local.ip", "192.168.32.197")
+//    conf.set("spark.local.ip", "192.168.32.197")
     //      .set("spark.master.host", "192.168.32.197")
     val args = new MasterArguments(argStrings, conf)
     val (rpcEnv, _, _) = startRpcEnvAndEndpoint(args.host, args.port, args.webUiPort, conf)
@@ -74,20 +74,22 @@ private[deploy] object BlazeMaster extends Logging {
 
   def getWorkersHost(): Array[String] = {
     val slave = "/home/xialb/opt/spark/conf/slaves"
-    val hosts = ArrayBuffer[String]("prte")
-    hosts += "-H"
+    val cmd = ArrayBuffer[String]("prte")
+    cmd += "-H"
+    var hosts: String = ""
     val cores = getCores()
     for (host <- Source.fromFile(slave).getLines()) {
       breakable {
         if (host.matches("^[a-zA-Z].*$")) {
-          hosts += (host + ":" + cores)
+          hosts += (host + ":" + cores + ",")
           logInfo(s"Start MPIEnv in host ${hosts}")
         } else {
           break()
         }
       }
     }
-    hosts.toArray
+    cmd += hosts
+    cmd.toArray
   }
 
   def getCores(): Int = {

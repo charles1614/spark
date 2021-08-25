@@ -22,41 +22,27 @@ private[spark] class MPIParallelCollectionRDD[T: ClassTag](
       locationPrefs) with Serializable {
 
   // TODO: how to map
-  override def map[U: ClassTag](f: T => U): RDD[U] = withScope {
-//    val cleanF = sc.clean(f)
-    logInfo("======== use mpi map ===========")
-    launchMPIJobNamespace()
-    super.map(f)
-//    new MapPartitionsRDD[U, T](this, (_, _, iter) => iter.map(cleanF))
-  }
+//  override def map[U: ClassTag](f: T => U): RDD[U] = withScope {
+////    val cleanF = sc.clean(f)
+//    logInfo("======== use mpi map ===========")
+//    launchMPIJobNamespace()
+//    super.map(f)
+////    val cleanF = sc.clean(f)
+////    new MapPartitionsRDD[U, T](this, (_, _, iter) => iter.map(cleanF))
+//  }
 
-  def launchMPIJobNamespace(): Thread = {
-    val mpiJobNsThread = new Thread {
+  override def launchMPIJobNamespace(): Thread = {
+    val mpiJobNsThread = new Thread("MPINamespace Setup") {
       override def run: Unit = {
         setupMPIJobNamespace()
       }
     }
-    mpiJobNsThread.start()
+    try {
+      mpiJobNsThread.start()
+    } catch {
+      case e: Exception => print(e)
+      case _: Throwable => println("Got throwable exception")
+    }
     mpiJobNsThread
   }
-
-  def finalizeMPINamespace(): Unit = {
-    var ns = NativeUtils.namespaceQuery()
-    NativeUtils.namespaceFinalize(ns);
-  }
-
-  def setupMPIJobNamespace(): Unit ={
-//    NativeUtils.loadLibrary("")
-    val partitions = super.getPartitions
-    // TODO: mpi use partitions.length as mpi job cores
-    val np = partitions.length
-    logInfo(s"attempt to start ${np} cores for MPIJob")
-    val cmd = Array[String]("prun", "-n", np.toString, "hostname")
-    val rc = MPIRun.launch(cmd)
-    if (0 !=  rc) {
-      logError("setupMPIJobNamespace Failure")
-      exit(rc)
-    }
-  }
-
 }

@@ -16,7 +16,7 @@ public class MPIRun extends JavaLoggingWrapper {
         if (argc != 4) {
             throw new RuntimeException("MPI job Nssdpace setting need 3 args: -n [num] exe");
         }
-        logInfo(() -> "MPIJob is starting with " + args[1] + " cores");
+        logInfo(() -> "MPIJob is starting with " + args[2] + " cores");
         int rc = NativeUtils.mpirun(argc, args);
         return rc;
     }

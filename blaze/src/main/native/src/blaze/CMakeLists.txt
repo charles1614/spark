@@ -8,7 +8,7 @@ set(PRRTE_SRC  /docker/git/ompi/3rd-party/prrte/)
 
 #set(PRTE_SRC ${PRRTE}/src/tools/prun/prun.c ${PRRTE}/src/prted/prte.c )
 set(SRC org_apache_spark_blaze_deploy_mpi_NativeUtils.c org_apache_spark_blaze_deploy_mpi_NativeUtils.cc include/prun.c include/pmix_internal.h)
-set(CORE_SRC org_apache_spark_util_mpi.h org_apache_spark_mpi_NativeUtil.c)
+set(CORE_SRC org_apache_spark_mpi_NativeUtil.h org_apache_spark_mpi_NativeUtil.c)
 include_directories(${PRRTE} ${PRRTE}/include ${PRRTE_SRC} ${PRRTE_SRC}/src/include)
 include_directories(${PMIX}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include)

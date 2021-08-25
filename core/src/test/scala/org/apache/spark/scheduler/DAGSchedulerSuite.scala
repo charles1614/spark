@@ -20,23 +20,20 @@ package org.apache.spark.scheduler
 import java.util.Properties
 import java.util.concurrent.{CountDownLatch, TimeUnit}
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicLong, AtomicReference}
-
 import scala.annotation.meta.param
 import scala.collection.mutable.{ArrayBuffer, HashMap, HashSet, Map}
 import scala.util.control.NonFatal
-
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.scalatest.concurrent.{Signaler, ThreadSignaler, TimeLimits}
 import org.scalatest.exceptions.TestFailedException
 import org.scalatest.time.SpanSugar._
-
 import org.apache.spark._
 import org.apache.spark.broadcast.BroadcastManager
 import org.apache.spark.executor.ExecutorMetrics
 import org.apache.spark.internal.config
-import org.apache.spark.rdd.{DeterministicLevel, RDD}
+import org.apache.spark.rdd.{DeterministicLevel, MPIMapPartitionsRDD, RDD}
 import org.apache.spark.scheduler.SchedulingMode.SchedulingMode
 import org.apache.spark.shuffle.{FetchFailedException, MetadataFetchFailedException}
 import org.apache.spark.storage.{BlockId, BlockManagerId, BlockManagerMaster}
@@ -630,6 +627,26 @@ class DAGSchedulerSuite extends SparkFunSuite with LocalSparkContext with TimeLi
     val finalRdd = new MyRDD(sc, 1, List(new OneToOneDependency(baseRdd)))
     submit(finalRdd, Array(0))
     complete(taskSets(0), Seq((Success, 42)))
+    assert(results === Map(0 -> 42))
+    assertDataStructuresEmpty()
+  }
+
+  test("run mpi dependency") {
+//    val baseRdd = new MyRDD(sc, 1, Nil)
+//    val finalRdd = new MyRDD(sc, 1, List(new OneToOneDependency(baseRdd)))
+    val baseRdd = sc.parallelize(0 until 10, 1)
+//    val mpiDep = new MPIDependency(baseRdd, new HashPartitioner(1))
+//    val mpiShuffleId = mpiDep.shuffleId
+    val mpiMapRdd = baseRdd.mpimap(x => x)
+    val resultRdd = mpiMapRdd.map(x => x)
+//    resultRdd.collect()
+    submit(mpiMapRdd, Array(0))
+
+    complete(taskSets(0), Seq(
+      (Success, makeMapStatus("hostB", mpiMapRdd.partitions.length))))
+
+//    Thread.sleep(100000)
+    complete(taskSets(1), Seq((Success, 42)))
     assert(results === Map(0 -> 42))
     assertDataStructuresEmpty()
   }
@@ -1607,6 +1624,7 @@ class DAGSchedulerSuite extends SparkFunSuite with LocalSparkContext with TimeLi
       (Success, makeMapStatus("hostA", shuffleMapRdd.partitions.length))
     ))
 
+    Thread.sleep(100000)
     // then one executor dies, and a task fails in stage 1
     runEvent(ExecutorLost("exec-hostA", ExecutorKilled))
     runEvent(makeCompletionEvent(

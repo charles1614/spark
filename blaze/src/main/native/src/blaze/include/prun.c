@@ -694,7 +694,8 @@ int prun(int argc, char *argv[])
     if (PMIX_SUCCESS != (ret = PMIx_tool_init(&myproc, iptr, ninfo))) {
         fprintf(stderr, "%s failed to initialize, likely due to no DVM being available\n",
                 prte_tool_basename);
-        exit(1);
+        return 1;
+        // exit(1);
     }
     PMIX_INFO_FREE(iptr, ninfo);
 

@@ -19,14 +19,15 @@ package org.apache.spark.rdd
 
 import java.util.Random
 
-import scala.collection.{mutable, Map}
+import scala.collection.{Map, mutable}
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Codec
 import scala.language.implicitConversions
-import scala.reflect.{classTag, ClassTag}
+import scala.reflect.{ClassTag, classTag}
 import scala.util.hashing
 
 import com.clearspring.analytics.stream.cardinality.HyperLogLogPlus
+
 import org.apache.hadoop.io.{BytesWritable, NullWritable, Text}
 import org.apache.hadoop.io.compress.CompressionCodec
 import org.apache.hadoop.mapred.TextOutputFormat
@@ -38,16 +39,15 @@ import org.apache.spark.api.java.JavaRDD
 import org.apache.spark.internal.Logging
 import org.apache.spark.internal.config._
 import org.apache.spark.internal.config.RDD_LIMIT_SCALE_UP_FACTOR
+import org.apache.spark.mpi.{MPIRun, NativeUtil}
 import org.apache.spark.partial.BoundedDouble
 import org.apache.spark.partial.CountEvaluator
 import org.apache.spark.partial.GroupedCountEvaluator
 import org.apache.spark.partial.PartialResult
 import org.apache.spark.storage.{RDDBlockId, StorageLevel}
 import org.apache.spark.util.{BoundedPriorityQueue, Utils}
-import org.apache.spark.util.collection.{ExternalAppendOnlyMap, OpenHashMap,
-  Utils => collectionUtils}
-import org.apache.spark.util.random.{BernoulliCellSampler, BernoulliSampler, PoissonSampler,
-  SamplingUtils}
+import org.apache.spark.util.collection.{ExternalAppendOnlyMap, OpenHashMap, Utils => collectionUtils}
+import org.apache.spark.util.random.{BernoulliCellSampler, BernoulliSampler, PoissonSampler, SamplingUtils}
 
 /**
  * A Resilient Distributed Dataset (RDD), the basic abstraction in Spark. Represents an immutable,
@@ -1982,6 +1982,55 @@ abstract class RDD[T: ClassTag](
     }
   }
 
+
+  var mpiStage_ : Boolean = false
+
+  def isMPIStage() : Boolean = {
+    mpiStage_
+  }
+
+  /** mpi map */
+  def mpimap[U: ClassTag](f: T => U): RDD[U] = withScope {
+    logInfo("======== Initialize MPI Namespace ===========")
+    launchMPIJobNamespace()
+    val cleanF = sc.clean(f)
+    new MPIMapPartitionsRDD[U, T](this, (_, _, iter) => iter.map(cleanF), isFromBarrier = true)
+  }
+
+
+  def launchMPIJobNamespace(): Thread = {
+    val mpiJobNsThread = new Thread("MPINamespace Setup") {
+      override def run: Unit = {
+        setupMPIJobNamespace()
+      }
+    }
+    try {
+      mpiJobNsThread.start()
+    } catch {
+      case e: Exception => logError("Exception", e)
+      case _: Throwable => logError("Got throwable exception")
+    }
+    mpiJobNsThread
+  }
+
+  def finalizeMPINamespace(): Unit = {
+    var ns = NativeUtil.namespaceQuery()
+    NativeUtil.namespaceFinalize(ns);
+  }
+
+  def setupMPIJobNamespace(): Int = {
+
+    // TODO: mpi use partitions.length as mpi job cores
+    val np = partitions.length
+    logInfo(s"attempt to start ${np} cores for MPIJob")
+    val cmd = Array[String]("prun", "-n", np.toString, "hostname")
+    val rc = MPIRun.launch(cmd)
+    if (0 !=  rc) {
+      logError("setupMPIJobNamespace Failure")
+      throw new Exception("setupMPIJobNamespace Failure")
+    }
+    rc
+  }
 }
 
 
@@ -2000,6 +2049,10 @@ object RDD {
   // `import SparkContext._` to enable them. Now we move them here to make the compiler find
   // them automatically. However, we still keep the old functions in SparkContext for backward
   // compatibility and forward to the following functions directly.
+
+  implicit def rddToKeyValueRDD[V](rdd: RDD[V]): RDD[_ <: Product2[Int, V]] = {
+    rdd.map(i => (1, i))
+  }
 
   implicit def rddToPairRDDFunctions[K, V](rdd: RDD[(K, V)])
     (implicit kt: ClassTag[K], vt: ClassTag[V], ord: Ordering[K] = null): PairRDDFunctions[K, V] = {

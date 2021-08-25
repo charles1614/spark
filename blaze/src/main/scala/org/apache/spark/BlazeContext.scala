@@ -13,7 +13,7 @@ import scala.collection.Map
 import scala.reflect.ClassTag
 
 
-class BlazeContext(config: SparkConf) extends SparkContext(config) {
+class BlazeContext(config: SparkConf) extends SparkContext(config) with Serializable {
 
   // TODO: stop BlazeContext, deregister namespace
   //  def stop(): Unit = {
@@ -30,7 +30,7 @@ class BlazeContext(config: SparkConf) extends SparkContext(config) {
 * ------------------------------------------------------------------------------------- */
   // MPI NameSpace and Rank info
 
-  private var _namespace: String = _
+  private[spark] var _namespace: String = _
   private var _ranks: Int = _
   private var _mpienv: String = _
 

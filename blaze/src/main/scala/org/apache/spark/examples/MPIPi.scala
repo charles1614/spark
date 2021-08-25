@@ -60,29 +60,27 @@ object MPIPi {
   def main(args: Array[String]): Unit = {
 
     val conf = new SparkConf()
-      .set("spark.master", "spark://192.168.32.197:7077")
-      .setJars(Array[String]("/home/xialb/opt/spark/blaze/target/spark-blaze_2.12-3.0.3-SNAPSHOT.jar"))
+//      .set("spark.master", "spark://192.168.32.197:7077")
+//      .setJars(Array[String]("/home/xialb/opt/spark/blaze/target/spark-blaze_2.12-3.0.3-SNAPSHOT.jar"))
       .set("spark.executor.cores", "1")
+//      .set("spark.dynamicAllocation.maxExecutors", "7")
+//      .set("spark.task.cpus","1")
 
-    val bstart = System.currentTimeMillis()
 
     val blaze = BlazeSession
       .builder
-      .appName("blazePi")
       .config(conf)
+      .appName("blazePi")
+      .master("local[2]")
       .getOrCreate()
 
 //    val slices = if (args.length > 0) args(0).toInt else 7
 
     val bc = blaze.blazeContext
 
-    val binit = System.currentTimeMillis()
-
     bc.setLogLevel("INFO")
 
-    val bstart_p = System.currentTimeMillis()
-
-    val pi = bc.parallelize(0 until 7, 7).map(i => {
+    val pi = bc.parallelize(0 until 2, 2).map(i => {
       val argv = Array(i.toString)
       mpiop(argv)
     }).collect()
@@ -91,8 +89,6 @@ object MPIPi {
 
     pi.map(i => println(s"pi array ${i}"))
 
-    BlazeUtils.getElapseTime(bstart, binit, "Blaze Init")
-    BlazeUtils.getElapseTime(bstart_p, bstop_p, "Blaze Compute")
 
     blaze.stop()
     println("MPIPI has exited")

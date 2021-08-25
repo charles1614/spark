@@ -64,6 +64,9 @@ private[spark] class CoarseGrainedExecutorBackend(
   var executor: Executor = null
   @volatile var driver: Option[RpcEndpointRef] = None
 
+  // mpi namespace
+  private val mpienv = new mutable.HashMap[String, String]
+
   // If this CoarseGrainedExecutorBackend is changed to support multiple threads, then this may need
   // to be changed so that we don't share the serializer instance across threads
   private[this] val ser: SerializerInstance = env.closureSerializer.newInstance()
@@ -274,7 +277,6 @@ private[spark] object CoarseGrainedExecutorBackend extends Logging {
         arguments.bindAddress, arguments.hostname, arguments.cores, arguments.userClassPath, env,
         arguments.resourcesFileOpt, resourceProfile)
     }
-//    print("hey ! start \n")
     run(parseArguments(args, this.getClass.getCanonicalName.stripSuffix("$")), createFn)
     System.exit(0)
   }

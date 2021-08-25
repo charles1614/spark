@@ -29,6 +29,10 @@ import org.apache.spark.resource.ResourceUtils.GPU
 
 class TaskDescriptionSuite extends SparkFunSuite {
   test("encoding and then decoding a TaskDescription results in the same TaskDescription") {
+
+    val mpienv = new HashMap[String, String]()
+    mpienv.put("PMI", "DEm")
+
     val originalFiles = new HashMap[String, Long]()
     originalFiles.put("fileUrl1", 1824)
     originalFiles.put("fileUrl2", 2)
@@ -68,6 +72,7 @@ class TaskDescriptionSuite extends SparkFunSuite {
       name = "task for test",
       index = 19,
       partitionId = 1,
+      mpienv,
       originalFiles,
       originalJars,
       originalProperties,
@@ -85,6 +90,7 @@ class TaskDescriptionSuite extends SparkFunSuite {
     assert(decodedTaskDescription.name === originalTaskDescription.name)
     assert(decodedTaskDescription.index === originalTaskDescription.index)
     assert(decodedTaskDescription.partitionId === originalTaskDescription.partitionId)
+    assert(decodedTaskDescription.mpienv === originalTaskDescription.mpienv)
     assert(decodedTaskDescription.addedFiles.equals(originalFiles))
     assert(decodedTaskDescription.addedJars.equals(originalJars))
     assert(decodedTaskDescription.properties.equals(originalTaskDescription.properties))
