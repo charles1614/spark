@@ -1,0 +1,526 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 4.3
+# Built for x86_64-pc-linux-gnu
+# Copyright (C) 1988-2020 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
+# Make data base, printed on Fri Aug 27 17:35:46 2021
+
+# Variables
+
+# environment
+JAVA_HOME = /usr/lib/jvm/java-8-openjdk
+# environment
+GDK_BACKEND = x11
+# environment
+LC_ALL = C
+# environment
+NO_AT_BRIDGE = 1
+# environment
+GTK_RC_FILES = /etc/gtk/gtkrc:/home/xialb/.gtkrc:/home/xialb/.config/gtkrc
+# environment
+C_INCLUDE_PATH = /opt/deps/pmix/include:/opt/deps/prrte/include:/usr/lib/jvm/java-8-openjdk/include:/usr/lib/jvm/java-8-openjdk/include/linux:/opt/ompi/include:/opt/deps/pmix/include:/opt/deps/prrte/include:/usr/lib/jvm/java-8-openjdk/include:/usr/lib/jvm/java-8-openjdk/include/linux:/opt/deps/flex/include:/opt/ompi/include:/opt/deps/openpmix/include:/opt/deps/prrte/include:/usr/lib/jvm/java-8-openjdk/include:/usr/lib/jvm/java-8-openjdk/include/linux:/opt/ompi/include:/opt/deps/pmix/include:/opt/deps/prrte/include:/usr/lib/jvm/java-8-openjdk/include:/usr/lib/jvm/java-8-openjdk/include/linux:/opt/deps/flex/include:/opt/ompi/include:/opt/deps/openpmix/include:/opt/deps/prrte/include:/usr/lib/jvm/java-8-openjdk/include:/usr/lib/jvm/java-8-openjdk/include/linux:
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-067fa049-6eb7-434b-a443-39e3d311d1b6.sock
+# environment
+VSCODE_CWD = /home/xialb
+# default
+MAKE_COMMAND := make
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+VSCODE_BROWSER_CODE_LOADING = bypassHeatCheck
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# default
+.VARIABLES := 
+# environment
+PWD = /home/xialb/opt/spark/blaze/src/main/native
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# environment
+LSCOLORS = Gxfxcxdxbxegedabagacad
+# environment
+MAIL = /var/spool/mail/xialb
+# environment
+OLDPWD = /home/xialb
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+VSCODE_LOG_STACK = false
+# automatic
+%F = $(notdir $%)
+# environment
+VSCODE_CODE_CACHE_PATH = /home/xialb/.config/Code/CachedData/3866c3553be8b268c8a7f8c0482c0c0177aa8bfa
+# environment
+XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session1
+# environment
+LANG = C
+# environment
+XAUTHORITY = /home/xialb/.Xauthority
+# default
+.LOADED := 
+# default
+.INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
+# makefile (from 'Makefile', line 51)
+CMAKE_COMMAND = /usr/bin/cmake
+# makefile
+MAKEFLAGS = pqrR
+# makefile
+CURDIR := /home/xialb/opt/spark/blaze/src/main/native
+# environment
+PERL5LIB = /home/xialb/perl5/lib/perl5
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+SPARK_HOME = /home/xialb/opt/spark
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+# environment
+ZSH_TMUX_TERM = screen
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+PAM_KWALLET5_LOGIN = /run/user/1000/kwallet5.socket
+# environment
+MFLAGS = -pqrR
+# default
+.SHELLFLAGS := -c
+# environment
+_ZSH_TMUX_FIXED_CONFIG = /home/xialb/.oh-my-zsh/plugins/tmux/tmux.extra.conf
+# environment
+XDG_CONFIG_DIRS = /home/xialb/.config/kdedefaults:/etc/xdg
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# environment
+XCURSOR_THEME = breeze_cursors
+# environment
+XDG_SESSION_DESKTOP = KDE
+# environment
+VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=b30e3388-d051-47bc-b660-67f0640b313c&iid=b30e3388-d051-47bc-b660-67f0640b313c&sid=b30e3388-d051-47bc-b660-67f0640b313c","uploadToServer":true}
+# makefile (from 'Makefile', line 1)
+MAKEFILE_LIST := Makefile
+# makefile (from 'Makefile', line 63)
+CMAKE_BINARY_DIR = /home/xialb/opt/spark/blaze/src/main/native
+# automatic
+@F = $(notdir $@)
+# environment
+ZSH = /home/xialb/.oh-my-zsh
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+VSCODE_PID = 32618
+# environment
+XDG_SESSION_TYPE = x11
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# makefile (from 'Makefile', line 60)
+CMAKE_SOURCE_DIR = /home/xialb/opt/spark/blaze/src/main/native
+# environment
+SESSION_MANAGER = local/lenovo:@/tmp/.ICE-unix/864,unix/lenovo:/tmp/.ICE-unix/864
+# automatic
+*F = $(notdir $*)
+# environment
+SBLAZE = /home/xialb/opt/spark/blaze/src/main/scala
+# environment
+CHROME_DESKTOP = code-url-handler.desktop
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# environment
+BREAKPAD_DUMP_LOCATION = /home/xialb/.config/Code/exthost Crash Reports
+# default
+MAKE_HOST := x86_64-pc-linux-gnu
+# environment
+SDL_IM_MODULE = fcitx
+# makefile (from 'Makefile', line 48)
+SHELL = /bin/sh
+# environment
+CLASSPATH = /docker/git/ompi/examples:/opt/ompi/lib/mpi.jar:/docker/git/ompi/examples:/opt/ompi/lib/mpi.jar:
+# default
+MAKECMDGOALS := all
+# environment
+XMODIFIERS = @im=fcitx
+# environment
+LD_LIBRARY_PATH = /opt/deps/pmix/lib:/opt/deps/prrte/lib:/opt/ompi/lib:/opt/ompi/lib:/opt/deps/pmix/lib:/opt/deps/prrte/lib:/opt/ompi/lib:/home/xialb/lib:/opt/deps/flex/lib:/opt/ompi/lib:/opt/deps/openpmix/lib:/opt/deps/prrte/lib:/opt/ompi/lib:/opt/ompi/lib:/opt/deps/pmix/lib:/opt/deps/prrte/lib:/opt/ompi/lib:/home/xialb/lib:/opt/deps/flex/lib:/opt/ompi/lib:/opt/deps/openpmix/lib:/opt/deps/prrte/lib:/opt/ompi/lib:
+# environment
+SHLVL = 0
+# environment
+MAKELEVEL := 0
+# environment
+ZSH_TMUX_CONFIG = /home/xialb/.tmux.conf
+# default
+MAKE = $(MAKE_COMMAND)
+# environment
+PATH = /opt/deps/pmix/bin:/opt/deps/prrte/bin:/home/xialb/perl5/bin:/home/xialb/opt/arm/forge/21.0/bin:/usr/lib/jvm/java-8-openjdk/bin:/home/xialb/sbin:/home/xialb/opt/goldendict:/opt/ompi/bin:/opt/deps/pmix/bin:/opt/deps/prrte/bin:/opt/ompi/bin:/opt/deps/openpmix/bin:/opt/deps/prrte/bin:/opt/deps/flex/bin:/opt/ompi/bin:/opt/deps/pmix/bin:/opt/deps/prrte/bin:/opt/ompi/bin:/opt/deps/openpmix/bin:/opt/deps/prrte/bin:/opt/deps/flex/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/usr/lib/jvm/default/bin
+# default
+MAKEFILES := 
+# environment
+LANGUAGE = en_US
+# environment
+MOTD_SHOWN = pam
+# automatic
+^F = $(notdir $^)
+# environment
+VSCODE_LOG_NATIVE = false
+# automatic
+?F = $(notdir $?)
+# environment
+KDE_APPLICATIONS_AS_SCOPE = 1
+# environment
+XDG_SEAT = seat0
+# environment
+GTK_IM_MODULE = fcitx
+# environment
+PERL_LOCAL_LIB_ROOT = /home/xialb/perl5
+# environment
+XDG_CURRENT_DESKTOP = KDE
+# environment
+LS_COLORS = 
+# automatic
++F = $(notdir $+)
+# environment
+XDG_SEAT_PATH = /org/freedesktop/DisplayManager/Seat0
+# environment
+LESS = -R
+# environment
+DESKTOP_SESSION = plasma
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = KDE
+# 'override' directive
+GNUMAKEFLAGS := 
+# environment
+QT_SCREEN_SCALE_FACTORS = HDMI-1=1.3125;HDMI-2=1.3125;DP-1=1.3125;
+# makefile (from 'Makefile', line 57)
+EQUALS = =
+# environment
+LOGNAME = xialb
+# environment
+XDG_VTNR = 1
+# makefile
+.DEFAULT_GOAL := default_target
+# environment
+SYSTEMD_EXEC_PID = 709
+# makefile (from 'Makefile', line 54)
+RM = /usr/bin/cmake -E rm -f
+# environment
+DISPLAY = :0
+# environment
+GTK_MODULES = canberra-gtk-module
+# environment
+USER = xialb
+# environment
+LIBRARY_PATH = /opt/deps/pmix/lib:/opt/deps/prrte/lib:/opt/ompi/lib:/opt/ompi/lib:/opt/deps/pmix/lib:/opt/deps/prrte/lib:/opt/ompi/lib:/home/xialb/lib:/opt/deps/flex/lib:/opt/ompi/lib:/opt/deps/openpmix/lib:/opt/deps/prrte/lib:/opt/ompi/lib:/opt/ompi/lib:/opt/deps/pmix/lib:/opt/deps/prrte/lib:/opt/ompi/lib:/home/xialb/lib:/opt/deps/flex/lib:/opt/ompi/lib:/opt/deps/openpmix/lib:/opt/deps/prrte/lib:/opt/ompi/lib:
+# default
+MAKE_VERSION := 4.3
+# environment
+KDE_SESSION_UID = 1000
+# environment
+PAGER = less
+# makefile (from 'Makefile', line 35)
+MAKESILENT = -s
+# environment
+_ = /usr/bin/make
+# environment
+XDG_RUNTIME_DIR = /run/user/1000
+# environment
+XDG_SESSION_CLASS = user
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/services/extensions/node/extensionHostProcess
+# environment
+GTK2_RC_FILES = /etc/gtk-2.0/gtkrc:/home/xialb/.gtkrc-2.0:/home/xialb/.config/gtkrc-2.0
+# environment
+HOME = /home/xialb
+# environment
+QT_IM_MODULE = fcitx
+# environment
+JBLAZE = /home/xialb/opt/spark/blaze/src/main/java
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# environment
+VSCODE_IPC_HOOK = /run/user/1000/vscode-81bd4855-1.59.1-main.sock
+# environment
+XDG_SESSION_ID = 2
+# environment
+XCURSOR_SIZE = 24
+# environment
+PERL_MM_OPT = INSTALL_BASE=/home/xialb/perl5
+# default
+.RECIPEPREFIX := 
+# automatic
+<F = $(notdir $<)
+# default
+SUFFIXES := 
+# environment
+QT_AUTO_SCREEN_SCALE_FACTOR = 0
+# environment
+PERL_MB_OPT = --install_base "/home/xialb/perl5"
+# environment
+KDE_SESSION_VERSION = 5
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink guile load
+# environment
+KDE_FULL_SESSION = true
+# variable set hash-table stats:
+# Load=128/1024=12%, Rehash=0, Collisions=8/167=5%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# RCS: could not be stat'd.
+# SCCS: could not be stat'd.
+ 
+# . (device 43, inode 9359498): 14 files, no impossibilities.
+
+# 14 files, no impossibilities in 3 directories.
+
+# Implicit Rules
+
+%: %,v
+
+%: RCS/%
+
+%: RCS/%,v
+
+%: SCCS/s.%
+
+%: s.%
+
+%.hpux_make_needs_suffix_list:
+
+# 6 implicit rules, 0 (0.0%) terminal.
+# Files
+
+depend:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 116):
+	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+
+default_target: all
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+edit_cache/fast: edit_cache
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2021-08-27 16:31:48.833598096
+#  File has been updated.
+#  Successfully updated.
+
+rebuild_cache:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 70):
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+
+blaze/fast:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 129):
+	$(MAKE) $(MAKESILENT) -f src/blaze/CMakeFiles/blaze.dir/build.make src/blaze/CMakeFiles/blaze.dir/build
+
+.SILENT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+clean:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 97):
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 clean
+
+cmake_force:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+preinstall/fast:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 111):
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 preinstall
+
+edit_cache:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 80):
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/usr/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+
+rebuild_cache/fast: rebuild_cache
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+.hpux_make_needs_suffix_list:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+preinstall: all
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 106):
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 preinstall
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+mca_odls_blaze: cmake_check_build_system
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 137):
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mca_odls_blaze
+
+all: cmake_check_build_system
+#  Phony target (prerequisite of .PHONY).
+#  Command line target.
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/6=0%
+#  recipe to execute (from 'Makefile', line 90):
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/CMakeFiles /home/xialb/opt/spark/blaze/src/main/native//CMakeFiles/progress.marks
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/CMakeFiles 0
+
+mca_odls_blaze/fast:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 142):
+	$(MAKE) $(MAKESILENT) -f src/pmix/CMakeFiles/mca_odls_blaze.dir/build.make src/pmix/CMakeFiles/mca_odls_blaze.dir/build
+
+help:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 147):
+	@echo "The following are some of the valid targets for this Makefile:"
+	@echo "... all (the default if no target is provided)"
+	@echo "... clean"
+	@echo "... depend"
+	@echo "... edit_cache"
+	@echo "... rebuild_cache"
+	@echo "... blaze"
+	@echo "... mca_odls_blaze"
+
+clean/fast: clean
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+.NOTPARALLEL:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+blaze: cmake_check_build_system
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 124):
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 blaze
+
+cmake_check_build_system:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: ''
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := cmake_check_build_system
+# automatic
+# * := 
+# automatic
+# < := 
+# automatic
+# + := 
+# automatic
+# % := 
+# automatic
+# ^ := 
+# automatic
+# ? := 
+# automatic
+# | := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/14=7%
+#  recipe to execute (from 'Makefile', line 166):
+	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+
+.SUFFIXES: .hpux_make_needs_suffix_list
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+.PHONY: default_target cmake_force rebuild_cache rebuild_cache/fast edit_cache edit_cache/fast all clean clean/fast preinstall preinstall/fast depend blaze blaze/fast mca_odls_blaze mca_odls_blaze/fast help cmake_check_build_system
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# files hash-table stats:
+# Load=25/1024=2%, Rehash=0, Collisions=0/84=0%
+# VPATH Search Paths
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 49 / storage = 538 B / avg = 10 B
+# current buf: size = 8162 B / used = 538 B / count = 49 / avg = 10 B
+
+# strcache performance: lookups = 144 / hit rate = 65%
+# hash-table stats:
+# Load=49/8192=1%, Rehash=0, Collisions=0/144=0%
+# Finished Make data base on Fri Aug 27 17:35:46 2021
+
+ 

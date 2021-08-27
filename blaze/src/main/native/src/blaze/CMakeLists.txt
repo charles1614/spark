@@ -1,5 +1,4 @@
 project(blaze)
-cmake_minimum_required(VERSION 2.8)
 
 #aux_source_directory(. PRTE_SRC)
 set(PRRTE /opt/deps/prrte)
@@ -12,7 +11,12 @@ set(CORE_SRC org_apache_spark_mpi_NativeUtil.h org_apache_spark_mpi_NativeUtil.c
 include_directories(${PRRTE} ${PRRTE}/include ${PRRTE_SRC} ${PRRTE_SRC}/src/include)
 include_directories(${PMIX}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(/usr/lib/jvm/java-8-openjdk/include /usr/lib/jvm/java-8-openjdk/include/linux)
+
+if(NOT DEFINED ENV{JAVA_HOME})
+    message(FATAL_ERROR "not defined JAVA_HOME")
+endif()
+
+include_directories($ENV{JAVA_HOME}/include $ENV{JAVA_HOME}/include/linux)
 
 link_directories("/opt/deps/openpmix/lib" "/opt/deps/prrte/lib" "/usr/lib")
 link_libraries("/opt/deps/openpmix/lib/libpmix.so")
