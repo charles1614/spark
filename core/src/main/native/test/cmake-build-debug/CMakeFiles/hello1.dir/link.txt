@@ -1,0 +1,1 @@
+/usr/bin/cc -g CMakeFiles/hello1.dir/hello1.c.o -o hello1  /opt/deps/openpmix/lib/libpmix.so /opt/deps/prrte/lib/libprrte.so /usr/lib/libevent_core-2.1.so.7 /opt/ompi/lib/libmpi.so /opt/deps/openpmix/lib/libpmix.so /opt/deps/prrte/lib/libprrte.so /usr/lib/libevent_core-2.1.so.7 /opt/ompi/lib/libmpi.so 

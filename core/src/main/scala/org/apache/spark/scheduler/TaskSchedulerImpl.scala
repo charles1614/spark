@@ -399,6 +399,7 @@ private[spark] class TaskSchedulerImpl(
     // Mark each slave as alive and remember its hostname
     // Also track if new executor is added
     var newExecAvail = false
+//    offers.foreach(o => print((o.executorId, o.cores)))
     for (o <- offers) {
       if (!hostToExecutors.contains(o.host)) {
         hostToExecutors(o.host) = new HashSet[String]()

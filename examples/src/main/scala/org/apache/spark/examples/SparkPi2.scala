@@ -22,41 +22,19 @@ import scala.math.random
 
 import mpi.{MPI, MPIException}
 
+import org.apache.spark.BlazeSession
 import org.apache.spark.SparkConf
-import org.apache.spark.blaze.BlazeSession
 
 /** Computes an approximation to pi */
 object SparkPi2 {
 
-  @throws[MPIException]
-  private def mpiop(mpargs: Array[String]): Unit = {
-
-
-    MPI.Init(mpargs)
-    val myrank = MPI.COMM_WORLD.getRank
-    val size = MPI.COMM_WORLD.getSize
-    System.out.println("Hello world from rank " + myrank + " size of " + size)
-    MPI.Finalize()
-  }
-
   def main(args: Array[String]): Unit = {
 
-    val conf = new SparkConf().set("spark.master", "spark://192.168.32.197:7077")
-      .setJars(Array[String]("/home/xialb/opt/spark/examples/target/scala-2.12/jars/spark-examples_2.12-3.0.3-SNAPSHOT.jar"))
-
-    //    val spark = SparkSession
-    //      .builder
-    //      .config(conf)
-    //      .appName("Spark Pi")
-    //      .getOrCreate()
 
 
     val blaze = BlazeSession
       .builder
       .appName("blazePi")
-      .config(conf)
-      //      .master("local[2]")
-      .master("spark://192.168.32.197:7077")
       .getOrCreate()
 
 
@@ -64,7 +42,7 @@ object SparkPi2 {
     //    val slices = if (args.length > 0) args(0).toInt else 2
     val slices = 8
     val n = math.min(100000L * slices, Int.MaxValue).toInt // avoid overflow
-    val count = blaze.sparkContext.parallelize(1 until n, slices).map { i =>
+    val count = blaze.blazeContext.parallelize(1 until n, slices).map { i =>
       val x = random * 2 - 1
       val y = random * 2 - 1
       if (x * x + y * y <= 1) 1 else 0

@@ -99,7 +99,7 @@ object MPIP1 {
 
     //    pi.map(i => println(s"pi array ${i}"))
 
-    Thread.sleep(100000)
+//    Thread.sleep(100000)
     blaze.stop()
     println("MPIPI has exited")
     System.exit(0)

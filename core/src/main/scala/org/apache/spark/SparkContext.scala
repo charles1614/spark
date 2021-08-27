@@ -1455,7 +1455,7 @@ class SparkContext(config: SparkConf) extends Logging {
   }
 
   /**
-   * Create and register a `CollectionAccumulator`, which starts with empty list and accumulates
+   * Create and register a `CollectionAccumulator`, which sttarts with empty list and accumulates
    * inputs by adding them into the list.
    */
   def collectionAccumulator[T]: CollectionAccumulator[T] = {
