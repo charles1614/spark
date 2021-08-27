@@ -21,7 +21,7 @@ include_directories($ENV{JAVA_HOME}/include $ENV{JAVA_HOME}/include/linux)
 link_directories("/opt/deps/openpmix/lib" "/opt/deps/prrte/lib" "/usr/lib")
 link_libraries("/opt/deps/openpmix/lib/libpmix.so")
 link_libraries("/opt/deps/prrte/lib/libprrte.so")
-link_libraries("/usr/lib/libevent_core-2.1.so.7")
+link_libraries("/usr/lib64/libevent_core.so")
 #link_libraries("/usr/lib/libevent_pthreads-2.1.so.7")
 #link_libraries("/usr/lib/libpthread.so.0" "/opt/deps/libevent/libevent_core-2.0.so.5")
 
