@@ -1,1 +1,0 @@
-/usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 -fPIC -g -shared -Wl,-soname,libmca_odls_blaze.so -o libmca_odls_blaze.so CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o  -lpmix -lprrte -lpmix -lprrte 
