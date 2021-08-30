@@ -179,7 +179,7 @@
 			},
 			{
 				"backtrace" : 1,
-				"fragment" : "/usr/lib/libevent_core-2.1.so.7",
+				"fragment" : "/usr/lib64/libevent_core.so",
 				"role" : "libraries"
 			},
 			{

@@ -142,7 +142,7 @@ src/blaze/libblaze.so: src/blaze/CMakeFiles/blaze.dir/org_apache_spark_mpi_Nativ
 src/blaze/libblaze.so: src/blaze/CMakeFiles/blaze.dir/build.make
 src/blaze/libblaze.so: /opt/deps/openpmix/lib/libpmix.so
 src/blaze/libblaze.so: /opt/deps/prrte/lib/libprrte.so
-src/blaze/libblaze.so: /usr/lib/libevent_core-2.1.so.7
+src/blaze/libblaze.so: /usr/lib64/libevent_core.so
 src/blaze/libblaze.so: src/blaze/CMakeFiles/blaze.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX shared library libblaze.so"
 	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/blaze.dir/link.txt --verbose=$(VERBOSE)
