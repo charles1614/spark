@@ -37,6 +37,7 @@
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/mca"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/include"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte"/>
+					<Add directory="/docker/git/ompi/3rd-party/openpmix/src/class"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/backward"/>
@@ -68,6 +69,7 @@
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/mca"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/include"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte"/>
+					<Add directory="/docker/git/ompi/3rd-party/openpmix/src/class"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/backward"/>
@@ -99,6 +101,7 @@
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/mca"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/include"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte"/>
+					<Add directory="/docker/git/ompi/3rd-party/openpmix/src/class"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/backward"/>
@@ -130,6 +133,7 @@
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/mca"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/include"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte"/>
+					<Add directory="/docker/git/ompi/3rd-party/openpmix/src/class"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/backward"/>
@@ -161,6 +165,7 @@
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/mca"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/include"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte"/>
+					<Add directory="/docker/git/ompi/3rd-party/openpmix/src/class"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/backward"/>
@@ -192,6 +197,7 @@
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/mca"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/include"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte"/>
+					<Add directory="/docker/git/ompi/3rd-party/openpmix/src/class"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/backward"/>
@@ -223,6 +229,7 @@
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/mca"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/include"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte"/>
+					<Add directory="/docker/git/ompi/3rd-party/openpmix/src/class"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/backward"/>
@@ -254,6 +261,7 @@
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/mca"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/include"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte"/>
+					<Add directory="/docker/git/ompi/3rd-party/openpmix/src/class"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/backward"/>
@@ -285,6 +293,7 @@
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/mca"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/include"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte"/>
+					<Add directory="/docker/git/ompi/3rd-party/openpmix/src/class"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/backward"/>
@@ -316,6 +325,7 @@
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/mca"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/include"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte"/>
+					<Add directory="/docker/git/ompi/3rd-party/openpmix/src/class"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/backward"/>
@@ -357,6 +367,7 @@
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/mca"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/include"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte"/>
+					<Add directory="/docker/git/ompi/3rd-party/openpmix/src/class"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/backward"/>
@@ -388,6 +399,7 @@
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/mca"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte/src/include"/>
 					<Add directory="/docker/git/ompi/3rd-party/prrte"/>
+					<Add directory="/docker/git/ompi/3rd-party/openpmix/src/class"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/../../../../include/c++/11.1.0/backward"/>

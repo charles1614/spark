@@ -17,6 +17,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "/docker/git/ompi/3rd-party/prrte/src/mca"
   "/docker/git/ompi/3rd-party/prrte/src/include"
   "/docker/git/ompi/3rd-party/prrte"
+  "/docker/git/ompi/3rd-party/openpmix/src/class"
   )
 
 # The set of dependency files which are needed:

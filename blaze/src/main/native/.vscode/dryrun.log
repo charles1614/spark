@@ -23,6 +23,7 @@ cd /home/xialb/opt/spark/blaze/src/main/native/src/blaze && /usr/bin/cmake -E cm
 make[2]: Leaving directory '/home/xialb/opt/spark/blaze/src/main/native'
 /usr/bin/cmake -E cmake_echo_color --switch= --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/CMakeFiles --progress-num=1,2,3,4,5 "Built target blaze"
 make -s -f src/pmix/CMakeFiles/mca_odls_blaze.dir/build.make src/pmix/CMakeFiles/mca_odls_blaze.dir/depend
+ 
 make[2]: Entering directory '/home/xialb/opt/spark/blaze/src/main/native'
 cd /home/xialb/opt/spark/blaze/src/main/native && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/xialb/opt/spark/blaze/src/main/native /home/xialb/opt/spark/blaze/src/main/native/src/pmix /home/xialb/opt/spark/blaze/src/main/native /home/xialb/opt/spark/blaze/src/main/native/src/pmix /home/xialb/opt/spark/blaze/src/main/native/src/pmix/CMakeFiles/mca_odls_blaze.dir/DependInfo.cmake --color=
 make[2]: Leaving directory '/home/xialb/opt/spark/blaze/src/main/native'

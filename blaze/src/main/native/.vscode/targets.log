@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Aug 27 17:35:46 2021
+# Make data base, printed on Mon Sep  6 15:17:20 2021
 
 # Variables
 
@@ -23,15 +23,13 @@ GTK_RC_FILES = /etc/gtk/gtkrc:/home/xialb/.gtkrc:/home/xialb/.config/gtkrc
 # environment
 C_INCLUDE_PATH = /opt/deps/pmix/include:/opt/deps/prrte/include:/usr/lib/jvm/java-8-openjdk/include:/usr/lib/jvm/java-8-openjdk/include/linux:/opt/ompi/include:/opt/deps/pmix/include:/opt/deps/prrte/include:/usr/lib/jvm/java-8-openjdk/include:/usr/lib/jvm/java-8-openjdk/include/linux:/opt/deps/flex/include:/opt/ompi/include:/opt/deps/openpmix/include:/opt/deps/prrte/include:/usr/lib/jvm/java-8-openjdk/include:/usr/lib/jvm/java-8-openjdk/include/linux:/opt/ompi/include:/opt/deps/pmix/include:/opt/deps/prrte/include:/usr/lib/jvm/java-8-openjdk/include:/usr/lib/jvm/java-8-openjdk/include/linux:/opt/deps/flex/include:/opt/ompi/include:/opt/deps/openpmix/include:/opt/deps/prrte/include:/usr/lib/jvm/java-8-openjdk/include:/usr/lib/jvm/java-8-openjdk/include/linux:
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-067fa049-6eb7-434b-a443-39e3d311d1b6.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-dc46dbee-a4d0-4cb5-9f01-3347c1011651.sock
 # environment
 VSCODE_CWD = /home/xialb
 # default
 MAKE_COMMAND := make
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
-# environment
-VSCODE_BROWSER_CODE_LOADING = bypassHeatCheck
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # default
@@ -53,7 +51,7 @@ VSCODE_LOG_STACK = false
 # automatic
 %F = $(notdir $%)
 # environment
-VSCODE_CODE_CACHE_PATH = /home/xialb/.config/Code/CachedData/3866c3553be8b268c8a7f8c0482c0c0177aa8bfa
+VSCODE_CODE_CACHE_PATH = /home/xialb/.config/Code/CachedData/e7d7e9a9348e6a8cc8c03f877d39cb72e5dfb1ff
 # environment
 XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session1
 # environment
@@ -111,7 +109,7 @@ ZSH = /home/xialb/.oh-my-zsh
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 32618
+VSCODE_PID = 2979
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
@@ -119,7 +117,7 @@ XDG_SESSION_TYPE = x11
 # makefile (from 'Makefile', line 60)
 CMAKE_SOURCE_DIR = /home/xialb/opt/spark/blaze/src/main/native
 # environment
-SESSION_MANAGER = local/lenovo:@/tmp/.ICE-unix/864,unix/lenovo:/tmp/.ICE-unix/864
+SESSION_MANAGER = local/lenovo:@/tmp/.ICE-unix/827,unix/lenovo:/tmp/.ICE-unix/827
 # automatic
 *F = $(notdir $*)
 # environment
@@ -205,7 +203,7 @@ XDG_VTNR = 1
 # makefile
 .DEFAULT_GOAL := default_target
 # environment
-SYSTEMD_EXEC_PID = 709
+SYSTEMD_EXEC_PID = 716
 # makefile (from 'Makefile', line 54)
 RM = /usr/bin/cmake -E rm -f
 # environment
@@ -243,7 +241,7 @@ JBLAZE = /home/xialb/opt/spark/blaze/src/main/java
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-81bd4855-1.59.1-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-81bd4855-1.60.0-main.sock
 # environment
 XDG_SESSION_ID = 2
 # environment
@@ -267,7 +265,7 @@ KDE_SESSION_VERSION = 5
 # environment
 KDE_FULL_SESSION = true
 # variable set hash-table stats:
-# Load=128/1024=12%, Rehash=0, Collisions=8/167=5%
+# Load=127/1024=12%, Rehash=0, Collisions=8/166=5%
 
 # Pattern-specific Variable Values
 
@@ -277,10 +275,9 @@ KDE_FULL_SESSION = true
 
 # RCS: could not be stat'd.
 # SCCS: could not be stat'd.
- 
-# . (device 43, inode 9359498): 14 files, no impossibilities.
+# . (device 43, inode 9359498): 15 files, no impossibilities.
 
-# 14 files, no impossibilities in 3 directories.
+# 15 files, no impossibilities in 3 directories.
 
 # Implicit Rules
 
@@ -302,6 +299,7 @@ KDE_FULL_SESSION = true
 depend:
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
+ 
 #  File does not exist.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 116):
@@ -515,12 +513,12 @@ cmake_check_build_system:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 49 / storage = 538 B / avg = 10 B
-# current buf: size = 8162 B / used = 538 B / count = 49 / avg = 10 B
+# strcache buffers: 1 (0) / strings = 50 / storage = 545 B / avg = 10 B
+# current buf: size = 8162 B / used = 545 B / count = 50 / avg = 10 B
 
-# strcache performance: lookups = 144 / hit rate = 65%
+# strcache performance: lookups = 145 / hit rate = 65%
 # hash-table stats:
-# Load=49/8192=1%, Rehash=0, Collisions=0/144=0%
-# Finished Make data base on Fri Aug 27 17:35:46 2021
+# Load=50/8192=1%, Rehash=0, Collisions=0/145=0%
+# Finished Make data base on Mon Sep  6 15:17:20 2021
 
  

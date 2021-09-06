@@ -20,20 +20,20 @@ int main(int argc, char *argv[]) {
     int rank, size;
     char version[MPI_MAX_LIBRARY_VERSION_STRING];
 
-    int ninfo = 2;
-    pmix_info_t *info;
-
-    int n = 0;
-    PMIX_INFO_CREATE(info, ninfo);
-    PMIX_INFO_LOAD(&info[n], PMIX_SERVER_URI, "PMIX_SERVER_URI2:;prterun-lenovo-97102@0.0;tcp4://192.168.32.197:44423",
-                   PMIX_STRING);
-    ++n;
+//    int ninfo = 2;
+//    pmix_info_t *info;
+//
+//    int n = 0;
+//    PMIX_INFO_CREATE(info, ninfo);
+//    PMIX_INFO_LOAD(&info[n], PMIX_SERVER_URI, "PMIX_SERVER_URI2:;prterun-lenovo-97102@0.0;tcp4://192.168.32.197:44423",
+//                   PMIX_STRING);
+//    ++n;
 
 
     /* server env */
 
 //    PMIx_Allocation_request()
-    FILE *f = fopen("/home/xialb/pmixsrv.env", "r");
+    FILE *f = fopen("/nfs/pmixsrv.env", "r");
     char *line = NULL;
     size_t len;
 

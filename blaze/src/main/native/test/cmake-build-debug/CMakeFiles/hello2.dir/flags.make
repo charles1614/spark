@@ -4,7 +4,7 @@
 # compile C with /usr/bin/cc
 C_DEFINES = 
 
-C_INCLUDES = -I/docker/git/ompi/3rd-party/prrte/src/mca -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi/3rd-party/prrte
+C_INCLUDES = -I/docker/git/ompi/3rd-party/prrte/src/mca -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/openpmix/src/class
 
 C_FLAGS = -g
 

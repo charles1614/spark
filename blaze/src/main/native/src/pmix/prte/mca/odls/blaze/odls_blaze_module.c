@@ -917,21 +917,32 @@ static int odls_blaze_fork_local_proc(void *cdptr) {
     char *pos;
     char **envp = cd->env;
 
-    FILE *f = fopen("/nfs/pmixsrv.env", "w");
+    FILE *f = fopen("/tmp/pmixsrv.env", "w");
     while (*envp) {
         if ((pos = strstr(*envp, "PMIX_NAMESPACE"))) {
             fprintf(f, "%s\n", *envp++);
             continue;
         }
-        if ((pos = strstr(*envp, "PMIX_SERVER_URI2"))) {
+        if ((pos = strstr(*envp, "PMIX_SERVER_URI4"))) {
             fprintf(f, "%s\n", *envp++);
             continue;
         }
-        /* if((pos = strstr(*envp, "PMIX_SERVER_URI21"))) { fprintf(f, "%s\n", *envp++); continue; } */
         if ((pos = strstr(*envp, "PMIX_DSTORE_ESH_BASE_PATH"))) {
             fprintf(f, "%s\n", *envp++);
             continue;
         }
+//        if ((pos = strstr(*envp, "PMIX_HOSTNAME"))) {
+//            fprintf(f, "%s\n", *envp++);
+//            continue;
+//        }
+//        if ((pos = strstr(*envp, "PRTE_MCA_ess_base_nspace"))) {
+//            fprintf(f, "%s\n", *envp++);
+//            continue;
+//        }
+//        if ((pos = strstr(*envp, "PRTE_MCA_prte_hnp_uri"))) {
+//            fprintf(f, "%s\n", *envp++);
+//            continue;
+//        }
         *envp++;
     }
     fclose(f);

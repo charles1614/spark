@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
     /* server env */
 
 //    PMIx_Allocation_request()
-    FILE *f = fopen("/home/xialb/pmixsrv.env", "r");
+    FILE *f = fopen("/nfs/pmixsrv.env", "r");
     char *line = NULL;
     size_t len;
 

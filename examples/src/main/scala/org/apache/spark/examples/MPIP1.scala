@@ -25,7 +25,6 @@ import mpi.{MPI, MPIException}
 import org.apache.spark.{BlazeSession}
 
 
-
 /** Computes an approximation to pi */
 object MPIP1 {
 
@@ -45,7 +44,7 @@ object MPIP1 {
       ppn = points - (points / size) * (size - 1)
     }
     var cnt = 0
-//    println(s"rank: ${myrank} ppn:${ppn}")
+    //    println(s"rank: ${myrank} ppn:${ppn}")
     val random = new Random(myrank)
     for (i <- 0 until ppn) {
       val x = random.nextDouble() * 2 - 1
@@ -81,12 +80,13 @@ object MPIP1 {
     bc.setLogLevel("DEBUG")
 
 
-    val data = bc.parallelize(0 until 8, 8)
+    val data = bc.parallelize(0 until 4, 4)
 
     val res = data.mpimap { i =>
       val argv = Array(i.toString)
       mpiop(argv)
     }.reduce(_ + _)
+
 
     println(s"pi is ${res}")
 

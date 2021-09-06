@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.17)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(/docker/git/ompi/3rd-party/prrte/src/mca/ /docker/git/ompi/3rd-party/prrte/src/include /docker/git/ompi/3rd-party/prrte/)
+include_directories(/docker/git/ompi/3rd-party/openpmix/src/class)
 #include_directories(/docker/git/ompi/3rd-party/openpmix/ /docker/git/ompi/3rd-party/openpmix/src/include/)
 
 link_directories("/opt/deps/openpmix/lib" "/opt/deps/prrte/lib" "/usr/lib")
