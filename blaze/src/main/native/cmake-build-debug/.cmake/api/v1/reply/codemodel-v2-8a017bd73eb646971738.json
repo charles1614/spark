@@ -1,0 +1,186 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3
+					],
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.17"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "src/blaze",
+					"jsonFile" : "directory-src.blaze-Debug-3bc932e00421d215abfe.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.17"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "src/blaze",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "src/pmix",
+					"jsonFile" : "directory-src.pmix-Debug-f661c8151cbd40dd50fb.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.17"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 2,
+					"source" : "src/pmix",
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"build" : "test",
+					"jsonFile" : "directory-test-Debug-451c0598f41488bb20b9.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.17"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 3,
+					"source" : "test",
+					"targetIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "native"
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "blaze",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2
+					],
+					"name" : "blaze",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						3
+					],
+					"name" : "tool",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "blaze::@9406ae15cc66bf24f968",
+					"jsonFile" : "target-blaze-Debug-e55f0ef6b63747dce4a1.json",
+					"name" : "blaze",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "hello0::@36f028580bb02cc8272a",
+					"jsonFile" : "target-hello0-Debug-9bb8384b167bc26cbd7a.json",
+					"name" : "hello0",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "hello1::@36f028580bb02cc8272a",
+					"jsonFile" : "target-hello1-Debug-69e398bfff911b63b2cb.json",
+					"name" : "hello1",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "hello2::@36f028580bb02cc8272a",
+					"jsonFile" : "target-hello2-Debug-79e2c3f4129462f876c8.json",
+					"name" : "hello2",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "hello3::@36f028580bb02cc8272a",
+					"jsonFile" : "target-hello3-Debug-b23de7f6955fe8f5de2b.json",
+					"name" : "hello3",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "mca_odls_blaze::@a7c8364441f707a874de",
+					"jsonFile" : "target-mca_odls_blaze-Debug-5396de005693ff923987.json",
+					"name" : "mca_odls_blaze",
+					"projectIndex" : 2
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug",
+		"source" : "/home/xialb/opt/spark/blaze/src/main/native"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}
