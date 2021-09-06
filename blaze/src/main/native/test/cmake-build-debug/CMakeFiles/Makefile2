@@ -63,12 +63,10 @@ CMAKE_BINARY_DIR = /home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/client.dir/all
-all: CMakeFiles/hello3.dir/all
-all: CMakeFiles/tool.dir/all
+all: CMakeFiles/hello0.dir/all
 all: CMakeFiles/hello1.dir/all
-all: CMakeFiles/hello.dir/all
 all: CMakeFiles/hello2.dir/all
+all: CMakeFiles/hello3.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -76,91 +74,37 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/client.dir/clean
-clean: CMakeFiles/hello3.dir/clean
-clean: CMakeFiles/tool.dir/clean
+clean: CMakeFiles/hello0.dir/clean
 clean: CMakeFiles/hello1.dir/clean
-clean: CMakeFiles/hello.dir/clean
 clean: CMakeFiles/hello2.dir/clean
+clean: CMakeFiles/hello3.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/client.dir
+# Target rules for target CMakeFiles/hello0.dir
 
 # All Build rule for target.
-CMakeFiles/client.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target client"
-.PHONY : CMakeFiles/client.dir/all
+CMakeFiles/hello0.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello0.dir/build.make CMakeFiles/hello0.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello0.dir/build.make CMakeFiles/hello0.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target hello0"
+.PHONY : CMakeFiles/hello0.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/client.dir/rule: cmake_check_build_system
+CMakeFiles/hello0.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/client.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/hello0.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/client.dir/rule
+.PHONY : CMakeFiles/hello0.dir/rule
 
 # Convenience name for target.
-client: CMakeFiles/client.dir/rule
-.PHONY : client
+hello0: CMakeFiles/hello0.dir/rule
+.PHONY : hello0
 
 # clean rule for target.
-CMakeFiles/client.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/clean
-.PHONY : CMakeFiles/client.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/hello3.dir
-
-# All Build rule for target.
-CMakeFiles/hello3.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello3.dir/build.make CMakeFiles/hello3.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello3.dir/build.make CMakeFiles/hello3.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles --progress-num=9,10 "Built target hello3"
-.PHONY : CMakeFiles/hello3.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/hello3.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/hello3.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/hello3.dir/rule
-
-# Convenience name for target.
-hello3: CMakeFiles/hello3.dir/rule
-.PHONY : hello3
-
-# clean rule for target.
-CMakeFiles/hello3.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello3.dir/build.make CMakeFiles/hello3.dir/clean
-.PHONY : CMakeFiles/hello3.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/tool.dir
-
-# All Build rule for target.
-CMakeFiles/tool.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tool.dir/build.make CMakeFiles/tool.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tool.dir/build.make CMakeFiles/tool.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles --progress-num=11,12 "Built target tool"
-.PHONY : CMakeFiles/tool.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/tool.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/tool.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/tool.dir/rule
-
-# Convenience name for target.
-tool: CMakeFiles/tool.dir/rule
-.PHONY : tool
-
-# clean rule for target.
-CMakeFiles/tool.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tool.dir/build.make CMakeFiles/tool.dir/clean
-.PHONY : CMakeFiles/tool.dir/clean
+CMakeFiles/hello0.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello0.dir/build.make CMakeFiles/hello0.dir/clean
+.PHONY : CMakeFiles/hello0.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/hello1.dir
@@ -169,7 +113,7 @@ CMakeFiles/tool.dir/clean:
 CMakeFiles/hello1.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello1.dir/build.make CMakeFiles/hello1.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello1.dir/build.make CMakeFiles/hello1.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles --progress-num=5,6 "Built target hello1"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles --progress-num=3,4 "Built target hello1"
 .PHONY : CMakeFiles/hello1.dir/all
 
 # Build rule for subdir invocation for target.
@@ -189,39 +133,13 @@ CMakeFiles/hello1.dir/clean:
 .PHONY : CMakeFiles/hello1.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/hello.dir
-
-# All Build rule for target.
-CMakeFiles/hello.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello.dir/build.make CMakeFiles/hello.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello.dir/build.make CMakeFiles/hello.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles --progress-num=3,4 "Built target hello"
-.PHONY : CMakeFiles/hello.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/hello.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/hello.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/hello.dir/rule
-
-# Convenience name for target.
-hello: CMakeFiles/hello.dir/rule
-.PHONY : hello
-
-# clean rule for target.
-CMakeFiles/hello.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello.dir/build.make CMakeFiles/hello.dir/clean
-.PHONY : CMakeFiles/hello.dir/clean
-
-#=============================================================================
 # Target rules for target CMakeFiles/hello2.dir
 
 # All Build rule for target.
 CMakeFiles/hello2.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello2.dir/build.make CMakeFiles/hello2.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello2.dir/build.make CMakeFiles/hello2.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles --progress-num=7,8 "Built target hello2"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles --progress-num=5,6 "Built target hello2"
 .PHONY : CMakeFiles/hello2.dir/all
 
 # Build rule for subdir invocation for target.
@@ -239,6 +157,32 @@ hello2: CMakeFiles/hello2.dir/rule
 CMakeFiles/hello2.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello2.dir/build.make CMakeFiles/hello2.dir/clean
 .PHONY : CMakeFiles/hello2.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/hello3.dir
+
+# All Build rule for target.
+CMakeFiles/hello3.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello3.dir/build.make CMakeFiles/hello3.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello3.dir/build.make CMakeFiles/hello3.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles --progress-num=7,8 "Built target hello3"
+.PHONY : CMakeFiles/hello3.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/hello3.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/hello3.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/hello3.dir/rule
+
+# Convenience name for target.
+hello3: CMakeFiles/hello3.dir/rule
+.PHONY : hello3
+
+# clean rule for target.
+CMakeFiles/hello3.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello3.dir/build.make CMakeFiles/hello3.dir/clean
+.PHONY : CMakeFiles/hello3.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

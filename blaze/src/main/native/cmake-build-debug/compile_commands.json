@@ -28,5 +28,25 @@
   "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
   "command": "/usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 -Dmca_odls_blaze_EXPORTS -I/home/xialb/opt/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c",
   "file": "/home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c"
+},
+{
+  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/test",
+  "command": "/usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0  -I/docker/git/ompi/3rd-party/prrte/src/mca -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/openpmix/src/class -g -o CMakeFiles/hello3.dir/hello3.c.o -c /home/xialb/opt/spark/blaze/src/main/native/test/hello3.c",
+  "file": "/home/xialb/opt/spark/blaze/src/main/native/test/hello3.c"
+},
+{
+  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/test",
+  "command": "/usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0  -I/docker/git/ompi/3rd-party/prrte/src/mca -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/openpmix/src/class -g -o CMakeFiles/hello2.dir/hello2.c.o -c /home/xialb/opt/spark/blaze/src/main/native/test/hello2.c",
+  "file": "/home/xialb/opt/spark/blaze/src/main/native/test/hello2.c"
+},
+{
+  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/test",
+  "command": "/usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0  -I/docker/git/ompi/3rd-party/prrte/src/mca -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/openpmix/src/class -g -o CMakeFiles/hello1.dir/hello1.c.o -c /home/xialb/opt/spark/blaze/src/main/native/test/hello1.c",
+  "file": "/home/xialb/opt/spark/blaze/src/main/native/test/hello1.c"
+},
+{
+  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/test",
+  "command": "/usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0  -I/docker/git/ompi/3rd-party/prrte/src/mca -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/openpmix/src/class -g -o CMakeFiles/hello0.dir/hello0.c.o -c /home/xialb/opt/spark/blaze/src/main/native/test/hello0.c",
+  "file": "/home/xialb/opt/spark/blaze/src/main/native/test/hello0.c"
 }
 ]

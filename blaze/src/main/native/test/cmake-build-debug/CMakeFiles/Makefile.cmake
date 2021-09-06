@@ -46,10 +46,8 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/client.dir/DependInfo.cmake"
-  "CMakeFiles/hello3.dir/DependInfo.cmake"
-  "CMakeFiles/tool.dir/DependInfo.cmake"
+  "CMakeFiles/hello0.dir/DependInfo.cmake"
   "CMakeFiles/hello1.dir/DependInfo.cmake"
-  "CMakeFiles/hello.dir/DependInfo.cmake"
   "CMakeFiles/hello2.dir/DependInfo.cmake"
+  "CMakeFiles/hello3.dir/DependInfo.cmake"
   )

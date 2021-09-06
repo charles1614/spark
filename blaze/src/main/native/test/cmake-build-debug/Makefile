@@ -117,43 +117,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named client
+# Target rules for targets named hello0
 
 # Build rule for target.
-client: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 client
-.PHONY : client
+hello0: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hello0
+.PHONY : hello0
 
 # fast build rule for target.
-client/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/build
-.PHONY : client/fast
-
-#=============================================================================
-# Target rules for targets named hello3
-
-# Build rule for target.
-hello3: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hello3
-.PHONY : hello3
-
-# fast build rule for target.
-hello3/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello3.dir/build.make CMakeFiles/hello3.dir/build
-.PHONY : hello3/fast
-
-#=============================================================================
-# Target rules for targets named tool
-
-# Build rule for target.
-tool: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tool
-.PHONY : tool
-
-# fast build rule for target.
-tool/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tool.dir/build.make CMakeFiles/tool.dir/build
-.PHONY : tool/fast
+hello0/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello0.dir/build.make CMakeFiles/hello0.dir/build
+.PHONY : hello0/fast
 
 #=============================================================================
 # Target rules for targets named hello1
@@ -169,19 +143,6 @@ hello1/fast:
 .PHONY : hello1/fast
 
 #=============================================================================
-# Target rules for targets named hello
-
-# Build rule for target.
-hello: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hello
-.PHONY : hello
-
-# fast build rule for target.
-hello/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello.dir/build.make CMakeFiles/hello.dir/build
-.PHONY : hello/fast
-
-#=============================================================================
 # Target rules for targets named hello2
 
 # Build rule for target.
@@ -194,53 +155,42 @@ hello2/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello2.dir/build.make CMakeFiles/hello2.dir/build
 .PHONY : hello2/fast
 
-client.o: client.c.o
-.PHONY : client.o
+#=============================================================================
+# Target rules for targets named hello3
+
+# Build rule for target.
+hello3: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hello3
+.PHONY : hello3
+
+# fast build rule for target.
+hello3/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello3.dir/build.make CMakeFiles/hello3.dir/build
+.PHONY : hello3/fast
+
+hello0.o: hello0.c.o
+.PHONY : hello0.o
 
 # target to build an object file
-client.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client.c.o
-.PHONY : client.c.o
+hello0.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello0.dir/build.make CMakeFiles/hello0.dir/hello0.c.o
+.PHONY : hello0.c.o
 
-client.i: client.c.i
-.PHONY : client.i
-
-# target to preprocess a source file
-client.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client.c.i
-.PHONY : client.c.i
-
-client.s: client.c.s
-.PHONY : client.s
-
-# target to generate assembly for a file
-client.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client.c.s
-.PHONY : client.c.s
-
-hello.o: hello.c.o
-.PHONY : hello.o
-
-# target to build an object file
-hello.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello.dir/build.make CMakeFiles/hello.dir/hello.c.o
-.PHONY : hello.c.o
-
-hello.i: hello.c.i
-.PHONY : hello.i
+hello0.i: hello0.c.i
+.PHONY : hello0.i
 
 # target to preprocess a source file
-hello.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello.dir/build.make CMakeFiles/hello.dir/hello.c.i
-.PHONY : hello.c.i
+hello0.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello0.dir/build.make CMakeFiles/hello0.dir/hello0.c.i
+.PHONY : hello0.c.i
 
-hello.s: hello.c.s
-.PHONY : hello.s
+hello0.s: hello0.c.s
+.PHONY : hello0.s
 
 # target to generate assembly for a file
-hello.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello.dir/build.make CMakeFiles/hello.dir/hello.c.s
-.PHONY : hello.c.s
+hello0.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello0.dir/build.make CMakeFiles/hello0.dir/hello0.c.s
+.PHONY : hello0.c.s
 
 hello1.o: hello1.c.o
 .PHONY : hello1.o
@@ -314,30 +264,6 @@ hello3.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/hello3.dir/build.make CMakeFiles/hello3.dir/hello3.c.s
 .PHONY : hello3.c.s
 
-tool.o: tool.c.o
-.PHONY : tool.o
-
-# target to build an object file
-tool.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tool.dir/build.make CMakeFiles/tool.dir/tool.c.o
-.PHONY : tool.c.o
-
-tool.i: tool.c.i
-.PHONY : tool.i
-
-# target to preprocess a source file
-tool.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tool.dir/build.make CMakeFiles/tool.dir/tool.c.i
-.PHONY : tool.c.i
-
-tool.s: tool.c.s
-.PHONY : tool.s
-
-# target to generate assembly for a file
-tool.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/tool.dir/build.make CMakeFiles/tool.dir/tool.c.s
-.PHONY : tool.c.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -346,18 +272,13 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... client"
-	@echo "... hello"
+	@echo "... hello0"
 	@echo "... hello1"
 	@echo "... hello2"
 	@echo "... hello3"
-	@echo "... tool"
-	@echo "... client.o"
-	@echo "... client.i"
-	@echo "... client.s"
-	@echo "... hello.o"
-	@echo "... hello.i"
-	@echo "... hello.s"
+	@echo "... hello0.o"
+	@echo "... hello0.i"
+	@echo "... hello0.s"
 	@echo "... hello1.o"
 	@echo "... hello1.i"
 	@echo "... hello1.s"
@@ -367,9 +288,6 @@ help:
 	@echo "... hello3.o"
 	@echo "... hello3.i"
 	@echo "... hello3.s"
-	@echo "... tool.o"
-	@echo "... tool.i"
-	@echo "... tool.s"
 .PHONY : help
 
 

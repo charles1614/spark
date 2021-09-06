@@ -4,3 +4,4 @@ project(native)
 
 add_subdirectory(src/blaze)
 add_subdirectory(src/pmix)
+add_subdirectory(test)

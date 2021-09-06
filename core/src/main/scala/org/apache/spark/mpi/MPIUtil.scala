@@ -13,7 +13,7 @@ object MPIUtil extends Logging {
   System.load("/home/xialb/lib/libblaze.so")
 
   def setPmixEnv(): Unit = {
-    for (line <- Source.fromFile("/nfs/pmixsrv.env").getLines()) {
+    for (line <- Source.fromFile("/tmp/pmixsrv.env").getLines()) {
       val key: String = line.split('=')(0)
       val value: String = line.split('=')(1)
       val map = new java.util.HashMap[String, String]()

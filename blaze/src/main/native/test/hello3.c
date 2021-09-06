@@ -11,16 +11,9 @@
  */
 
 #include <stdio.h>
-#include <fcntl.h>
-#include <signal.h>
-#include <stdlib.h>
-#include "state/state.h"
-#include <pmix.h>
-#include "plm/plm_types.h"
 #include <pmix_common.h>
+#include <fcntl.h>
 #include "mpi.h"
-//#include "src/include/pmix_globals.h"
-
 
 
 int main(int argc, char *argv[]) {
@@ -40,7 +33,7 @@ int main(int argc, char *argv[]) {
     /* server env */
 
 //    PMIx_Allocation_request()
-    FILE *f = fopen("/nfs/pmixsrv.env", "r");
+    FILE *f = fopen("/tmp/pmixsrv.env", "r");
     char *line = NULL;
     size_t len;
 
@@ -60,10 +53,7 @@ int main(int argc, char *argv[]) {
     fclose(f);
     free(line);
 
-//    setenv("PMIX_NAMESPACE", "prterun-lenovo-97102@1", 1);
-    setenv("PMIX_RANK", "1", 1);
-//    setenv("PMIX_SERVER_URI2", "prterun-lenovo-97102@0.0;tcp4://192.168.32.197:33307", 1);
-//    setenv("PMIX_DSTORE_ESH_BASE_PATH", "/tmp/prte.lenovo.1000/dvm.97102/pmix_dstor_ds12_97102", 1);
+    setenv("PMIX_RANK", "3", 1);
 
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -71,18 +61,9 @@ int main(int argc, char *argv[]) {
     MPI_Get_library_version(version, &len);
     printf("Hello, world, I am %d of %d, (%s, %d)\n",
            rank, size, version, len);
-
-//    pmix_proc_t pp;
-//    struct pmix_info pinfo;
-//    pmix_status_t ret;
-//    bool flag = true;
-//    PMIX_INFO_LOAD(&pinfo, PMIX_JOB_CTRL_TERMINATE, &flag, PMIX_BOOL);
-//    ret = PMIx_Job_control(NULL, 0, &pinfo, 1, NULL, NULL);
-//    if(PMIX_SUCCESS != ret){
-//        fprintf(stderr, "JOB ctrl error");
-//    }
-
-//    PRTE_ACTIVATE_PROC_STATE(&prte_process_info.myproc, PRTE_PROC_STATE_TERMINATED);
     MPI_Finalize();
+
+    exit(0);
+
     return 0;
 }

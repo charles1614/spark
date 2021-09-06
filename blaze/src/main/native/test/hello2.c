@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
     /* server env */
 
 //    PMIx_Allocation_request()
-    FILE *f = fopen("/nfs/pmixsrv.env", "r");
+    FILE *f = fopen("/tmp/pmixsrv.env", "r");
     char *line = NULL;
     size_t len;
 
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
     fclose(f);
     free(line);
 
-    setenv("PMIX_RANK", "0", 1);
+    setenv("PMIX_RANK", "2", 1);
 
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);

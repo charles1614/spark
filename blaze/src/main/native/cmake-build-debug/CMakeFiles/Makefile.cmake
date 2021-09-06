@@ -13,6 +13,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.21.2/CMakeSystem.cmake"
   "../src/blaze/CMakeLists.txt"
   "../src/pmix/CMakeLists.txt"
+  "../test/CMakeLists.txt"
   "/usr/share/cmake-3.21/Modules/CMakeCInformation.cmake"
   "/usr/share/cmake-3.21/Modules/CMakeCXXInformation.cmake"
   "/usr/share/cmake-3.21/Modules/CMakeCommonLanguageInclude.cmake"
@@ -43,10 +44,15 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   "src/blaze/CMakeFiles/CMakeDirectoryInformation.cmake"
   "src/pmix/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "test/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "src/blaze/CMakeFiles/blaze.dir/DependInfo.cmake"
   "src/pmix/CMakeFiles/mca_odls_blaze.dir/DependInfo.cmake"
+  "test/CMakeFiles/hello3.dir/DependInfo.cmake"
+  "test/CMakeFiles/hello2.dir/DependInfo.cmake"
+  "test/CMakeFiles/hello1.dir/DependInfo.cmake"
+  "test/CMakeFiles/hello0.dir/DependInfo.cmake"
   )

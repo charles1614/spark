@@ -142,6 +142,58 @@ mca_odls_blaze/fast:
 	$(MAKE) $(MAKESILENT) -f src/pmix/CMakeFiles/mca_odls_blaze.dir/build.make src/pmix/CMakeFiles/mca_odls_blaze.dir/build
 .PHONY : mca_odls_blaze/fast
 
+#=============================================================================
+# Target rules for targets named hello3
+
+# Build rule for target.
+hello3: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hello3
+.PHONY : hello3
+
+# fast build rule for target.
+hello3/fast:
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello3.dir/build.make test/CMakeFiles/hello3.dir/build
+.PHONY : hello3/fast
+
+#=============================================================================
+# Target rules for targets named hello2
+
+# Build rule for target.
+hello2: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hello2
+.PHONY : hello2
+
+# fast build rule for target.
+hello2/fast:
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello2.dir/build.make test/CMakeFiles/hello2.dir/build
+.PHONY : hello2/fast
+
+#=============================================================================
+# Target rules for targets named hello1
+
+# Build rule for target.
+hello1: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hello1
+.PHONY : hello1
+
+# fast build rule for target.
+hello1/fast:
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello1.dir/build.make test/CMakeFiles/hello1.dir/build
+.PHONY : hello1/fast
+
+#=============================================================================
+# Target rules for targets named hello0
+
+# Build rule for target.
+hello0: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hello0
+.PHONY : hello0
+
+# fast build rule for target.
+hello0/fast:
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello0.dir/build.make test/CMakeFiles/hello0.dir/build
+.PHONY : hello0/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -151,6 +203,10 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... blaze"
+	@echo "... hello0"
+	@echo "... hello1"
+	@echo "... hello2"
+	@echo "... hello3"
 	@echo "... mca_odls_blaze"
 .PHONY : help
 
