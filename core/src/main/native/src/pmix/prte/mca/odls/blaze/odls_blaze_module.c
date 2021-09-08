@@ -917,7 +917,7 @@ static int odls_blaze_fork_local_proc(void *cdptr) {
     char *pos;
     char **envp = cd->env;
 
-    FILE *f = fopen("/nfs/pmixsrv.env", "w");
+    FILE *f = fopen("/tmp/pmixsrv.env", "w");
     while (*envp) {
         if ((pos = strstr(*envp, "PMIX_NAMESPACE"))) {
             fprintf(f, "%s\n", *envp++);

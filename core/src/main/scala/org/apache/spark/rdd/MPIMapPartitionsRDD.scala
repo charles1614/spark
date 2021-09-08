@@ -17,6 +17,7 @@
 
 package org.apache.spark.rdd
 
+import org.apache.spark.storage.{BlockId, RDDBlockId}
 import org.apache.spark.{Dependency, HashPartitioner, MPIDependency, Partition, Partitioner, ShuffleDependency, SparkEnv, TaskContext}
 
 import scala.reflect.ClassTag

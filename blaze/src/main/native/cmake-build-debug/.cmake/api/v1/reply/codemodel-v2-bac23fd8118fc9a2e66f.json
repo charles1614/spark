@@ -47,7 +47,9 @@
 					"source" : "src/pmix",
 					"targetIndexes" : 
 					[
-						5
+						5,
+						6,
+						7
 					]
 				},
 				{
@@ -106,7 +108,9 @@
 					"parentIndex" : 0,
 					"targetIndexes" : 
 					[
-						5
+						5,
+						6,
+						7
 					]
 				},
 				{
@@ -165,8 +169,22 @@
 				{
 					"directoryIndex" : 2,
 					"id" : "mca_odls_blaze::@a7c8364441f707a874de",
-					"jsonFile" : "target-mca_odls_blaze-Debug-5396de005693ff923987.json",
+					"jsonFile" : "target-mca_odls_blaze-Debug-e30d271552fba0fb8adb.json",
 					"name" : "mca_odls_blaze",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "mca_rmaps_blaze::@a7c8364441f707a874de",
+					"jsonFile" : "target-mca_rmaps_blaze-Debug-7cab7032596ea50f6424.json",
+					"name" : "mca_rmaps_blaze",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "mca_rmaps_rankfile::@a7c8364441f707a874de",
+					"jsonFile" : "target-mca_rmaps_rankfile-Debug-c93964c8427abe3419a1.json",
+					"name" : "mca_rmaps_rankfile",
 					"projectIndex" : 2
 				}
 			]

@@ -1760,6 +1760,7 @@ abstract class RDD[T: ClassTag](
 
   /** The [[org.apache.spark.SparkContext]] that this RDD was created on. */
   def context: SparkContext = sc
+  def blazeContext: BlazeContext = blazeContext
 
   /**
    * Private API for changing an RDD's ClassTag.
@@ -1991,12 +1992,14 @@ abstract class RDD[T: ClassTag](
 
   /** mpi map */
   def mpimap[U: ClassTag](f: T => U): RDD[U] = withScope {
-    logInfo("======== Initialize MPI Namespace ===========")
-    System.load("/home/xialb/lib/libblaze.so")
-    launchMPIJobNamespace()
+//    logInfo("======== Initialize MPI Namespace ===========")
+//    System.load("/home/xialb/lib/libblaze.so")
+//    launchMPIJobNamespace()
 
     val cleanF = sc.clean(f)
-    new MPIMapPartitionsRDD[U, T](this, (_, _, iter) => iter.map(cleanF), isFromBarrier = true)
+    val mpimprdd = new MPIMapPartitionsRDD[U, T](this, (_, _, iter) => iter.map(cleanF), isFromBarrier = true)
+
+    mpimprdd
   }
 
 

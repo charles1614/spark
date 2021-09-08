@@ -20,23 +20,20 @@ package org.apache.spark.scheduler
 import java.io.{File, ObjectInputStream}
 import java.net.URL
 import java.nio.ByteBuffer
-
 import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.duration._
 import scala.util.control.NonFatal
-
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.{any, anyLong}
 import org.mockito.Mockito.{spy, times, verify}
 import org.scalatest.Assertions._
 import org.scalatest.BeforeAndAfter
 import org.scalatest.concurrent.Eventually._
-
 import org.apache.spark._
 import org.apache.spark.TaskState.TaskState
 import org.apache.spark.TestUtils.JavaSourceFromString
 import org.apache.spark.internal.config.Network.RPC_MESSAGE_MAX_SIZE
-import org.apache.spark.storage.TaskResultBlockId
+import org.apache.spark.storage.{RDDBlockId, TaskResultBlockId}
 import org.apache.spark.util.{MutableURLClassLoader, RpcUtils, ThreadUtils, Utils}
 
 
@@ -135,6 +132,12 @@ class TaskResultGetterSuite extends SparkFunSuite with BeforeAndAfter with Local
     val result =
       sc.parallelize(Seq(1), 1).map(x => 1.to(maxRpcMessageSize).toArray).reduce((x, y) => x)
     assert(result === 1.to(maxRpcMessageSize).toArray)
+    val rdd = sc.parallelize(Seq(1 to 3), 3)
+    rdd.collect()
+    print(rdd.getNumPartitions)
+    val blockid = RDDBlockId(rdd.id, rdd.partitions(0).index)
+    print(sc.env.blockManager.master.getLocations(blockid).size)
+
 
     val RESULT_BLOCK_ID = TaskResultBlockId(0)
     assert(sc.env.blockManager.master.getLocations(RESULT_BLOCK_ID).size === 0,

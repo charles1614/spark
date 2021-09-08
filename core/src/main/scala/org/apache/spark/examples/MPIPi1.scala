@@ -30,13 +30,12 @@ object MPIPi1 {
   @throws[MPIException]
   def mpiop(mpargs: Array[String]): Double = {
 
-    Thread.sleep(100000)
     MPI.Init(mpargs)
 
     val myrank = MPI.COMM_WORLD.getRank
     val size = MPI.COMM_WORLD.getSize
 
-    val points = 100000;
+    val points = 10000;
     var ppn: Int = 0
     if (myrank != 0) {
       ppn = points / size
@@ -78,16 +77,16 @@ object MPIPi1 {
       .builder
 //      .config(conf)
       .appName("blazePi")
-      .master("local[*]")
+      .master("local[1]")
       .getOrCreate()
 
     val start = System.nanoTime()
     val bc = blaze.blazeContext
 
-    bc.setLogLevel("INFO")
+    bc.setLogLevel("Debug")
 
 
-    val data = bc.parallelize(0 until 8, 1)
+    val data = bc.parallelize(0 until 1, 1)
 
     val res = data.mpimap { i =>
       println("ok run on exec")

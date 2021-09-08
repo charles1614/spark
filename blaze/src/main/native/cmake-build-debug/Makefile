@@ -130,6 +130,32 @@ blaze/fast:
 .PHONY : blaze/fast
 
 #=============================================================================
+# Target rules for targets named mca_rmaps_blaze
+
+# Build rule for target.
+mca_rmaps_blaze: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mca_rmaps_blaze
+.PHONY : mca_rmaps_blaze
+
+# fast build rule for target.
+mca_rmaps_blaze/fast:
+	$(MAKE) $(MAKESILENT) -f src/pmix/CMakeFiles/mca_rmaps_blaze.dir/build.make src/pmix/CMakeFiles/mca_rmaps_blaze.dir/build
+.PHONY : mca_rmaps_blaze/fast
+
+#=============================================================================
+# Target rules for targets named mca_rmaps_rankfile
+
+# Build rule for target.
+mca_rmaps_rankfile: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mca_rmaps_rankfile
+.PHONY : mca_rmaps_rankfile
+
+# fast build rule for target.
+mca_rmaps_rankfile/fast:
+	$(MAKE) $(MAKESILENT) -f src/pmix/CMakeFiles/mca_rmaps_rankfile.dir/build.make src/pmix/CMakeFiles/mca_rmaps_rankfile.dir/build
+.PHONY : mca_rmaps_rankfile/fast
+
+#=============================================================================
 # Target rules for targets named mca_odls_blaze
 
 # Build rule for target.
@@ -208,6 +234,8 @@ help:
 	@echo "... hello2"
 	@echo "... hello3"
 	@echo "... mca_odls_blaze"
+	@echo "... mca_rmaps_blaze"
+	@echo "... mca_rmaps_rankfile"
 .PHONY : help
 
 
