@@ -1,6 +1,8 @@
 
 package org.apache.spark.deploy.master
 
+import com.sun.security.auth.module.UnixSystem
+import org.apache.commons.io.FileUtils
 import org.apache.spark.blaze.deploy.mpi.{MPILauncher, NativeUtils}
 import org.apache.spark.deploy.master.MasterMessages.{BoundPortsRequest, BoundPortsResponse}
 import org.apache.spark.{SecurityManager, SparkConf}
@@ -9,6 +11,8 @@ import org.apache.spark.internal.Logging
 import org.apache.spark.rpc.{RpcAddress, RpcEnv}
 import org.apache.spark.util.{SparkUncaughtExceptionHandler, Utils}
 
+import java.io.{File, FileNotFoundException}
+import java.net.InetAddress
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 import scala.sys.exit
@@ -41,7 +45,20 @@ private[deploy] object BlazeMaster extends Logging {
     rpcEnv.awaitTermination()
   }
 
+  def cleanDirMPI(): Unit = {
+    val unix = new UnixSystem()
+    val hostname = unix.getUsername
+    val uid = unix.getUid
+    val dirPath = s"/tmp/prte.${hostname}.${uid}"
+    val dir = new File(dirPath)
+    FileUtils.deleteDirectory(dir)
+  }
+
+
   def startMPIRuntimeEnv(): Thread = {
+    // do some clean works before start
+    cleanDirMPI()
+
     val mpiSrvThread = new Thread {
       override def run: Unit = {
         launchMPIRuntimeEnv()

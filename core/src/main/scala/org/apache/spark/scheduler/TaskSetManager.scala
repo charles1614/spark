@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// scalastyle:off println
 
 package org.apache.spark.scheduler
 
@@ -33,6 +34,8 @@ import org.apache.spark.resource.ResourceInformation
 import org.apache.spark.scheduler.SchedulingMode._
 import org.apache.spark.util.{AccumulatorV2, Clock, LongAccumulator, SystemClock, Utils}
 import org.apache.spark.util.collection.MedianHeap
+
+import java.net.InetAddress
 
 /**
  * Schedules the tasks within a single TaskSet in the TaskSchedulerImpl. This class keeps track of
@@ -1107,10 +1110,11 @@ private[spark] class TaskSetManager(
     val out = new PrintWriter(rankfile)
     for (i <- 0 until this.numTasks) {
       val host = shuffledOffers(i).host
+      val hostname = InetAddress.getByName(host).getHostName
       val partitionId = taskSet.tasks(i).partitionId
       logInfo(s"mpi rank ${partitionId} start in host: ${host}")
       // TODO replace write rankfile with blaze
-      out.println(s"rank ${partitionId}=${host} slot=${partitionId}")
+      out.println(s"rank ${partitionId}=${hostname} slot=${partitionId}")
     }
     out.close()
     logInfo("======== Initialize MPI Namespace ===========")
