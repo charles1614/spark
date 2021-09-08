@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c" "src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o" "gcc" "src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o.d"
-  "/home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_module.c" "src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o" "gcc" "src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o.d"
+  "/home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c" "src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o" "gcc" "src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o.d"
+  "/home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_module.c" "src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o" "gcc" "src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o.d"
   )
 
 # Targets to which this target links.

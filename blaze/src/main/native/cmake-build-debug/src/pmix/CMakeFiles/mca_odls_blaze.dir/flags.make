@@ -4,7 +4,7 @@
 # compile C with /opt/rh/devtoolset-8/root/usr/bin/gcc
 C_DEFINES = -Dmca_odls_blaze_EXPORTS
 
-C_INCLUDES = -I/home/xialb/opt/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include
+C_INCLUDES = -I/home/xialb/git/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include
 
 C_FLAGS = -g -fPIC
 

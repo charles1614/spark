@@ -57,10 +57,10 @@ RM = /usr/local/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/xialb/opt/spark/blaze/src/main/native
+CMAKE_SOURCE_DIR = /home/xialb/git/spark/blaze/src/main/native
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug
+CMAKE_BINARY_DIR = /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

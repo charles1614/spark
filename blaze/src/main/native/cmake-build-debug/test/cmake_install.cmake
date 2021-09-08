@@ -1,4 +1,4 @@
-# Install script for directory: /home/xialb/opt/spark/blaze/src/main/native/test
+# Install script for directory: /home/xialb/git/spark/blaze/src/main/native/test
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

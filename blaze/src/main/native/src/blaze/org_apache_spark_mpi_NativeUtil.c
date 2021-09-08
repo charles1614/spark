@@ -153,7 +153,7 @@ JNIEXPORT jint JNICALL Java_org_apache_spark_mpi_NativeUtil_setEnv
  */
 JNIEXPORT jint JNICALL Java_org_apache_spark_mpi_NativeUtil_mpirun
         (JNIEnv *env, jclass cls, jint argc, jobjectArray argv) {
-    char *pargv[argc + 1];
+    const char *pargv[argc + 1];
     int stringCount = (*env)->GetArrayLength(env, argv);
     for (int i = 0; i < stringCount; ++i) {
         jstring string = (*env)->GetObjectArrayElement(env, argv, i);

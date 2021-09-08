@@ -1,5 +1,5 @@
 test/CMakeFiles/hello3.dir/hello3.c.o: \
- /home/xialb/opt/spark/blaze/src/main/native/test/hello3.c \
+ /home/xialb/git/spark/blaze/src/main/native/test/hello3.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h /usr/include/features.h \
  /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
  /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \

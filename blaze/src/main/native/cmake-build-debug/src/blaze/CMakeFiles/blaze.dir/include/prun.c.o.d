@@ -1,10 +1,10 @@
 src/blaze/CMakeFiles/blaze.dir/include/prun.c.o: \
- /home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prun.c \
+ /home/xialb/git/spark/blaze/src/main/native/src/blaze/include/prun.c \
  /usr/include/stdc-predef.h \
- /home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prte_config.h \
- /home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prte_config_top.h \
- /home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prte_config_bottom.h \
- /home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prte_stdint.h \
+ /home/xialb/git/spark/blaze/src/main/native/src/blaze/include/prte_config.h \
+ /home/xialb/git/spark/blaze/src/main/native/src/blaze/include/prte_config_top.h \
+ /home/xialb/git/spark/blaze/src/main/native/src/blaze/include/prte_config_bottom.h \
+ /home/xialb/git/spark/blaze/src/main/native/src/blaze/include/prte_stdint.h \
  /opt/rh/devtoolset-8/root/usr/lib/gcc/x86_64-redhat-linux/8/include/limits.h \
  /opt/rh/devtoolset-8/root/usr/lib/gcc/x86_64-redhat-linux/8/include/syslimits.h \
  /usr/include/limits.h /usr/include/features.h /usr/include/sys/cdefs.h \
@@ -140,7 +140,7 @@ src/blaze/CMakeFiles/blaze.dir/include/prun.c.o: \
  /docker/git/ompi/3rd-party/prrte/src/class/prte_pointer_array.h \
  /docker/git/ompi/3rd-party/prrte/src/include/prefetch.h \
  /docker/git/ompi/3rd-party/prrte/src/runtime/prte_progress_threads.h \
- /home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prun.h \
+ /home/xialb/git/spark/blaze/src/main/native/src/blaze/include/prun.h \
  /docker/git/ompi/3rd-party/prrte/src/mca/errmgr/errmgr.h \
  /docker/git/ompi/3rd-party/prrte/src/mca/plm/plm_types.h \
  /docker/git/ompi/3rd-party/prrte/src/runtime/prte_globals.h \

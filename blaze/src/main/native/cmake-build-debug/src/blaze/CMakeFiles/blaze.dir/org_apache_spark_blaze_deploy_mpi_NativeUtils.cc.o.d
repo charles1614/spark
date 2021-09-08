@@ -1,5 +1,5 @@
 src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o: \
- /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc \
+ /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc \
  /usr/include/stdc-predef.h /usr/lib/jvm/java/include/jni.h \
  /usr/include/stdio.h /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \

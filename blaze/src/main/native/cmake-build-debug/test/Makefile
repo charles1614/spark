@@ -57,10 +57,10 @@ RM = /usr/local/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/xialb/opt/spark/blaze/src/main/native
+CMAKE_SOURCE_DIR = /home/xialb/git/spark/blaze/src/main/native
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug
+CMAKE_BINARY_DIR = /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,14 +87,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/test//CMakeFiles/progress.marks
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles 0
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/test//CMakeFiles/progress.marks
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/clean
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/clean
 .PHONY : clean
 
 # The main clean target
@@ -103,22 +103,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/preinstall
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/preinstall
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 test/CMakeFiles/hello3.dir/rule:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/CMakeFiles/hello3.dir/rule
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/CMakeFiles/hello3.dir/rule
 .PHONY : test/CMakeFiles/hello3.dir/rule
 
 # Convenience name for target.
@@ -127,12 +127,12 @@ hello3: test/CMakeFiles/hello3.dir/rule
 
 # fast build rule for target.
 hello3/fast:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello3.dir/build.make test/CMakeFiles/hello3.dir/build
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello3.dir/build.make test/CMakeFiles/hello3.dir/build
 .PHONY : hello3/fast
 
 # Convenience name for target.
 test/CMakeFiles/hello2.dir/rule:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/CMakeFiles/hello2.dir/rule
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/CMakeFiles/hello2.dir/rule
 .PHONY : test/CMakeFiles/hello2.dir/rule
 
 # Convenience name for target.
@@ -141,12 +141,12 @@ hello2: test/CMakeFiles/hello2.dir/rule
 
 # fast build rule for target.
 hello2/fast:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello2.dir/build.make test/CMakeFiles/hello2.dir/build
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello2.dir/build.make test/CMakeFiles/hello2.dir/build
 .PHONY : hello2/fast
 
 # Convenience name for target.
 test/CMakeFiles/hello1.dir/rule:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/CMakeFiles/hello1.dir/rule
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/CMakeFiles/hello1.dir/rule
 .PHONY : test/CMakeFiles/hello1.dir/rule
 
 # Convenience name for target.
@@ -155,12 +155,12 @@ hello1: test/CMakeFiles/hello1.dir/rule
 
 # fast build rule for target.
 hello1/fast:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello1.dir/build.make test/CMakeFiles/hello1.dir/build
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello1.dir/build.make test/CMakeFiles/hello1.dir/build
 .PHONY : hello1/fast
 
 # Convenience name for target.
 test/CMakeFiles/hello0.dir/rule:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/CMakeFiles/hello0.dir/rule
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/CMakeFiles/hello0.dir/rule
 .PHONY : test/CMakeFiles/hello0.dir/rule
 
 # Convenience name for target.
@@ -169,7 +169,7 @@ hello0: test/CMakeFiles/hello0.dir/rule
 
 # fast build rule for target.
 hello0/fast:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello0.dir/build.make test/CMakeFiles/hello0.dir/build
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello0.dir/build.make test/CMakeFiles/hello0.dir/build
 .PHONY : hello0/fast
 
 hello0.o: hello0.c.o
@@ -177,7 +177,7 @@ hello0.o: hello0.c.o
 
 # target to build an object file
 hello0.c.o:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello0.dir/build.make test/CMakeFiles/hello0.dir/hello0.c.o
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello0.dir/build.make test/CMakeFiles/hello0.dir/hello0.c.o
 .PHONY : hello0.c.o
 
 hello0.i: hello0.c.i
@@ -185,7 +185,7 @@ hello0.i: hello0.c.i
 
 # target to preprocess a source file
 hello0.c.i:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello0.dir/build.make test/CMakeFiles/hello0.dir/hello0.c.i
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello0.dir/build.make test/CMakeFiles/hello0.dir/hello0.c.i
 .PHONY : hello0.c.i
 
 hello0.s: hello0.c.s
@@ -193,7 +193,7 @@ hello0.s: hello0.c.s
 
 # target to generate assembly for a file
 hello0.c.s:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello0.dir/build.make test/CMakeFiles/hello0.dir/hello0.c.s
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello0.dir/build.make test/CMakeFiles/hello0.dir/hello0.c.s
 .PHONY : hello0.c.s
 
 hello1.o: hello1.c.o
@@ -201,7 +201,7 @@ hello1.o: hello1.c.o
 
 # target to build an object file
 hello1.c.o:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello1.dir/build.make test/CMakeFiles/hello1.dir/hello1.c.o
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello1.dir/build.make test/CMakeFiles/hello1.dir/hello1.c.o
 .PHONY : hello1.c.o
 
 hello1.i: hello1.c.i
@@ -209,7 +209,7 @@ hello1.i: hello1.c.i
 
 # target to preprocess a source file
 hello1.c.i:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello1.dir/build.make test/CMakeFiles/hello1.dir/hello1.c.i
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello1.dir/build.make test/CMakeFiles/hello1.dir/hello1.c.i
 .PHONY : hello1.c.i
 
 hello1.s: hello1.c.s
@@ -217,7 +217,7 @@ hello1.s: hello1.c.s
 
 # target to generate assembly for a file
 hello1.c.s:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello1.dir/build.make test/CMakeFiles/hello1.dir/hello1.c.s
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello1.dir/build.make test/CMakeFiles/hello1.dir/hello1.c.s
 .PHONY : hello1.c.s
 
 hello2.o: hello2.c.o
@@ -225,7 +225,7 @@ hello2.o: hello2.c.o
 
 # target to build an object file
 hello2.c.o:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello2.dir/build.make test/CMakeFiles/hello2.dir/hello2.c.o
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello2.dir/build.make test/CMakeFiles/hello2.dir/hello2.c.o
 .PHONY : hello2.c.o
 
 hello2.i: hello2.c.i
@@ -233,7 +233,7 @@ hello2.i: hello2.c.i
 
 # target to preprocess a source file
 hello2.c.i:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello2.dir/build.make test/CMakeFiles/hello2.dir/hello2.c.i
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello2.dir/build.make test/CMakeFiles/hello2.dir/hello2.c.i
 .PHONY : hello2.c.i
 
 hello2.s: hello2.c.s
@@ -241,7 +241,7 @@ hello2.s: hello2.c.s
 
 # target to generate assembly for a file
 hello2.c.s:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello2.dir/build.make test/CMakeFiles/hello2.dir/hello2.c.s
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello2.dir/build.make test/CMakeFiles/hello2.dir/hello2.c.s
 .PHONY : hello2.c.s
 
 hello3.o: hello3.c.o
@@ -249,7 +249,7 @@ hello3.o: hello3.c.o
 
 # target to build an object file
 hello3.c.o:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello3.dir/build.make test/CMakeFiles/hello3.dir/hello3.c.o
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello3.dir/build.make test/CMakeFiles/hello3.dir/hello3.c.o
 .PHONY : hello3.c.o
 
 hello3.i: hello3.c.i
@@ -257,7 +257,7 @@ hello3.i: hello3.c.i
 
 # target to preprocess a source file
 hello3.c.i:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello3.dir/build.make test/CMakeFiles/hello3.dir/hello3.c.i
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello3.dir/build.make test/CMakeFiles/hello3.dir/hello3.c.i
 .PHONY : hello3.c.i
 
 hello3.s: hello3.c.s
@@ -265,7 +265,7 @@ hello3.s: hello3.c.s
 
 # target to generate assembly for a file
 hello3.c.s:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello3.dir/build.make test/CMakeFiles/hello3.dir/hello3.c.s
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/hello3.dir/build.make test/CMakeFiles/hello3.dir/hello3.c.s
 .PHONY : hello3.c.s
 
 # Help Target
@@ -303,6 +303,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/xialb/git/spark/blaze/src/main/native/cmake-build-debug && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

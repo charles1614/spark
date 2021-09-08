@@ -1,5 +1,5 @@
 src/pmix/CMakeFiles/mca_rmaps_rankfile.dir/prte/mca/rmaps/rankfile/rmaps_rankfile_lex.c.o: \
- /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/rankfile/rmaps_rankfile_lex.c \
+ /home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/rankfile/rmaps_rankfile_lex.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h /usr/include/features.h \
  /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
  /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
@@ -42,7 +42,7 @@ src/pmix/CMakeFiles/mca_rmaps_rankfile.dir/prte/mca/rmaps/rankfile/rmaps_rankfil
  /usr/include/unistd.h /usr/include/bits/posix_opt.h \
  /usr/include/bits/environments.h /usr/include/bits/confname.h \
  /usr/include/getopt.h \
- /home/xialb/opt/spark/blaze/src/main/native/src/pmix/include/rmaps_rankfile_lex.h \
+ /home/xialb/git/spark/blaze/src/main/native/src/pmix/include/rmaps_rankfile_lex.h \
  /docker/git/ompi/3rd-party/prrte/src/util/output.h \
  /docker/git/ompi/3rd-party/prrte/src/class/prte_object.h \
  /usr/include/assert.h \

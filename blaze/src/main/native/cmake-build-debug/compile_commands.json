@@ -1,82 +1,82 @@
 [
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dblaze_EXPORTS -I/opt/deps/prrte -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src/include -I/home/xialb/opt/spark/blaze/src/main/native/src/blaze/include -g -fPIC -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/src/blaze",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dblaze_EXPORTS -I/opt/deps/prrte -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src/include -I/home/xialb/git/spark/blaze/src/main/native/src/blaze/include -g -fPIC -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o -c /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c"
 },
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/c++ -Dblaze_EXPORTS -I/opt/deps/prrte -I/opt/deps/prrte/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src/include -I/opt/deps/openpmix/include -I/home/xialb/opt/spark/blaze/src/main/native/src/blaze/include -I/usr/lib/jvm/java/include -I/usr/lib/jvm/java/include/linux -g -fPIC -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/src/blaze",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/c++ -Dblaze_EXPORTS -I/opt/deps/prrte -I/opt/deps/prrte/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src/include -I/opt/deps/openpmix/include -I/home/xialb/git/spark/blaze/src/main/native/src/blaze/include -I/usr/lib/jvm/java/include -I/usr/lib/jvm/java/include/linux -g -fPIC -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o -c /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc"
 },
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dblaze_EXPORTS -I/opt/deps/prrte -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src/include -I/home/xialb/opt/spark/blaze/src/main/native/src/blaze/include -g -fPIC -o CMakeFiles/blaze.dir/include/prun.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prun.c",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prun.c"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/src/blaze",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dblaze_EXPORTS -I/opt/deps/prrte -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src/include -I/home/xialb/git/spark/blaze/src/main/native/src/blaze/include -g -fPIC -o CMakeFiles/blaze.dir/include/prun.c.o -c /home/xialb/git/spark/blaze/src/main/native/src/blaze/include/prun.c",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/src/blaze/include/prun.c"
 },
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dblaze_EXPORTS -I/opt/deps/prrte -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src/include -I/home/xialb/opt/spark/blaze/src/main/native/src/blaze/include -g -fPIC -o CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/src/blaze",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dblaze_EXPORTS -I/opt/deps/prrte -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src/include -I/home/xialb/git/spark/blaze/src/main/native/src/blaze/include -g -fPIC -o CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o -c /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c"
 },
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_rmaps_blaze_EXPORTS -I/home/xialb/opt/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_rmaps_blaze.dir/prte/mca/rmaps/blaze/rmaps_blaze.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/blaze/rmaps_blaze.c",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/blaze/rmaps_blaze.c"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_rmaps_blaze_EXPORTS -I/home/xialb/git/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_rmaps_blaze.dir/prte/mca/rmaps/blaze/rmaps_blaze.c.o -c /home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/blaze/rmaps_blaze.c",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/blaze/rmaps_blaze.c"
 },
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_rmaps_blaze_EXPORTS -I/home/xialb/opt/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_rmaps_blaze.dir/prte/mca/rmaps/blaze/rmaps_blaze_component.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/blaze/rmaps_blaze_component.c",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/blaze/rmaps_blaze_component.c"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_rmaps_blaze_EXPORTS -I/home/xialb/git/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_rmaps_blaze.dir/prte/mca/rmaps/blaze/rmaps_blaze_component.c.o -c /home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/blaze/rmaps_blaze_component.c",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/blaze/rmaps_blaze_component.c"
 },
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_rmaps_blaze_EXPORTS -I/home/xialb/opt/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_rmaps_blaze.dir/prte/mca/rmaps/blaze/rmaps_blaze_lex.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/blaze/rmaps_blaze_lex.c",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/blaze/rmaps_blaze_lex.c"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_rmaps_blaze_EXPORTS -I/home/xialb/git/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_rmaps_blaze.dir/prte/mca/rmaps/blaze/rmaps_blaze_lex.c.o -c /home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/blaze/rmaps_blaze_lex.c",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/blaze/rmaps_blaze_lex.c"
 },
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_rmaps_rankfile_EXPORTS -I/home/xialb/opt/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_rmaps_rankfile.dir/prte/mca/rmaps/rankfile/rmaps_rankfile_component.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/rankfile/rmaps_rankfile_component.c",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/rankfile/rmaps_rankfile_component.c"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_rmaps_rankfile_EXPORTS -I/home/xialb/git/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_rmaps_rankfile.dir/prte/mca/rmaps/rankfile/rmaps_rankfile_component.c.o -c /home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/rankfile/rmaps_rankfile_component.c",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/rankfile/rmaps_rankfile_component.c"
 },
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_rmaps_rankfile_EXPORTS -I/home/xialb/opt/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_rmaps_rankfile.dir/prte/mca/rmaps/rankfile/rmaps_rankfile.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/rankfile/rmaps_rankfile.c",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/rankfile/rmaps_rankfile.c"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_rmaps_rankfile_EXPORTS -I/home/xialb/git/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_rmaps_rankfile.dir/prte/mca/rmaps/rankfile/rmaps_rankfile.c.o -c /home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/rankfile/rmaps_rankfile.c",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/rankfile/rmaps_rankfile.c"
 },
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_rmaps_rankfile_EXPORTS -I/home/xialb/opt/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_rmaps_rankfile.dir/prte/mca/rmaps/rankfile/rmaps_rankfile_lex.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/rankfile/rmaps_rankfile_lex.c",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/rankfile/rmaps_rankfile_lex.c"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_rmaps_rankfile_EXPORTS -I/home/xialb/git/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_rmaps_rankfile.dir/prte/mca/rmaps/rankfile/rmaps_rankfile_lex.c.o -c /home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/rankfile/rmaps_rankfile_lex.c",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/rmaps/rankfile/rmaps_rankfile_lex.c"
 },
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_odls_blaze_EXPORTS -I/home/xialb/opt/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_module.c",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_module.c"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_odls_blaze_EXPORTS -I/home/xialb/git/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o -c /home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_module.c",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_module.c"
 },
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_odls_blaze_EXPORTS -I/home/xialb/opt/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/src/pmix",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc -Dmca_odls_blaze_EXPORTS -I/home/xialb/git/spark/blaze/src/main/native/src/pmix/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/prrte/src -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi -I/docker/git/ompi/opal/include -g -fPIC -o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o -c /home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c"
 },
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/test",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc  -I/docker/git/ompi/3rd-party/prrte/src/mca -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/openpmix/src/class -g -o CMakeFiles/hello3.dir/hello3.c.o -c /home/xialb/opt/spark/blaze/src/main/native/test/hello3.c",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/test/hello3.c"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/test",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc  -I/docker/git/ompi/3rd-party/prrte/src/mca -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/openpmix/src/class -g -o CMakeFiles/hello3.dir/hello3.c.o -c /home/xialb/git/spark/blaze/src/main/native/test/hello3.c",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/test/hello3.c"
 },
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/test",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc  -I/docker/git/ompi/3rd-party/prrte/src/mca -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/openpmix/src/class -g -o CMakeFiles/hello2.dir/hello2.c.o -c /home/xialb/opt/spark/blaze/src/main/native/test/hello2.c",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/test/hello2.c"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/test",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc  -I/docker/git/ompi/3rd-party/prrte/src/mca -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/openpmix/src/class -g -o CMakeFiles/hello2.dir/hello2.c.o -c /home/xialb/git/spark/blaze/src/main/native/test/hello2.c",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/test/hello2.c"
 },
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/test",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc  -I/docker/git/ompi/3rd-party/prrte/src/mca -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/openpmix/src/class -g -o CMakeFiles/hello1.dir/hello1.c.o -c /home/xialb/opt/spark/blaze/src/main/native/test/hello1.c",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/test/hello1.c"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/test",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc  -I/docker/git/ompi/3rd-party/prrte/src/mca -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/openpmix/src/class -g -o CMakeFiles/hello1.dir/hello1.c.o -c /home/xialb/git/spark/blaze/src/main/native/test/hello1.c",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/test/hello1.c"
 },
 {
-  "directory": "/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/test",
-  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc  -I/docker/git/ompi/3rd-party/prrte/src/mca -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/openpmix/src/class -g -o CMakeFiles/hello0.dir/hello0.c.o -c /home/xialb/opt/spark/blaze/src/main/native/test/hello0.c",
-  "file": "/home/xialb/opt/spark/blaze/src/main/native/test/hello0.c"
+  "directory": "/home/xialb/git/spark/blaze/src/main/native/cmake-build-debug/test",
+  "command": "/opt/rh/devtoolset-8/root/usr/bin/gcc  -I/docker/git/ompi/3rd-party/prrte/src/mca -I/docker/git/ompi/3rd-party/prrte/src/include -I/docker/git/ompi/3rd-party/prrte -I/docker/git/ompi/3rd-party/openpmix/src/class -g -o CMakeFiles/hello0.dir/hello0.c.o -c /home/xialb/git/spark/blaze/src/main/native/test/hello0.c",
+  "file": "/home/xialb/git/spark/blaze/src/main/native/test/hello0.c"
 }
 ]

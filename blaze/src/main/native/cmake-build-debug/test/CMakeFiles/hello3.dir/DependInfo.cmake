@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/xialb/opt/spark/blaze/src/main/native/test/hello3.c" "test/CMakeFiles/hello3.dir/hello3.c.o" "gcc" "test/CMakeFiles/hello3.dir/hello3.c.o.d"
+  "/home/xialb/git/spark/blaze/src/main/native/test/hello3.c" "test/CMakeFiles/hello3.dir/hello3.c.o" "gcc" "test/CMakeFiles/hello3.dir/hello3.c.o.d"
   )
 
 # Targets to which this target links.
