@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -g -shared -Wl,-soname,libblaze.so -o libblaze.so CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.o CMakeFiles/blaze.dir/include/prun.o CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.o  -lpmix -lprrte -levent_core -lpmix -lprrte 

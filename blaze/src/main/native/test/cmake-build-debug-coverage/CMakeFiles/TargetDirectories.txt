@@ -1,8 +1,0 @@
-/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug-coverage/CMakeFiles/rebuild_cache.dir
-/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug-coverage/CMakeFiles/client.dir
-/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug-coverage/CMakeFiles/hello3.dir
-/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug-coverage/CMakeFiles/tool.dir
-/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug-coverage/CMakeFiles/hello1.dir
-/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug-coverage/CMakeFiles/hello.dir
-/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug-coverage/CMakeFiles/edit_cache.dir
-/home/xialb/opt/spark/blaze/src/main/native/test/cmake-build-debug-coverage/CMakeFiles/hello2.dir

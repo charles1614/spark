@@ -44,10 +44,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /usr/local/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E rm -f
+RM = /usr/local/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -73,57 +73,57 @@ src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o
 src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o: ../src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c
 src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o: src/blaze/CMakeFiles/blaze.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o -MF CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o.d -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o -MF CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o.d -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c
 
 src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.i"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c > CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.i
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c > CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.i
 
 src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.s"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.s
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.s
 
 src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o: src/blaze/CMakeFiles/blaze.dir/flags.make
 src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o: ../src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc
 src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o: src/blaze/CMakeFiles/blaze.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o -MF CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o.d -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /opt/rh/devtoolset-8/root/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o -MF CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o.d -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc
 
 src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.i"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc > CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.i
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /opt/rh/devtoolset-8/root/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc > CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.i
 
 src/blaze/CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.s"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.s
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /opt/rh/devtoolset-8/root/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.s
 
 src/blaze/CMakeFiles/blaze.dir/include/prun.c.o: src/blaze/CMakeFiles/blaze.dir/flags.make
 src/blaze/CMakeFiles/blaze.dir/include/prun.c.o: ../src/blaze/include/prun.c
 src/blaze/CMakeFiles/blaze.dir/include/prun.c.o: src/blaze/CMakeFiles/blaze.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object src/blaze/CMakeFiles/blaze.dir/include/prun.c.o"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/blaze/CMakeFiles/blaze.dir/include/prun.c.o -MF CMakeFiles/blaze.dir/include/prun.c.o.d -o CMakeFiles/blaze.dir/include/prun.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prun.c
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/blaze/CMakeFiles/blaze.dir/include/prun.c.o -MF CMakeFiles/blaze.dir/include/prun.c.o.d -o CMakeFiles/blaze.dir/include/prun.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prun.c
 
 src/blaze/CMakeFiles/blaze.dir/include/prun.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blaze.dir/include/prun.c.i"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prun.c > CMakeFiles/blaze.dir/include/prun.c.i
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prun.c > CMakeFiles/blaze.dir/include/prun.c.i
 
 src/blaze/CMakeFiles/blaze.dir/include/prun.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blaze.dir/include/prun.c.s"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prun.c -o CMakeFiles/blaze.dir/include/prun.c.s
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/opt/spark/blaze/src/main/native/src/blaze/include/prun.c -o CMakeFiles/blaze.dir/include/prun.c.s
 
 src/blaze/CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o: src/blaze/CMakeFiles/blaze.dir/flags.make
 src/blaze/CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o: ../src/blaze/org_apache_spark_mpi_NativeUtil.c
 src/blaze/CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o: src/blaze/CMakeFiles/blaze.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object src/blaze/CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/blaze/CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o -MF CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o.d -o CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/blaze/CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o -MF CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o.d -o CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c
 
 src/blaze/CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.i"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c > CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.i
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c > CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.i
 
 src/blaze/CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.s"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c -o CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.s
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/blaze && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/opt/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c -o CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.s
 
 # Object files for target blaze
 blaze_OBJECTS = \

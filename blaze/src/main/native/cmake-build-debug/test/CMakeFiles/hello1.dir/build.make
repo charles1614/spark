@@ -44,10 +44,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /usr/local/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E rm -f
+RM = /usr/local/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -73,15 +73,15 @@ test/CMakeFiles/hello1.dir/hello1.c.o: test/CMakeFiles/hello1.dir/flags.make
 test/CMakeFiles/hello1.dir/hello1.c.o: ../test/hello1.c
 test/CMakeFiles/hello1.dir/hello1.c.o: test/CMakeFiles/hello1.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object test/CMakeFiles/hello1.dir/hello1.c.o"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/test && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT test/CMakeFiles/hello1.dir/hello1.c.o -MF CMakeFiles/hello1.dir/hello1.c.o.d -o CMakeFiles/hello1.dir/hello1.c.o -c /home/xialb/opt/spark/blaze/src/main/native/test/hello1.c
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/test && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT test/CMakeFiles/hello1.dir/hello1.c.o -MF CMakeFiles/hello1.dir/hello1.c.o.d -o CMakeFiles/hello1.dir/hello1.c.o -c /home/xialb/opt/spark/blaze/src/main/native/test/hello1.c
 
 test/CMakeFiles/hello1.dir/hello1.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/hello1.dir/hello1.c.i"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/test && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/opt/spark/blaze/src/main/native/test/hello1.c > CMakeFiles/hello1.dir/hello1.c.i
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/test && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/opt/spark/blaze/src/main/native/test/hello1.c > CMakeFiles/hello1.dir/hello1.c.i
 
 test/CMakeFiles/hello1.dir/hello1.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/hello1.dir/hello1.c.s"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/test && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/opt/spark/blaze/src/main/native/test/hello1.c -o CMakeFiles/hello1.dir/hello1.c.s
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/test && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/opt/spark/blaze/src/main/native/test/hello1.c -o CMakeFiles/hello1.dir/hello1.c.s
 
 # Object files for target hello1
 hello1_OBJECTS = \

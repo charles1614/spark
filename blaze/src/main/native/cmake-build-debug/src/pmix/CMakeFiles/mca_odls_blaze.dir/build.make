@@ -44,10 +44,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /usr/local/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E rm -f
+RM = /usr/local/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -73,29 +73,29 @@ src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o
 src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o: ../src/pmix/prte/mca/odls/blaze/odls_blaze_module.c
 src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o: src/pmix/CMakeFiles/mca_odls_blaze.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o -MF CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o.d -o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_module.c
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o -MF CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o.d -o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_module.c
 
 src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.i"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_module.c > CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.i
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_module.c > CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.i
 
 src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.s"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_module.c -o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.s
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_module.c -o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.s
 
 src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o: src/pmix/CMakeFiles/mca_odls_blaze.dir/flags.make
 src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o: ../src/pmix/prte/mca/odls/blaze/odls_blaze_component.c
 src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o: src/pmix/CMakeFiles/mca_odls_blaze.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o -MF CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o.d -o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o -MF CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o.d -o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o -c /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c
 
 src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.i"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c > CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.i
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c > CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.i
 
 src/pmix/CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.s"
-	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix && /usr/bin/x86_64-pc-linux-gnu-gcc-11.1.0 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c -o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.s
+	cd /home/xialb/opt/spark/blaze/src/main/native/cmake-build-debug/src/pmix && /opt/rh/devtoolset-8/root/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/opt/spark/blaze/src/main/native/src/pmix/prte/mca/odls/blaze/odls_blaze_component.c -o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.s
 
 # Object files for target mca_odls_blaze
 mca_odls_blaze_OBJECTS = \
