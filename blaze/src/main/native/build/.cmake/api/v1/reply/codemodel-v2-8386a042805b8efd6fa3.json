@@ -1,0 +1,213 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3
+					],
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.17"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "src/blaze",
+					"jsonFile" : "directory-src.blaze-Debug-3bc932e00421d215abfe.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.17"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "src/blaze",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "src/pmix",
+					"jsonFile" : "directory-src.pmix-Debug-f661c8151cbd40dd50fb.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.17"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 2,
+					"source" : "src/pmix",
+					"targetIndexes" : 
+					[
+						5,
+						6,
+						7
+					]
+				},
+				{
+					"build" : "test",
+					"jsonFile" : "directory-test-Debug-451c0598f41488bb20b9.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.17"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 3,
+					"source" : "test",
+					"targetIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						8
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "native"
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "blaze",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2
+					],
+					"name" : "blaze",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						5,
+						6,
+						7
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						3
+					],
+					"name" : "tool",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						8
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "blaze::@9406ae15cc66bf24f968",
+					"jsonFile" : "target-blaze-Debug-4aee18cce04f48f6881a.json",
+					"name" : "blaze",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "hello0::@36f028580bb02cc8272a",
+					"jsonFile" : "target-hello0-Debug-5ffc308420e23a888eb9.json",
+					"name" : "hello0",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "hello1::@36f028580bb02cc8272a",
+					"jsonFile" : "target-hello1-Debug-f7a5a662207ba4303daf.json",
+					"name" : "hello1",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "hello2::@36f028580bb02cc8272a",
+					"jsonFile" : "target-hello2-Debug-8aeb58772ebfe7f01300.json",
+					"name" : "hello2",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "hello3::@36f028580bb02cc8272a",
+					"jsonFile" : "target-hello3-Debug-8b292ff1588a9158478d.json",
+					"name" : "hello3",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "mca_odls_blaze::@a7c8364441f707a874de",
+					"jsonFile" : "target-mca_odls_blaze-Debug-94a83b6553cff174d5ab.json",
+					"name" : "mca_odls_blaze",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "mca_rmaps_blaze::@a7c8364441f707a874de",
+					"jsonFile" : "target-mca_rmaps_blaze-Debug-d38d05c769ef1fc6f7fa.json",
+					"name" : "mca_rmaps_blaze",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "mca_rmaps_rankfile::@a7c8364441f707a874de",
+					"jsonFile" : "target-mca_rmaps_rankfile-Debug-3f24e2c3163f159a4fde.json",
+					"name" : "mca_rmaps_rankfile",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "prun_test::@36f028580bb02cc8272a",
+					"jsonFile" : "target-prun_test-Debug-d35111b5654fe2c51c2c.json",
+					"name" : "prun_test",
+					"projectIndex" : 3
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/xialb/git/spark/blaze/src/main/native/build",
+		"source" : "/home/xialb/git/spark/blaze/src/main/native"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}
