@@ -12,7 +12,7 @@ object LogElapsed {
     val result = block // call-by-name
     val t1 = System.nanoTime()
     log.info(s"Elapsed ${(t1 - t0)} ns, ${caller}: size:${vectorSize}x${vectorSize} on ${processors} nodes")
-    println(s"elapsed,${caller},${(t1 - t0)},${vectorSize},${processors},${System.currentTimeMillis() / 1000}")
+    //    println(s"elapsed,${caller},${(t1 - t0)},${vectorSize},${processors},${System.currentTimeMillis() / 1000}")
     result
   }
 

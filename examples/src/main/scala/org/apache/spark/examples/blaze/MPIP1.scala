@@ -1,29 +1,11 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
-// scalastyle:off println
-package org.apache.spark.examples
-
-import scala.util.Random
+package org.apache.spark.examples.blaze
 
 import mpi.{MPI, MPIException}
+import org.apache.commons.lang3.time.StopWatch
+import org.apache.spark.BlazeSession
 
-import org.apache.spark.{BlazeSession}
-
+import scala.util.Random
 
 /** Computes an approximation to pi */
 object MPIP1 {
@@ -31,12 +13,15 @@ object MPIP1 {
   @throws[MPIException]
   def mpiop(mpargs: Array[String]): Double = {
 
+    val stopWatch = new StopWatch()
+    stopWatch.start
+
     MPI.Init(mpargs)
 
     val myrank = MPI.COMM_WORLD.getRank
     val size = MPI.COMM_WORLD.getSize
 
-    val points = 100000;
+    val points = Int.MaxValue;
     var ppn: Int = 0
     if (myrank != 0) {
       ppn = points / size
@@ -61,7 +46,11 @@ object MPIP1 {
     if (myrank == 0) {
       res = (recv(0).toDouble / points * 4)
     }
+
+    stopWatch.stop()
+    println(s"elapse time is ${stopWatch.getTime}")
     MPI.Finalize()
+
     res
   }
 
@@ -74,20 +63,25 @@ object MPIP1 {
       .appName("blazePi")
       .getOrCreate()
 
-    val start = System.nanoTime()
     val bc = blaze.blazeContext
 
-    bc.setLogLevel("DEBUG")
+    bc.setLogLevel("ERROR")
+    var start, end: Long = 0
 
 
-    val data = bc.parallelize(0 until 4, 4)
+    val size = if (args.size > 0) args(0).toInt else 4
+    val data = bc.parallelize(0 until size, size)
 
     val res = data.mpimap { i =>
       val argv = Array(i.toString)
-      mpiop(argv)
+      start = System.nanoTime()
+      val r = mpiop(argv)
+      end = System.nanoTime()
+      r
     }.reduce(_ + _)
 
 
+    println(s"spark elapse time is ${end - start}ms")
     println(s"pi is ${res}")
 
     blaze.stop()

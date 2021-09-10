@@ -8,7 +8,8 @@ import org.apache.spark.BlazeSession
 import org.apache.spark.mllib.linalg.{DenseMatrix, Matrix, Vectors}
 import org.apache.spark.mllib.linalg.distributed.{BlockMatrix, IndexedRow, IndexedRowMatrix}
 import MPIOperators.mpiMultiply
-import org.apache.spark.examples.MPIP1.mpiop
+import MPIP1.mpiop
+import org.apache.spark.examples.blaze.BlockMatrixMultiply.log
 import org.apache.spark.rdd.RDD
 
 import scala.sys.exit
@@ -17,39 +18,46 @@ object BlockMatrixMultiplyMPI {
   @transient lazy val log = Logger.getLogger(getClass.getName)
 
   def main(args: Array[String]) {
-    val size = if (args.size > 0) args(0).toInt else 2560
-    val partitions = if (args.size > 1) args(1).toInt else 16
+    val size = if (args.size > 0) args(0).toInt else 900
+    val partitions = if (args.size > 1) args(1).toInt else 9
 
     val blaze = BlazeSession.builder
-      .appName("MLlib BlockMatrixMultiply example")
-      //      .master("local[4]")
+      .appName("MPI BlockMatrixMultiply")
       .getOrCreate()
 
     val bc = blaze.blazeContext
 
-    //    val line = Vectors.dense(Array.fill[Double](size) {
-    //      1
-    //    })
-    //
-    //    val mARows = bc.parallelize(1 to size, partitions).map(idx => IndexedRow(idx - 1, line))
-    //
-    //    val blockMat = new IndexedRowMatrix(mARows).toBlockMatrix()
-    //
-    val block: Seq[((Int, Int), DenseMatrix)] = Seq(
-      ((0, 0), new DenseMatrix(2, 2, Array(1.0, 0.0, 0.0, 2.0))),
-      ((0, 1), new DenseMatrix(2, 2, Array(0.0, 1.0, 0.0, 0.0))),
-      ((1, 0), new DenseMatrix(2, 2, Array(3.0, 0.0, 1.0, 1.0))),
-      ((1, 1), new DenseMatrix(2, 2, Array(1.0, 2.0, 0.0, 1.0))))
+    /* dense matrix size*size */
+    val line = Vectors.dense(Array.fill[Double](size) {
+      1
+    })
 
-    val blocks: RDD[((Int, Int), Matrix)] = bc.parallelize(block, 4)
-    //
-    val matrix = new BlockMatrix(blocks, 2, 2)
+    val mARows = bc.parallelize(1 to size, partitions).map(idx => IndexedRow(idx - 1, line))
 
-    val lambda = matrix.blocks.mpimap {
+    // row per block
+    val rpb = size / sqrt(partitions).toInt
+    val blockMat = new IndexedRowMatrix(mARows).toBlockMatrix(rpb, rpb)
+
+    // block seq
+    val blockSeq = blockMat.blocks.mpimap {
       case ((row, col), mat) =>
+        //        println(s"mat is ${mat.toString}")
         mpiMultiply(mat.asInstanceOf[DenseMatrix], mat.asInstanceOf[DenseMatrix])
-    }.collect
+    }
 
+    val t0 = System.nanoTime()
+    val ret = blockSeq.collect
+    val t1 = System.nanoTime()
+    //    println(s"ret is ${ret/size/size}, elapse time is ${t1-t0}")
+    println(s"ret is , elapse time is ${(t1 - t0)/1000000}ms")
+//    val sum = blockSeq.map(n => n.values.sum).reduce(_ + _)
+//    println(s"sum is ${sum}")
+
+    //    val ret = LogElapsed.log("MLlib", size, partitions,
+    //      blockSeq.map(block => block.toArray.sum).sum
+    //    )
+
+    //    log.info(s"ret head is ${ret / size / size} while expected is ${size}")
 
     //    val ret = LogElapsed.log("MPI", size, partitions,
     //      lambda.collect

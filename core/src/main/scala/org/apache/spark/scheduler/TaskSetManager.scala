@@ -36,6 +36,7 @@ import org.apache.spark.util.{AccumulatorV2, Clock, LongAccumulator, SystemClock
 import org.apache.spark.util.collection.MedianHeap
 
 import java.net.InetAddress
+import scala.collection.{immutable, mutable}
 
 /**
  * Schedules the tasks within a single TaskSet in the TaskSchedulerImpl. This class keeps track of
@@ -1108,13 +1109,21 @@ private[spark] class TaskSetManager(
     // TODO MPI taskset isBarrier
     val rankfile = "/tmp/rankfile"
     val out = new PrintWriter(rankfile)
-    for (i <- 0 until this.numTasks) {
-      val host = shuffledOffers(i).host
-      val hostname = InetAddress.getByName(host).getHostName
-      val partitionId = taskSet.tasks(i).partitionId
-      logInfo(s"mpi rank ${partitionId} start in host: ${host}")
-      // TODO replace write rankfile with blaze
-      out.println(s"rank ${partitionId}=${hostname} slot=${partitionId}")
+    var slot: Int = 0
+    val hostmap = new mutable.HashMap[String, Int]
+    // to rewrite
+    synchronized {
+      for (i <- 0 until this.numTasks) {
+        val host = shuffledOffers(i).host
+        val hostname = InetAddress.getByName(host).getHostName
+        val partitionId = taskSet.tasks(i).partitionId
+        // slot++
+        val slot = hostmap.getOrElse(hostname, -1) + 1
+        logInfo(s"mpi rank ${partitionId} start in host: ${host}:${slot}")
+        // TODO replace write rankfile with blaze
+        out.println(s"rank ${partitionId}=${hostname} slot=${slot}")
+        hostmap.update(hostname, slot)
+      }
     }
     out.close()
     logInfo("======== Initialize MPI Namespace ===========")
@@ -1145,7 +1154,7 @@ private[spark] class TaskSetManager(
     logInfo(s"attempt to start ${np} cores for MPIJob")
     val cmd = Array[String]("prun", "--map-by", "rankfile:file=/tmp/rankfile", "-np", np.toString, "hostname")
     val rc = MPIRun.launch(cmd)
-    if (0 !=  rc) {
+    if (0 != rc) {
       logError("setupMPIJobNamespace Failure")
       throw new Exception("setupMPIJobNamespace Failure")
     }

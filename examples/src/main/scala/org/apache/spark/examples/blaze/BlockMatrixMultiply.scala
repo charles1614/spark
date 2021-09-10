@@ -1,8 +1,8 @@
 
 package org.apache.spark.examples.blaze
 
+import org.apache.commons.lang3.time.StopWatch
 import org.apache.log4j.Logger
-
 import org.apache.spark.BlazeSession
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.linalg.distributed.{IndexedRow, IndexedRowMatrix}
@@ -15,9 +15,8 @@ object BlockMatrixMultiply {
     val partitions = if (args.size > 1) args(1).toInt else 16
 
     val blaze = BlazeSession.builder
-      .appName("MLlib BlockMatrixMultiply example")
+      .appName("MLlib BlockMatrixMultiply")
       .getOrCreate()
-
     val bc = blaze.blazeContext
 
     val line = Vectors.dense(Array.fill[Double](size) {
@@ -28,11 +27,15 @@ object BlockMatrixMultiply {
 
     val blockMat = new IndexedRowMatrix(mARows).toBlockMatrix()
 
+    val watch = new StopWatch()
+    watch.start()
     val ret = LogElapsed.log("MLlib", size, partitions,
       blockMat.multiply(blockMat).blocks.map(_._2.toArray.sum).sum
     )
+    watch.stop()
 
-    log.info(s"ret head is ${ret / size / size} while expected is ${size}")
+    println(s"ret head is ${ret / size / size} while expected is ${size}")
+    println(s"elapse time is ${watch.getTime}")
 
     bc.stop()
   }
