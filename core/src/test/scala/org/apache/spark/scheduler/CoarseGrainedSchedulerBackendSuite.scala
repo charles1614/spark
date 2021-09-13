@@ -238,7 +238,7 @@ class CoarseGrainedSchedulerBackendSuite extends SparkFunSuite with LocalSparkCo
 
     val taskResources = Map(GPU -> new ResourceInformation(GPU, Array("0")))
     var taskDescs: Seq[Seq[TaskDescription]] = Seq(Seq(new TaskDescription(1, 0, "1",
-      "t1", 0, 1, mutable.Map.empty[String, String], mutable.Map.empty[String, Long], mutable.Map.empty[String, Long],
+      "t1", 0, 1, false, mutable.Map.empty[String, Long], mutable.Map.empty[String, Long],
       new Properties(), taskResources, bytebuffer)))
     val ts = backend.getTaskSchedulerImpl()
     when(ts.resourceOffers(any[IndexedSeq[WorkerOffer]])).thenReturn(taskDescs)

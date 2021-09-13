@@ -29,7 +29,7 @@ import org.apache.spark._
 import org.apache.spark.TaskState.TaskState
 import org.apache.spark.internal.{Logging, config}
 import org.apache.spark.internal.config._
-import org.apache.spark.mpi.MPIRun
+import org.apache.spark.mpi.{MPIRun, NativeUtil}
 import org.apache.spark.resource.ResourceInformation
 import org.apache.spark.scheduler.SchedulingMode._
 import org.apache.spark.util.{AccumulatorV2, Clock, LongAccumulator, SystemClock, Utils}
@@ -484,7 +484,7 @@ private[spark] class TaskSetManager(
           taskName,
           index,
           task.partitionId,
-          mpienv,
+          task.isBarrier,
           addedFiles,
           addedJars,
           task.localProperties,
@@ -1159,6 +1159,14 @@ private[spark] class TaskSetManager(
       throw new Exception("setupMPIJobNamespace Failure")
     }
     rc
+  }
+
+  // TODO: stop specify namespace in task
+  def stopMPIJobNamespace(): Unit = {
+    System.load("/home/xialb/lib/libblaze.so")
+    val ns: String = NativeUtil.namespaceQuery()
+    logInfo(s"Stop MPI ns ${ns}")
+//    NativeUtil.namespaceFinalize(ns)
   }
 }
 

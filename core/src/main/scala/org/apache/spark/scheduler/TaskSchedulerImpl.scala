@@ -29,6 +29,7 @@ import org.apache.spark.TaskState.TaskState
 import org.apache.spark.executor.ExecutorMetrics
 import org.apache.spark.internal.{Logging, config}
 import org.apache.spark.internal.config._
+import org.apache.spark.mpi.NativeUtil
 import org.apache.spark.resource.ResourceUtils
 import org.apache.spark.rpc.RpcEndpoint
 import org.apache.spark.scheduler.SchedulingMode.SchedulingMode
@@ -328,7 +329,12 @@ private[spark] class TaskSchedulerImpl(
         taskSetsByStageIdAndAttempt -= manager.taskSet.stageId
       }
     }
-    manager.parent.removeSchedulable(manager)
+    // stop MPI
+    manager.stopMPIJobNamespace()
+//    System.load("/home/xialb/lib/libblaze.so")
+//    val ns: String = NativeUtil.namespaceQuery()
+//    logInfo(s"ns is ${ns}")
+//    manager.parent.removeSchedulable(manager)
     logInfo(s"Removed TaskSet ${manager.taskSet.id}, whose tasks have all completed, from pool" +
       s" ${manager.parent.name}")
   }

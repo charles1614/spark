@@ -72,7 +72,7 @@ class TaskDescriptionSuite extends SparkFunSuite {
       name = "task for test",
       index = 19,
       partitionId = 1,
-      mpienv,
+      false,
       originalFiles,
       originalJars,
       originalProperties,
@@ -90,7 +90,7 @@ class TaskDescriptionSuite extends SparkFunSuite {
     assert(decodedTaskDescription.name === originalTaskDescription.name)
     assert(decodedTaskDescription.index === originalTaskDescription.index)
     assert(decodedTaskDescription.partitionId === originalTaskDescription.partitionId)
-    assert(decodedTaskDescription.mpienv === originalTaskDescription.mpienv)
+    assert(decodedTaskDescription.isMPI === originalTaskDescription.isMPI)
     assert(decodedTaskDescription.addedFiles.equals(originalFiles))
     assert(decodedTaskDescription.addedJars.equals(originalJars))
     assert(decodedTaskDescription.properties.equals(originalTaskDescription.properties))

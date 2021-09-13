@@ -23,10 +23,10 @@ object MPIUtil extends Logging {
     }
   }
 
-  def setMPIEnv(taskDesc: TaskDescription): Unit = {
-    import collection.JavaConverters._
-    NativeUtil.setEnv(taskDesc.mpienv.asJava)
-  }
+//  def setMPIEnv(taskDesc: TaskDescription): Unit = {
+//    import collection.JavaConverters._
+//    NativeUtil.setEnv(taskDesc.mpienv.asJava)
+//  }
 
   def setRank(rank: String): Unit = {
     val map = new java.util.HashMap[String, String]()

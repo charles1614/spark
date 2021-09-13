@@ -56,22 +56,22 @@ import org.apache.spark.util.io.ChunkedByteBuffer
  * except in the case of Mesos fine-grained mode.
  */
 private[spark] class Executor(
-    executorId: String,
-    executorHostname: String,
-    env: SparkEnv,
-    userClassPath: Seq[URL] = Nil,
-    isLocal: Boolean = false,
-    uncaughtExceptionHandler: UncaughtExceptionHandler = new SparkUncaughtExceptionHandler,
-    resources: immutable.Map[String, ResourceInformation])
+                               executorId: String,
+                               executorHostname: String,
+                               env: SparkEnv,
+                               userClassPath: Seq[URL] = Nil,
+                               isLocal: Boolean = false,
+                               uncaughtExceptionHandler: UncaughtExceptionHandler = new SparkUncaughtExceptionHandler,
+                               resources: immutable.Map[String, ResourceInformation])
   extends Logging {
 
   logInfo(s"Starting executor ID $executorId on host $executorHostname")
-//  logInfo(s"start MPI rank $executorId on host $executorHostname")
-//
-//
-//  System.load("/home/xialb/lib/libblaze.so")
-//  MPIUtil.setPmixEnv()
-////  MPIUtil.setRank(executorId)
+  //  logInfo(s"start MPI rank $executorId on host $executorHostname")
+  //
+  //
+  //  System.load("/home/xialb/lib/libblaze.so")
+  //  MPIUtil.setPmixEnv()
+  ////  MPIUtil.setRank(executorId)
 
   private val executorShutdown = new AtomicBoolean(false)
   ShutdownHookManager.addShutdownHook(
@@ -89,7 +89,7 @@ private[spark] class Executor(
   // No ip or host:port - just hostname
   Utils.checkHost(executorHostname)
   // must not have port specified.
-  assert (0 == Utils.parseHostPort(executorHostname)._2)
+  assert(0 == Utils.parseHostPort(executorHostname)._2)
 
   // Make sure the local hostname we report matches the cluster scheduler's name for this host
   Utils.setCustomHostname(executorHostname)
@@ -243,13 +243,10 @@ private[spark] class Executor(
   private[executor] def numRunningTasks: Int = runningTasks.size()
 
   def launchTask(context: ExecutorBackend, taskDescription: TaskDescription): Unit = {
-    // setup mpi task env
-    logInfo(s"task ${taskDescription.partitionId} MPI Environment")
-    logInfo(s"start MPI rank ${taskDescription.partitionId} on host $executorHostname")
-//    MPIUtil.setMPIEnv(taskDescription)
-    MPIUtil.setPmixEnv()
-    MPIUtil.setRank(taskDescription.partitionId.toString)
-
+    if (taskDescription.isMPI) {
+      // setup mpi task env
+      startTaskMPI(taskDescription)
+    }
     val tr = new TaskRunner(context, taskDescription)
     runningTasks.put(taskDescription.taskId, tr)
     threadPool.execute(tr)
@@ -285,9 +282,10 @@ private[spark] class Executor(
    * Function to kill the running tasks in an executor.
    * This can be called by executor back-ends to kill the
    * tasks instead of taking the JVM down.
+   *
    * @param interruptThread whether to interrupt the task thread
    */
-  def killAllTasks(interruptThread: Boolean, reason: String) : Unit = {
+  def killAllTasks(interruptThread: Boolean, reason: String): Unit = {
     runningTasks.keys().asScala.foreach(t =>
       killTask(t, interruptThread = interruptThread, reason = reason))
   }
@@ -325,8 +323,8 @@ private[spark] class Executor(
   }
 
   class TaskRunner(
-      execBackend: ExecutorBackend,
-      private val taskDescription: TaskDescription)
+                    execBackend: ExecutorBackend,
+                    private val taskDescription: TaskDescription)
     extends Runnable {
 
     val taskId = taskDescription.taskId
@@ -344,7 +342,9 @@ private[spark] class Executor(
     @GuardedBy("TaskRunner.this")
     private var finished = false
 
-    def isFinished: Boolean = synchronized { finished }
+    def isFinished: Boolean = synchronized {
+      finished
+    }
 
     /** How much the JVM process has spent in GC when the task starts to run. */
     @volatile var startGCTime: Long = _
@@ -383,10 +383,10 @@ private[spark] class Executor(
     }
 
     /**
-     *  Utility function to:
+     * Utility function to:
      *    1. Report executor runtime and JVM gc time if possible
-     *    2. Collect accumulator updates
-     *    3. Set the finished flag to true and clear current thread's interrupt status
+     *       2. Collect accumulator updates
+     *       3. Set the finished flag to true and clear current thread's interrupt status
      */
     private def collectAccumulatorsAndResetStatusOnFailure(taskStartTimeNs: Long) = {
       // Report executor runtime and JVM gc time
@@ -619,7 +619,7 @@ private[spark] class Executor(
           execBackend.statusUpdate(taskId, TaskState.KILLED, serializedTK)
 
         case _: InterruptedException | NonFatal(_) if
-            task != null && task.reasonIfKilled.isDefined =>
+          task != null && task.reasonIfKilled.isDefined =>
           val killReason = task.reasonIfKilled.getOrElse("unknown reason")
           logInfo(s"Executor interrupted and killed $taskName (TID $taskId), reason: $killReason")
 
@@ -730,9 +730,9 @@ private[spark] class Executor(
    * if the supervised task never exits.
    */
   private class TaskReaper(
-      taskRunner: TaskRunner,
-      val interruptThread: Boolean,
-      val reason: String)
+                            taskRunner: TaskRunner,
+                            val interruptThread: Boolean,
+                            val reason: String)
     extends Runnable {
 
     private[this] val taskId: Long = taskRunner.taskId
@@ -747,8 +747,11 @@ private[spark] class Executor(
 
     override def run(): Unit = {
       val startTimeNs = System.nanoTime()
+
       def elapsedTimeNs = System.nanoTime() - startTimeNs
+
       def timeoutExceeded(): Boolean = killTimeoutNs > 0 && elapsedTimeNs > killTimeoutNs
+
       try {
         // Only attempt to kill the task once. If interruptThread = false then a second kill
         // attempt would be a no-op and if interruptThread = true then it may not be safe or
@@ -953,6 +956,24 @@ private[spark] class Executor(
             s"more than $HEARTBEAT_MAX_FAILURES times")
           System.exit(ExecutorExitCode.HEARTBEAT_FAILURE)
         }
+    }
+  }
+
+  def startTaskMPI(taskDescription: TaskDescription): Unit = {
+    logInfo(s"task ${taskDescription.partitionId} MPI Environment")
+    logInfo(s"start MPI rank ${taskDescription.partitionId} on host $executorHostname")
+    MPIUtil.setPmixEnv()
+    MPIUtil.setRank(taskDescription.partitionId.toString)
+    System.load("/home/xialb/lib/libblaze.so")
+  }
+
+  def stopTaskMPI(): Unit = {
+    System.load("/home/xialb/lib/libblaze.so")
+    val ns: String = NativeUtil.namespaceQuery()
+    if (!ns.isEmpty) {
+      logInfo(ns)
+      logInfo("Stop namespace")
+      NativeUtil.namespaceFinalize(ns)
     }
   }
 }

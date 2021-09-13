@@ -65,7 +65,6 @@ object MPIP1 {
 
     val bc = blaze.blazeContext
 
-    bc.setLogLevel("ERROR")
     var start, end: Long = 0
 
 

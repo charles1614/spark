@@ -52,6 +52,7 @@ private[deploy] object BlazeMaster extends Logging {
     val dirPath = s"/tmp/prte.${hostname}.${uid}"
     val dir = new File(dirPath)
     FileUtils.deleteDirectory(dir)
+    logInfo(s"${dirPath} has been cleaned before start up")
   }
 
 
