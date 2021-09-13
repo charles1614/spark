@@ -47,7 +47,7 @@ private[deploy] object BlazeMaster extends Logging {
 
   def cleanDirMPI(): Unit = {
     val unix = new UnixSystem()
-    val hostname = unix.getUsername
+    val hostname = InetAddress.getLocalHost.getHostName
     val uid = unix.getUid
     val dirPath = s"/tmp/prte.${hostname}.${uid}"
     val dir = new File(dirPath)
