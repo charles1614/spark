@@ -61,6 +61,7 @@ object MPIP1 {
     val blaze = BlazeSession
       .builder
       .appName("blazePi")
+      .master("local[*]")
       .getOrCreate()
 
     val bc = blaze.blazeContext

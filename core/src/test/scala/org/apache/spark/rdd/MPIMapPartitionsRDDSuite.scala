@@ -12,9 +12,12 @@ import java.util.Properties
 class MPIMapPartitionsRDDSuite extends SparkFunSuite with SharedSparkContext {
 
   test("basic operation") {
-    val nums = sc.makeRDD(Array(1, 2, 3, 4), 2)
-    assert(nums.getNumPartitions == 2)
-    nums.mpimap(i => i).collect()
+    val nums = sc.makeRDD(Array(1, 2, 3, 4), 1)
+    assert(nums.getNumPartitions == 1)
+    nums.mpimapPartitions(iter => iter.map(print(_))).collect()
+//    nums.mpimap{
+//      i => print(i)
+//    }.collect()
     while(true) {
       Thread.sleep(1000)
     }

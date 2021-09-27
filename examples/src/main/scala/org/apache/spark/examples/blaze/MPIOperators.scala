@@ -2,14 +2,12 @@
 package org.apache.spark.examples.blaze
 
 import scala.math.sqrt
-import mpi.{CartComm, Datatype, MPI}
+
+import mpi.{CartComm, MPI}
+
 import org.apache.commons.io.output.ByteArrayOutputStream
-import org.apache.derby.iapi.util.ByteArray
 import org.apache.log4j.Logger
-import org.apache.spark.BlazeSession
-import org.apache.spark.mllib.linalg.distributed.{IndexedRow, IndexedRowMatrix}
 import org.apache.spark.mllib.linalg.{BLAS, DenseMatrix, Matrix, Vectors}
-import org.apache.spark.rdd.RDD
 
 import java.io.{ByteArrayInputStream, ObjectInputStream, ObjectOutputStream}
 import java.nio.ByteBuffer

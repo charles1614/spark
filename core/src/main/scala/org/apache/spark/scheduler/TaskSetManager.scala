@@ -1165,10 +1165,10 @@ private[spark] class TaskSetManager(
   def stopMPIJobNamespace(): Unit = {
     System.load("/home/xialb/lib/libblaze.so")
     val ns: String = NativeUtil.namespaceQuery()
-    logInfo(s"Stop MPI ns ${ns}")
+    logInfo(s"Existed MPI ns ${ns}")
     val split = ns.split(",")
     if (!split(0).isEmpty) {
-      println(split(0).isEmpty)
+      logInfo(s"Stop MPI ns ${split(0)}")
       new Thread() {
         NativeUtil.namespaceFinalize(split(0))
       }.start()

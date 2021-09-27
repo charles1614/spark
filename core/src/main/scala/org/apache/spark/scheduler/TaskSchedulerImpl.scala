@@ -330,8 +330,10 @@ private[spark] class TaskSchedulerImpl(
       }
     }
     // stop MPI
-    manager.stopMPIJobNamespace()
-//    System.load("/home/xialb/lib/libblaze.so")
+    if(manager.isBarrier) {
+      manager.stopMPIJobNamespace()
+    }
+    //    System.load("/home/xialb/lib/libblaze.so")
 //    val ns: String = NativeUtil.namespaceQuery()
 //    logInfo(s"ns is ${ns}")
 //    manager.parent.removeSchedulable(manager)

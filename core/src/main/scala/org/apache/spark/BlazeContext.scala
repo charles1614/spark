@@ -3,14 +3,13 @@ package org.apache.spark
 
 
 import java.util.concurrent.atomic.AtomicReference
-
 import scala.collection.Map
 import scala.reflect.ClassTag
-
 import org.apache.spark.blaze.deploy.mpi.MPIContextNative.{getNamespace, getRanks, getSrvPeer}
 import org.apache.spark.blaze.ompi.Peer
 import org.apache.spark.blaze.rdd.MPIParallelCollectionRDD
 import org.apache.spark.internal.Logging
+import org.apache.spark.rdd.ParallelCollectionRDD
 import org.apache.spark.util.{CallSite, Utils}
 
 
@@ -78,9 +77,9 @@ class BlazeContext(config: SparkConf) extends SparkContext(config) with Serializ
   override def parallelize[T: ClassTag](
                                 seq: Seq[T],
                                 numSlices: Int = defaultParallelism
-                              ): MPIParallelCollectionRDD[T] = withScope {
+                              ): ParallelCollectionRDD[T] = withScope {
     assertNotStopped()
-    new MPIParallelCollectionRDD[T](this, seq, numSlices, Map[Int, Seq[String]]())
+    new ParallelCollectionRDD[T](this, seq, numSlices, Map[Int, Seq[String]]())
   }
 
 }
