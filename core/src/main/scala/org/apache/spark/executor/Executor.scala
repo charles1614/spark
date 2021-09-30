@@ -74,7 +74,7 @@ private[spark] class Executor(
   ////  MPIUtil.setRank(executorId)
 
   private val executorShutdown = new AtomicBoolean(false)
-  ShutdownHookManager.addShutdownHook(
+  val stopHookReference = ShutdownHookManager.addShutdownHook(
     () => stop()
   )
   // Application dependencies (added through SparkContext) that we've fetched so far on this node.
@@ -292,6 +292,7 @@ private[spark] class Executor(
 
   def stop(): Unit = {
     if (!executorShutdown.getAndSet(true)) {
+      ShutdownHookManager.removeShutdownHook(stopHookReference)
       env.metricsSystem.report()
       try {
         metricsPoller.stop()
