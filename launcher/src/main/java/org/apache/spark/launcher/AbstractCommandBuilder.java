@@ -144,7 +144,6 @@ abstract class AbstractCommandBuilder {
     if (prependClasses || isTesting) {
       String scala = getScalaVersion();
       List<String> projects = Arrays.asList(
-        "blaze",
         "common/kvstore",
         "common/network-common",
         "common/network-shuffle",

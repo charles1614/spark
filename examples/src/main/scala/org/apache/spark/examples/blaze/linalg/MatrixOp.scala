@@ -1,11 +1,13 @@
 
 package org.apache.spark.examples.blaze.linalg
 
-import org.apache.spark.{BlazeContext, SparkContext}
+import org.apache.spark.SparkContext
 import org.apache.spark.mllib.linalg.{DenseVector, Vector}
 import org.apache.spark.mllib.linalg.distributed.{BlockMatrix, IndexedRow, IndexedRowMatrix}
 import org.apache.spark.mllib.random.{RandomRDDs, StandardNormalGenerator}
 import org.apache.spark.rdd.RDD
+
+import scala.language.implicitConversions
 
 class MatrixOp(val bc: SparkContext) {
 

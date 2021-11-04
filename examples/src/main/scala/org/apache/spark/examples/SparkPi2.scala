@@ -20,10 +20,7 @@ package org.apache.spark.examples
 
 import scala.math.random
 
-import mpi.{MPI, MPIException}
-
 import org.apache.spark.BlazeSession
-import org.apache.spark.SparkConf
 
 /** Computes an approximation to pi */
 object SparkPi2 {

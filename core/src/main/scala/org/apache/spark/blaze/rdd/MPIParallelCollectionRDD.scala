@@ -5,10 +5,7 @@ package org.apache.spark.blaze.rdd
 import scala.collection.Map
 import scala.reflect.ClassTag
 import org.apache.spark.SparkContext
-import org.apache.spark.blaze.deploy.mpi.{MPIRun, NativeUtils}
-import org.apache.spark.rdd.{MapPartitionsRDD, ParallelCollectionRDD, RDD}
-
-import scala.sys.exit
+import org.apache.spark.rdd.ParallelCollectionRDD
 
 private[spark] class MPIParallelCollectionRDD[T: ClassTag](
     sc: SparkContext,

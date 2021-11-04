@@ -4,7 +4,6 @@ package org.apache.spark.mpi
 import scala.io.Source
 
 import org.apache.spark.internal.Logging
-import org.apache.spark.scheduler.TaskDescription
 
 class JavaLoggingWrapper extends Logging
 

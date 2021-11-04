@@ -146,21 +146,6 @@ object InMemoryTableSessionCatalog {
   }
 }
 
-object InMemoryTableSessionCatalog {
-  private var customIdentifierResolution: Identifier => Identifier = _
-
-  def withCustomIdentifierResolver(
-      resolver: Identifier => Identifier)(
-      f: => Unit): Unit = {
-    try {
-      customIdentifierResolution = resolver
-      f
-    } finally {
-      customIdentifierResolution = null
-    }
-  }
-}
-
 private [connector] trait SessionCatalogTest[T <: Table, Catalog <: TestV2SessionCatalogBase[T]]
   extends QueryTest
   with SharedSparkSession

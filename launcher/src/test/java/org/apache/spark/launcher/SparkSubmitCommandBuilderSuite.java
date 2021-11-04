@@ -68,8 +68,8 @@ public class SparkSubmitCommandBuilderSuite extends BaseSuite {
     List<String> sparkEmptyArgs = Collections.emptyList();
     cmd = buildCommand(sparkEmptyArgs, env);
     assertTrue(
-      "org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmit should be contained in the final cmd of empty input.",
-      cmd.contains("org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmit"));
+      "org.apache.spark.deploy.SparkSubmit should be contained in the final cmd of empty input.",
+      cmd.contains("org.apache.spark.deploy.SparkSubmit"));
   }
 
   @Test
@@ -147,7 +147,7 @@ public class SparkSubmitCommandBuilderSuite extends BaseSuite {
     List<String> sparkSubmitArgs = Arrays.asList(
       SparkSubmitCommandBuilder.PYSPARK_SHELL,
       "--master=foo",
-      "--org.apache.spark.blaze.deploy-mode=bar");
+      "--deploy-mode=bar");
 
     Map<String, String> env = new HashMap<>();
     List<String> cmd = buildCommand(sparkSubmitArgs, env);
@@ -162,7 +162,7 @@ public class SparkSubmitCommandBuilderSuite extends BaseSuite {
   public void testPySparkFallback() throws Exception {
     List<String> sparkSubmitArgs = Arrays.asList(
       "--master=foo",
-      "--org.apache.spark.blaze.deploy-mode=bar",
+      "--deploy-mode=bar",
       "script.py",
       "arg1");
 
@@ -170,7 +170,7 @@ public class SparkSubmitCommandBuilderSuite extends BaseSuite {
     List<String> cmd = buildCommand(sparkSubmitArgs, env);
 
     assertEquals("foo", findArgValue(cmd, "--master"));
-    assertEquals("bar", findArgValue(cmd, "--org.apache.spark.blaze.deploy-mode"));
+    assertEquals("bar", findArgValue(cmd, "--deploy-mode"));
     assertEquals("script.py", cmd.get(cmd.size() - 2));
     assertEquals("arg1", cmd.get(cmd.size() - 1));
   }
@@ -180,7 +180,7 @@ public class SparkSubmitCommandBuilderSuite extends BaseSuite {
     List<String> sparkSubmitArgs = Arrays.asList(
       SparkSubmitCommandBuilder.SPARKR_SHELL,
       "--master=foo",
-      "--org.apache.spark.blaze.deploy-mode=bar",
+      "--deploy-mode=bar",
       "--conf", "spark.r.shell.command=/usr/bin/R");
 
     Map<String, String> env = new HashMap<>();
@@ -268,12 +268,12 @@ public class SparkSubmitCommandBuilderSuite extends BaseSuite {
     // --master yarn or it can be any RM
     List<String> sparkSubmitArgs = Arrays.asList(parser.MASTER, "yarn");
     builder = newCommandBuilder(sparkSubmitArgs);
-    assertTrue("By default org.apache.spark.blaze.deploy mode is client", builder.isClientMode(Collections.emptyMap()));
+    assertTrue("By default deploy mode is client", builder.isClientMode(Collections.emptyMap()));
     // --master yarn and set spark.submit.deployMode to client
     Map<String, String> userProps = new HashMap<>();
     userProps.put("spark.submit.deployMode", "client");
     assertTrue(builder.isClientMode(userProps));
-    // --master mesos --org.apache.spark.blaze.deploy-mode cluster
+    // --master mesos --deploy-mode cluster
     sparkSubmitArgs = Arrays.asList(parser.MASTER, "mesos", parser.DEPLOY_MODE, "cluster");
     builder = newCommandBuilder(sparkSubmitArgs);
     assertFalse(builder.isClientMode(Collections.emptyMap()));

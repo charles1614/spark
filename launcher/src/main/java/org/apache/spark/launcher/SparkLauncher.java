@@ -46,7 +46,7 @@ public class SparkLauncher extends AbstractLauncher<SparkLauncher> {
   /** The Spark master. */
   public static final String SPARK_MASTER = "spark.master";
 
-  /** The Spark org.apache.spark.blaze.deploy mode. */
+  /** The Spark deploy mode. */
   public static final String DEPLOY_MODE = "spark.submit.deployMode";
 
   /** Configuration key for the driver memory. */

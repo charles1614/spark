@@ -1,6 +1,8 @@
 
 package org.apache.spark.examples.blaze.linalg
 
+import scala.language.implicitConversions
+
 import org.apache.spark.mllib.linalg.{DenseVector, Vector}
 import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.rdd.RDD

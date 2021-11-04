@@ -2,11 +2,9 @@
 package org.apache.spark.examples.blaze.cg.test
 
 import org.apache.spark.BlazeSession
-import org.apache.spark.examples.blaze.cg.MatrixOpMPI
-import org.apache.spark.examples.blaze.linalg.VectorSpace.DVector
 import org.apache.spark.mllib.linalg.DenseVector
-import org.apache.spark.mllib.random.{RandomRDDs, StandardNormalGenerator}
 import org.apache.spark.mllib.linalg.Vector
+import org.apache.spark.mllib.random.{RandomRDDs, StandardNormalGenerator}
 import org.apache.spark.rdd.RDD
 
 class zMatrixOpTest {

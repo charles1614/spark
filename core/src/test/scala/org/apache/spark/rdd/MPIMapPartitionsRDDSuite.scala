@@ -1,13 +1,8 @@
 
 package org.apache.spark.rdd
 
-import org.apache.spark.{FetchFailed, HashPartitioner, SharedSparkContext, ShuffleDependency, SparkFunSuite, Success, TaskContext}
-import org.apache.spark.scheduler.{DAGSchedulerEvent, DAGSchedulerEventProcessLoop, ExecutorKilled, ExecutorLost, JobListener, JobSubmitted, MyRDD}
-import org.apache.spark.mpi.{MPIRun, MPIUtil, MPIUtilSuite, NativeUtil}
-import org.apache.spark.scheduler.DAGSchedulerSuite.makeMapStatus
-import org.apache.spark.util.CallSite
-
-import java.util.Properties
+import org.apache.spark.{SharedSparkContext, SparkFunSuite}
+import org.apache.spark.mpi.{MPIRun, NativeUtil}
 
 class MPIMapPartitionsRDDSuite extends SparkFunSuite with SharedSparkContext {
 

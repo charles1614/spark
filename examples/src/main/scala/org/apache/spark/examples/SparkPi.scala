@@ -21,9 +21,6 @@ package org.apache.spark.examples
 import mpi.{MPI, MPIException}
 import org.apache.spark.SparkConf
 
-import scala.math.random
-import org.apache.spark.BlazeSession
-import org.apache.spark.blaze.deploy.mpi.NativeUtils.{getEnv, test}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.util.random.XORShiftRandom
 

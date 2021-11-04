@@ -566,6 +566,7 @@ class ExecutorSuite extends SparkFunSuite
       name = "",
       index = 0,
       partitionId = 0,
+      isMPI = false,
       addedFiles = Map[String, Long](),
       addedJars = Map[String, Long](),
       addedArchives = Map[String, Long](),

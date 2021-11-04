@@ -2,13 +2,12 @@
 package org.apache.spark.examples.blaze.cg
 
 import org.apache.spark.BlazeSession
-import org.apache.spark.examples.blaze.linalg.PrintHelper._
+import org.apache.spark.examples.blaze.linalg.MatrixOp
 import org.apache.spark.examples.blaze.linalg.MatrixOp._
-import org.apache.spark.mllib.linalg.distributed.{BlockMatrix, IndexedRow, IndexedRowMatrix}
-import org.apache.spark.mllib.linalg.{DenseVector, Vector}
-import org.apache.spark.mllib.regression.{LabeledPoint, LinearRegressionWithSGD}
+//import org.apache.spark.mllib.linalg.{DenseVector, Vector}
+import org.apache.spark.mllib.regression.LabeledPoint
+//import org.apache.spark.mllib.regression.inearRegressionWithSGD
 import org.apache.spark.rdd.RDD
-import org.apache.spark.examples.blaze.linalg.{MatrixOp, NumPartitioner}
 
 object SparkSGD {
   def main(args: Array[String]): Unit = {
@@ -45,21 +44,22 @@ object SparkSGD {
     val testRDD: RDD[LabeledPoint] = bZipA.map(iter => LabeledPoint(iter._2.toArray(0), iter._1))
     //    printLabelPoint(testRDD)
 
+    // not available to access mllib
     /** linReg */
-    val linReg = new LinearRegressionWithSGD(1, 10000, 0.0, 0.5)
-    linReg.optimizer.setNumIterations(maxIters).setStepSize(0.1).setConvergenceTol(1E-9)
+//    val linReg = new LinearRegressionWithSGD(1, 10000, 0.0, 0.5)
+//    linReg.optimizer.setNumIterations(maxIters).setStepSize(0.1).setConvergenceTol(1E-9)
 
-    val start = System.nanoTime
-    val model = linReg.run(testRDD)
-    val weights: Vector = model.weights
-    val stop = System.nanoTime
-
-
+//    val start = System.nanoTime
+//    val model = linReg.run(testRDD)
+//    val weights: Vector = model.weights
+//    val stop = System.nanoTime
 
 
-    val vectors: Array[DenseVector] = weights.toArray.map(i => new DenseVector(Array(i)))
-    vectors.foreach(i => i.values.foreach(i => print(i + " \n")))
-    print(s"time is ${(stop-start)/1000000}")
+
+
+//    val vectors: Array[DenseVector] = weights.toArray.map(i => new DenseVector(Array(i)))
+//    vectors.foreach(i => i.values.foreach(i => print(i + " \n")))
+//    print(s"time is ${(stop-start)/1000000}")
     //
     //    val vectorsRDD: RDD[IndexedRow] = bc.parallelize(vectors)
     //      .zipWithIndex

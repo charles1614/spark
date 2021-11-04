@@ -18,12 +18,11 @@
 // scalastyle:off println
 package org.apache.spark.examples
 
-import mpi.{MPI, MPIException}
-import org.apache.spark.{BlazeSession, SparkConf}
-
-import scala.math.random
-import scala.sys.exit
 import scala.util.Random
+
+import mpi.{MPI, MPIException}
+
+import org.apache.spark.{BlazeSession}
 
 /** Computes an approximation to pi */
 object MPIP1 {

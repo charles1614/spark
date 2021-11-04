@@ -1,22 +1,25 @@
 
 package org.apache.spark.deploy.master
 
-import com.sun.security.auth.module.UnixSystem
-import org.apache.commons.io.FileUtils
-import org.apache.spark.blaze.deploy.mpi.{MPILauncher, NativeUtils}
-import org.apache.spark.deploy.master.MasterMessages.{BoundPortsRequest, BoundPortsResponse}
-import org.apache.spark.{SecurityManager, SparkConf}
-import org.apache.spark.deploy.master._
-import org.apache.spark.internal.Logging
-import org.apache.spark.rpc.{RpcAddress, RpcEnv}
-import org.apache.spark.util.{SparkUncaughtExceptionHandler, Utils}
-
-import java.io.{File, FileNotFoundException}
+import java.io.File
 import java.net.InetAddress
+
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 import scala.sys.exit
 import scala.util.control.Breaks.{break, breakable}
+
+import com.sun.security.auth.module.UnixSystem
+
+import org.apache.commons.io.FileUtils
+
+import org.apache.spark.blaze.deploy.mpi.{MPILauncher, NativeUtils}
+import org.apache.spark.deploy.master.MasterMessages.{BoundPortsRequest, BoundPortsResponse}
+import org.apache.spark.{SecurityManager, SparkConf}
+import org.apache.spark.internal.Logging
+import org.apache.spark.rpc.{RpcAddress, RpcEnv}
+import org.apache.spark.util.{SparkUncaughtExceptionHandler, Utils}
+
 
 class BlazeMaster(override val rpcEnv: RpcEnv,
                   address: RpcAddress,

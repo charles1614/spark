@@ -17,12 +17,12 @@
 
 package org.apache.spark.scheduler
 
-import java.io.{DataInputStream, DataOutputStream, ObjectInputStream, ObjectOutputStream}
+import java.io.{DataInputStream, DataOutputStream}
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.util.Properties
 import scala.collection.JavaConverters._
-import scala.collection.{immutable, mutable}
+import scala.collection.immutable
 import scala.collection.mutable.{ArrayBuffer, HashMap, Map}
 import org.apache.spark.resource.ResourceInformation
 import org.apache.spark.util.{ByteBufferInputStream, ByteBufferOutputStream, Utils}
@@ -45,19 +45,19 @@ import org.apache.spark.util.{ByteBufferInputStream, ByteBufferOutputStream, Uti
  * (which can introduce significant overhead when the maps are small).
  */
 private[spark] class TaskDescription(
-                                      val taskId: Long,
-                                      val attemptNumber: Int,
-                                      val executorId: String,
-                                      val name: String,
-                                      val index: Int, // Index within this task's TaskSet
-                                      val partitionId: Int,
-                                      val isMPI: Boolean,
-                                      val addedFiles: Map[String, Long],
-                                      val addedJars: Map[String, Long],
-                                      val addedArchives: Map[String, Long],
-    val properties: Properties,
-                                      val resources: immutable.Map[String, ResourceInformation],
-                                      val serializedTask: ByteBuffer) {
+  val taskId: Long,
+  val attemptNumber: Int,
+  val executorId: String,
+  val name: String,
+  val index: Int, // Index within this task's TaskSet
+  val partitionId: Int,
+  val isMPI: Boolean,
+  val addedFiles: Map[String, Long],
+  val addedJars: Map[String, Long],
+  val addedArchives: Map[String, Long],
+  val properties: Properties,
+  val resources: immutable.Map[String, ResourceInformation],
+  val serializedTask: ByteBuffer) {
 
   override def toString: String = s"TaskDescription($name)"
 }
@@ -72,7 +72,7 @@ private[spark] object TaskDescription {
   }
 
   private def serializeResources(map: immutable.Map[String, ResourceInformation],
-                                 dataOut: DataOutputStream): Unit = {
+    dataOut: DataOutputStream): Unit = {
     dataOut.writeInt(map.size)
     map.foreach { case (key, value) =>
       dataOut.writeUTF(key)
@@ -85,7 +85,7 @@ private[spark] object TaskDescription {
   def encode(taskDescription: TaskDescription): ByteBuffer = {
     val bytesOut = new ByteBufferOutputStream(4096)
     val dataOut = new DataOutputStream(bytesOut)
-//    val objOut = new ObjectOutputStream(bytesOut)
+    //    val objOut = new ObjectOutputStream(bytesOut)
 
     dataOut.writeLong(taskDescription.taskId)
     dataOut.writeInt(taskDescription.attemptNumber)

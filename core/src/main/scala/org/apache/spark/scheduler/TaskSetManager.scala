@@ -18,25 +18,26 @@
 
 package org.apache.spark.scheduler
 
-import java.io.{BufferedWriter, FileWriter, NotSerializableException, PrintWriter}
+import java.io.{NotSerializableException, PrintWriter}
+import java.net.InetAddress
 import java.nio.ByteBuffer
 import java.util.concurrent.{ConcurrentLinkedQueue, TimeUnit}
+
 import scala.collection.immutable.Map
+import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, HashMap, HashSet}
 import scala.math.max
 import scala.util.control.NonFatal
+
 import org.apache.spark._
 import org.apache.spark.TaskState.TaskState
-import org.apache.spark.internal.{Logging, config}
+import org.apache.spark.internal.{config, Logging}
 import org.apache.spark.internal.config._
 import org.apache.spark.mpi.{MPIRun, NativeUtil}
 import org.apache.spark.resource.ResourceInformation
 import org.apache.spark.scheduler.SchedulingMode._
 import org.apache.spark.util.{AccumulatorV2, Clock, LongAccumulator, SystemClock, Utils}
 import org.apache.spark.util.collection.MedianHeap
-
-import java.net.InetAddress
-import scala.collection.{immutable, mutable}
 
 /**
  * Schedules the tasks within a single TaskSet in the TaskSchedulerImpl. This class keeps track of

@@ -4,7 +4,6 @@ package org.apache.spark.examples.blaze.cg
 import org.apache.spark.BlazeSession
 import org.apache.spark.examples.blaze.linalg.MatrixOp
 import org.apache.spark.examples.blaze.linalg.MatrixOp.BlockMatrixPlugin
-import org.apache.spark.examples.blaze.linalg.PrintHelper.{printVecRDD, printVecZipDns}
 import org.apache.spark.mllib.linalg.{DenseVector, Vector}
 import org.apache.spark.rdd.RDD
 

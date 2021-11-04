@@ -116,12 +116,12 @@ private[spark] object SparkAppLauncher extends Logging {
     logInfo(s"Launching a spark app with arguments $appArguments and conf $appConf")
     val preCommandLine = if (isJVM) {
       mutable.ArrayBuffer(sparkSubmitExecutable.toFile.getAbsolutePath,
-      "--org.apache.spark.blaze.deploy-mode", "cluster",
+      "--deploy-mode", "cluster",
       "--class", appArguments.mainClass,
       "--master", appConf.get("spark.master"))
     } else {
       mutable.ArrayBuffer(sparkSubmitExecutable.toFile.getAbsolutePath,
-        "--org.apache.spark.blaze.deploy-mode", "cluster",
+        "--deploy-mode", "cluster",
         "--master", appConf.get("spark.master"))
     }
     val commandLine =

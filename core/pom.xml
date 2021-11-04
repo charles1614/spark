@@ -512,6 +512,13 @@
       <artifactId>commons-crypto</artifactId>
     </dependency>
 
+    <!-- openmpi 5.0.1 -->
+    <dependency>
+      <groupId>org.open-mpi</groupId>
+      <artifactId>java</artifactId>
+      <version>5.0.1</version>
+    </dependency>
+
   </dependencies>
   <build>
     <outputDirectory>target/scala-${scala.binary.version}/classes</outputDirectory>

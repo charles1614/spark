@@ -29,15 +29,12 @@ import org.apache.spark.TaskState.TaskState
 import org.apache.spark.executor.ExecutorMetrics
 import org.apache.spark.internal.{Logging, config}
 import org.apache.spark.internal.config._
-import org.apache.spark.mpi.NativeUtil
 import org.apache.spark.resource.{ResourceInformation, ResourceProfile}
 import org.apache.spark.rpc.RpcEndpoint
 import org.apache.spark.scheduler.SchedulingMode.SchedulingMode
 import org.apache.spark.scheduler.TaskLocality.TaskLocality
 import org.apache.spark.storage.BlockManagerId
 import org.apache.spark.util.{AccumulatorV2, Clock, SystemClock, ThreadUtils, Utils}
-
-import java.io.PrintWriter
 
 /**
  * Schedules tasks for multiple types of clusters by acting through a SchedulerBackend.
@@ -619,12 +616,9 @@ private[spark] class TaskSchedulerImpl(
         if (!launchedAnyTask) {
           taskSet.getCompletelyExcludedTaskIfAny(hostToExecutors).foreach { taskIndex =>
             // If the taskSet is unschedulable we try to find an existing idle excluded
-            // executorand kill the idle
-             executor and kick off an abortTimer which if it doesn't
-              // schedule a task within the
-             the timeout will abort the taskSet if we were unable to
-              // schedule any task from the
-             taskSet.
+            // executor and kill the idle executor and kick off an abortTimer which if it doesn't
+            // schedule a task within the the timeout will abort the taskSet if we were unable to
+            // schedule any task from the taskSet.
             // Note 1: We keep track of schedulability on a per taskSet basis rather than on a per
             // task basis.
             // Note 2: The taskSet can still be aborted when there are more than one idle
@@ -633,9 +627,10 @@ private[spark] class TaskSchedulerImpl(
             // pending tasks and doesn't kill executors on idle timeouts, resulting in the abort
             // timer to expire and abort the taskSet.
             //
-              // If there are no idle executors and dynamic allocation is enabled, then we would
-              // notify ExecutorAllocationManager to allocate more executors to schedule the
-              // unschedulable tasks else we will abort immediately.executorIdToRunningTaskIds.find(x => !isExecutorBusy(x._1)) match {
+            // If there are no idle executors and dynamic allocation is enabled, then we would
+            // notify ExecutorAllocationManager to allocate more executors to schedule the
+            // unschedulable tasks else we will abort immediately.
+            executorIdToRunningTaskIds.find(x => !isExecutorBusy(x._1)) match {
               case Some((executorId, _)) =>
                 if (!unschedulableTaskSetToExpiryTime.contains(taskSet)) {
                   healthTrackerOpt.foreach(blt => blt.killExcludedIdleExecutor(executorId))

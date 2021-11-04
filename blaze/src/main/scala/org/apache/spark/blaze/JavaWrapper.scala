@@ -15,20 +15,11 @@
  * limitations under the License.
  */
 
-package org.apache.spark.status.api.v1.sql
+package org.apache.spark.blaze
 
-import javax.ws.rs.{Path, PathParam}
+import org.apache.spark.internal.Logging
 
-import org.apache.spark.status.api.v1.ApiRequestContext
-
-@Path("/v1")
-private[v1] class ApiSqlRootResource extends ApiRequestContext {
-
-  @Path("applications/{appId}/sql")
-  def sqlList(@PathParam("appId") appId: String): Class[SqlResource] = classOf[SqlResource]
-
-  @Path("applications/{appId}/{attemptId}/sql")
-  def sqlList(
-      @PathParam("appId") appId: String,
-      @PathParam("attemptId") attemptId: String): Class[SqlResource] = classOf[SqlResource]
+class JavaWrapper extends Logging{
 }
+
+class JavaLoggingWrapper extends Logging;

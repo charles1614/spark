@@ -109,6 +109,14 @@
       <artifactId>scopt_${scala.binary.version}</artifactId>
       <version>3.7.1</version>
     </dependency>
+
+    <!-- openmpi 5.0.1 -->
+    <dependency>
+      <groupId>org.open-mpi</groupId>
+      <artifactId>java</artifactId>
+      <version>5.0.1</version>
+    </dependency>
+
   </dependencies>
 
   <build>

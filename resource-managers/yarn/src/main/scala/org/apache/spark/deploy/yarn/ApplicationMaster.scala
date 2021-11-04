@@ -224,7 +224,7 @@ private[spark] class ApplicationMaster(
           System.setProperty(UI_PORT.key, "0")
         }
 
-        // Set the master and org.apache.spark.blaze.deploy mode property to match the requested mode.
+        // Set the master and deploy mode property to match the requested mode.
         System.setProperty("spark.master", "yarn")
         System.setProperty(SUBMIT_DEPLOY_MODE.key, "cluster")
 
@@ -791,11 +791,6 @@ private[spark] class ApplicationMaster(
           sparkConf.get(AM_CORES), extractLogUrls)
         driver.send(MiscellaneousProcessAdded(System.currentTimeMillis(), yarnAMID, info))
       }
-    }
-
-    override def receive: PartialFunction[Any, Unit] = {
-      case UpdateDelegationTokens(tokens) =>
-        SparkHadoopUtil.get.addDelegationTokens(tokens, sparkConf)
     }
 
     override def receive: PartialFunction[Any, Unit] = {

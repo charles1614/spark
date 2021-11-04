@@ -1,7 +1,9 @@
 
 package org.apache.spark.examples.blaze.linalg
 
-import org.apache.spark.mllib.linalg.{DenseVector, Vector}
+import scala.language.implicitConversions
+
+import org.apache.spark.mllib.linalg.Vector
 
 class VectorOp {
 

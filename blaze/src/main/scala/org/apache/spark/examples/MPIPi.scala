@@ -2,18 +2,12 @@
 // scalastyle:off println
 package org.apache.spark.examples
 
-import java.util
-
-import scala.math.random
 import scala.util.Random
 
-import mpi.{Comm, MPI, MPIException}
+import mpi.{ MPI, MPIException}
 
 import org.apache.spark.BlazeSession
 import org.apache.spark.SparkConf
-import org.apache.spark.blaze.BlazeUtils
-import org.apache.spark.blaze.deploy.mpi.NativeUtils
-import org.apache.spark.blaze.ompi.MPIConf
 
 
 /** Computes an approximation to pi */

@@ -1,7 +1,7 @@
 
 package org.apache.spark.scheduler
 
-import org.apache.spark.{MapOutputTrackerMaster, TaskContext}
+import org.apache.spark.TaskContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.util.CallSite
 
@@ -12,8 +12,9 @@ private[spark] class MPIMapStage(
   val partitions: Array[Int],
   parents: List[Stage],
   firstJobId: Int,
-  callSite: CallSite)
-  extends Stage (id, rdd, partitions.length, parents, firstJobId, callSite)
+  callSite: CallSite,
+  resourceProfileId: Int)
+  extends Stage (id, rdd, partitions.length, parents, firstJobId, callSite, resourceProfileId)
   {
 
     private[this] var _mpiStageJobs: List[ActiveJob] = Nil

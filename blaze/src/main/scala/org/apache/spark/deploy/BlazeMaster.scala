@@ -1,18 +1,18 @@
 
 package org.apache.spark.deploy.master
 
-import org.apache.spark.blaze.deploy.mpi.{MPILauncher, NativeUtils}
-import org.apache.spark.deploy.master.MasterMessages.{BoundPortsRequest, BoundPortsResponse}
-import org.apache.spark.{SecurityManager, SparkConf}
-import org.apache.spark.deploy.master._
-import org.apache.spark.internal.Logging
-import org.apache.spark.rpc.{RpcAddress, RpcEnv}
-import org.apache.spark.util.{SparkUncaughtExceptionHandler, Utils}
-
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 import scala.sys.exit
 import scala.util.control.Breaks.{break, breakable}
+
+import org.apache.spark.{SecurityManager, SparkConf}
+import org.apache.spark.blaze.deploy.mpi.{MPILauncher, NativeUtils}
+import org.apache.spark.deploy.master.MasterMessages.{BoundPortsRequest, BoundPortsResponse}
+import org.apache.spark.internal.Logging
+import org.apache.spark.rpc.{RpcAddress, RpcEnv}
+import org.apache.spark.util.{SparkUncaughtExceptionHandler, Utils}
+
 
 class BlazeMaster(override val rpcEnv: RpcEnv,
                   address: RpcAddress,

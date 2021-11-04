@@ -19,11 +19,11 @@
 package org.apache.spark.examples
 
 import scala.math.random
-import mpi.{MPI, MPIException}
-import org.apache.spark.blaze.deploy.mpi.NativeUtils.getEnv
-import org.apache.spark.{BlazeSession, SparkConf, SparkContext}
-
 import scala.sys.exit
+
+import mpi.{MPI, MPIException}
+
+import org.apache.spark.{BlazeSession, SparkConf}
 
 /** Computes an approximation to pi */
 object SparkPi {

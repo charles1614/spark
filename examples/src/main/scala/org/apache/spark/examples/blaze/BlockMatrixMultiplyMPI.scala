@@ -2,17 +2,15 @@
 package org.apache.spark.examples.blaze
 
 import scala.math.sqrt
-import mpi.{CartComm, Intracomm, MPI}
-import org.apache.log4j.Logger
-import org.apache.spark.BlazeSession
-import org.apache.spark.mllib.linalg.{DenseMatrix, Matrix, Vectors}
-import org.apache.spark.mllib.linalg.distributed.{BlockMatrix, IndexedRow, IndexedRowMatrix}
-import MPIOperators.mpiMultiply
-import MPIP1.mpiop
-import org.apache.spark.examples.blaze.BlockMatrixMultiply.log
-import org.apache.spark.rdd.RDD
-
 import scala.sys.exit
+
+import org.apache.log4j.Logger
+
+import org.apache.spark.BlazeSession
+import org.apache.spark.mllib.linalg.{DenseMatrix, Vectors}
+import org.apache.spark.mllib.linalg.distributed.{IndexedRow, IndexedRowMatrix}
+
+import MPIOperators.mpiMultiply
 
 object BlockMatrixMultiplyMPI {
   @transient lazy val log = Logger.getLogger(getClass.getName)

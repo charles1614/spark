@@ -5,7 +5,7 @@
     <parent>
         <artifactId>spark-parent_2.12</artifactId>
         <groupId>org.apache.spark</groupId>
-        <version>3.0.3-SNAPSHOT</version>
+        <version>3.2.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -32,17 +32,12 @@
 
         <!--From SPARK CORE-->
         <dependency>
-            <groupId>com.thoughtworks.paranamer</groupId>
-            <artifactId>paranamer</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.apache.avro</groupId>
             <artifactId>avro</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.avro</groupId>
             <artifactId>avro-mapred</artifactId>
-            <classifier>${avro.mapred.classifier}</classifier>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -58,7 +53,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.xbean</groupId>
-            <artifactId>xbean-asm7-shaded</artifactId>
+            <artifactId>xbean-asm9-shaded</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.hadoop</groupId>

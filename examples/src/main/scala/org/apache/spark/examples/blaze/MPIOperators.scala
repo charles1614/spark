@@ -3,14 +3,15 @@ package org.apache.spark.examples.blaze
 
 import scala.math.sqrt
 
+import java.io.{ByteArrayInputStream, ObjectInputStream, ObjectOutputStream}
+import java.nio.ByteBuffer
+
 import mpi.{CartComm, MPI}
 
 import org.apache.commons.io.output.ByteArrayOutputStream
 import org.apache.log4j.Logger
-import org.apache.spark.mllib.linalg.{BLAS, DenseMatrix, Matrix, Vectors}
 
-import java.io.{ByteArrayInputStream, ObjectInputStream, ObjectOutputStream}
-import java.nio.ByteBuffer
+import org.apache.spark.mllib.linalg.{BLAS, DenseMatrix}
 
 object MPIOperators {
 

@@ -3,7 +3,7 @@ package org.apache.spark.examples.blaze.cg
 
 import mpi.MPI
 
-import org.apache.spark.mllib.linalg.{DenseVector, Vector}
+import org.apache.spark.mllib.linalg.{DenseVector}
 
 class MatrixOpMPI {
 

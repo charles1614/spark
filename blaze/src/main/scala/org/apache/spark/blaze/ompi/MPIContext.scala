@@ -25,19 +25,17 @@ import scala.collection.Map
 import scala.reflect.ClassTag
 import org.apache.hadoop.conf.Configuration
 import org.apache.spark.blaze.deploy.mpi.MPIContextNative.{getNamespace, getRanks, getSrvPeer}
-import org.apache.spark.blaze.ompi
 import org.apache.spark.{ContextCleaner, ExecutorAllocationManager, Heartbeater, SparkConf, SparkContext, SparkEnv, SparkException, SparkStatusTracker}
 import org.apache.spark.blaze.rdd.{MPIParallelCollectionRDD, RDDOperationScope}
 import org.apache.spark.internal.Logging
 import org.apache.spark.internal.plugin.PluginContainer
-import org.apache.spark.rdd.ParallelCollectionRDD
 import org.apache.spark.resource.ResourceInformation
 import org.apache.spark.rpc.RpcEndpointRef
 import org.apache.spark.scheduler.{DAGScheduler, EventLoggingListener, LiveListenerBus, SchedulerBackend, TaskScheduler}
 import org.apache.spark.shuffle.api.ShuffleDriverComponents
 import org.apache.spark.status.AppStatusStore
 import org.apache.spark.ui.{ConsoleProgressBar, SparkUI}
-import org.apache.spark.util.{CallSite, ShutdownHookManager, Utils}
+import org.apache.spark.util.{CallSite, Utils}
 import org.apache.spark.util.logging.DriverLogger
 
 

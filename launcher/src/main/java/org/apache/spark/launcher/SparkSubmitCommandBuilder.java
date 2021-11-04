@@ -294,7 +294,7 @@ class SparkSubmitCommandBuilder extends AbstractCommandBuilder {
         config.get(SparkLauncher.DRIVER_EXTRA_LIBRARY_PATH));
     }
 
-    cmd.add("org.apache.spark.org.apache.spark.blaze.deploy.SparkSubmit");
+    cmd.add("org.apache.spark.deploy.SparkSubmit");
     cmd.addAll(buildSparkSubmitArgs());
     return cmd;
   }

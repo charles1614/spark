@@ -1,6 +1,8 @@
 
 package org.apache.spark.examples.blaze.linalg
 
+import scala.language.implicitConversions
+
 object ArrayHelper {
   implicit class ArrayOp(val oprand: Array[Double]) {
 

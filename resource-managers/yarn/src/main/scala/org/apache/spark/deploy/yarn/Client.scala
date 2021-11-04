@@ -1029,9 +1029,9 @@ private[spark] class Client(
       }
     val amClass =
       if (isClusterMode) {
-        Utils.classForName("org.apache.spark.org.apache.spark.blaze.deploy.yarn.ApplicationMaster").getName
+        Utils.classForName("org.apache.spark.deploy.yarn.ApplicationMaster").getName
       } else {
-        Utils.classForName("org.apache.spark.org.apache.spark.blaze.deploy.yarn.ExecutorLauncher").getName
+        Utils.classForName("org.apache.spark.deploy.yarn.ExecutorLauncher").getName
       }
     if (args.primaryRFile != null &&
         (args.primaryRFile.endsWith(".R") || args.primaryRFile.endsWith(".r"))) {

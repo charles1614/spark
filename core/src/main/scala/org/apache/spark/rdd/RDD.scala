@@ -1845,7 +1845,7 @@ abstract class RDD[T: ClassTag](
   /** The [[org.apache.spark.SparkContext]] that this RDD was created on. */
   def context: SparkContext = sc
 
-  def blazeContext: BlazeContext = blazeContext
+  def blazeContext: BlazeContext = sc.asInstanceOf[BlazeContext]
 
   /**
    * Private API for changing an RDD's ClassTag.

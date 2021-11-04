@@ -88,7 +88,7 @@ public abstract class AbstractLauncher<T extends AbstractLauncher<T>> {
   }
 
   /**
-   * Set the org.apache.spark.blaze.deploy mode for the application.
+   * Set the deploy mode for the application.
    *
    * @param mode Deploy mode.
    * @return This launcher.

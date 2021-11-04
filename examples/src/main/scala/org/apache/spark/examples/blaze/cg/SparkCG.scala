@@ -1,13 +1,8 @@
 
 package org.apache.spark.examples.blaze.cg
 
-import scala.util.Random
-
-import org.apache.log4j.{Level, Logger}
-
-import org.apache.spark.{BlazeContext, BlazeSession, SparkConf, SparkContext}
+import org.apache.spark.{BlazeContext, BlazeSession}
 import org.apache.spark.examples.blaze.linalg.{CGMatrix, CGVector}
-
 
 object SparkCG {
 

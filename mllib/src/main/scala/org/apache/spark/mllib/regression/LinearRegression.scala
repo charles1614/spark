@@ -83,7 +83,7 @@ object LinearRegressionModel extends Loader[LinearRegressionModel] {
  * See also the documentation for the precise formulation.
  */
 @Since("0.8.0")
-class LinearRegressionWithSGD (
+class LinearRegressionWithSGD private[mllib] (
     private var stepSize: Double,
     private var numIterations: Int,
     private var regParam: Double,

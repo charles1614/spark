@@ -3,11 +3,12 @@ package org.apache.spark
 
 
 import java.util.concurrent.atomic.AtomicReference
+
 import scala.collection.Map
 import scala.reflect.ClassTag
+
 import org.apache.spark.blaze.deploy.mpi.MPIContextNative.{getNamespace, getRanks, getSrvPeer}
 import org.apache.spark.blaze.ompi.Peer
-import org.apache.spark.blaze.rdd.MPIParallelCollectionRDD
 import org.apache.spark.internal.Logging
 import org.apache.spark.rdd.ParallelCollectionRDD
 import org.apache.spark.util.{CallSite, Utils}

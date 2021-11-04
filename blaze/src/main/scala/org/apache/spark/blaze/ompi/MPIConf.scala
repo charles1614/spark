@@ -4,13 +4,10 @@ package org.apache.spark.blaze.ompi
 import java.util.concurrent.ConcurrentHashMap
 
 import org.apache.spark.internal.Logging
-import org.apache.spark.internal.config.ConfigReader
 import org.apache.spark.util.Utils
 
 
 class MPIConf(loadDefaults: Boolean) extends Cloneable with Logging with Serializable {
-
-  import MPIConf._
 
   /** Create a MPIConf that loads defaults from system properties and the classpath */
   def this() = this(true)

@@ -353,16 +353,4 @@ class CsvFunctionsSuite extends QueryTest with SharedSparkSession {
       }
     }
   }
-
-  test("optional datetime parser does not affect csv time formatting") {
-    val s = "2015-08-26 12:34:46"
-    def toDF(p: String): DataFrame = sql(
-      s"""
-         |SELECT
-         | to_csv(
-         |   named_struct('time', timestamp'$s'), map('timestampFormat', "$p")
-         | )
-         | """.stripMargin)
-    checkAnswer(toDF("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"), toDF("yyyy-MM-dd'T'HH:mm:ss[.SSS][XXX]"))
-  }
 }

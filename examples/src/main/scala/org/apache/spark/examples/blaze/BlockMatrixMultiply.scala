@@ -1,8 +1,8 @@
 
 package org.apache.spark.examples.blaze
 
-import org.apache.commons.lang3.time.StopWatch
 import org.apache.log4j.Logger
+
 import org.apache.spark.BlazeSession
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.linalg.distributed.{IndexedRow, IndexedRowMatrix}

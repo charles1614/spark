@@ -51,7 +51,7 @@ while (( "$#" )); do
       IMAGE_TAG_OUTPUT_FILE="$2"
       shift
       ;;
-    --org.apache.spark.blaze.deploy-mode)
+    --deploy-mode)
       DEPLOY_MODE="$2"
       shift
       ;;

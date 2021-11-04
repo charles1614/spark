@@ -79,7 +79,7 @@ private[spark] class Executor(
   ////  MPIUtil.setRank(executorId)
 
   private val executorShutdown = new AtomicBoolean(false)
-  ShutdownHookManager.addShutdownHook(
+  val stopHookReference = ShutdownHookManager.addShutdownHook(
     () => stop()
   )
   // Application dependencies (added through SparkContext) that we've fetched so far on this node.
