@@ -35,19 +35,20 @@ script as shown here while passing your jar.
 
 For Python, you can use the `--py-files` argument of `spark-submit` to add `.py`, `.zip` or `.egg`
 files to be distributed with your application. If you depend on multiple Python files we recommend
-packaging them into a `.zip` or `.egg`.
+packaging them into a `.zip` or `.egg`. For third-party Python dependencies,
+see [Python Package Management](api/python/user_guide/python_packaging.html).
 
 # Launching Applications with spark-submit
 
 Once a user application is bundled, it can be launched using the `bin/spark-submit` script.
 This script takes care of setting up the classpath with Spark and its
-dependencies, and can support different cluster managers and org.apache.spark.blaze.deploy modes that Spark supports:
+dependencies, and can support different cluster managers and deploy modes that Spark supports:
 
 {% highlight bash %}
 ./bin/spark-submit \
   --class <main-class> \
   --master <master-url> \
-  --org.apache.spark.blaze.deploy-mode <org.apache.spark.blaze.deploy-mode> \
+  --deploy-mode <deploy-mode> \
   --conf <key>=<value> \
   ... # other options
   <application-jar> \
@@ -58,7 +59,7 @@ Some of the commonly used options are:
 
 * `--class`: The entry point for your application (e.g. `org.apache.spark.examples.SparkPi`)
 * `--master`: The [master URL](#master-urls) for the cluster (e.g. `spark://23.195.26.187:7077`)
-* `--org.apache.spark.blaze.deploy-mode`: Whether to org.apache.spark.blaze.deploy your driver on the worker nodes (`cluster`) or locally as an external client (`client`) (default: `client`) <b> &#8224; </b>
+* `--deploy-mode`: Whether to deploy your driver on the worker nodes (`cluster`) or locally as an external client (`client`) (default: `client`) <b> &#8224; </b>
 * `--conf`: Arbitrary Spark configuration property in key=value format. For values that contain spaces wrap "key=value" in quotes (as shown). Multiple configurations should be passed as separate arguments. (e.g. `--conf <key>=<value> --conf <key2>=<value2>`)
 * `application-jar`: Path to a bundled jar including your application and all dependencies. The URL must be globally visible inside of your cluster, for instance, an `hdfs://` path or a `file://` path that is present on all nodes.
 * `application-arguments`: Arguments passed to the main method of your main class, if any
@@ -76,12 +77,12 @@ locally on your laptop), it is common to use `cluster` mode to minimize network 
 the drivers and the executors. Currently, the standalone mode does not support cluster mode for Python
 applications.
 
-For Python applications, simply pass a `.py` file in the place of `<application-jar>` instead of a JAR,
+For Python applications, simply pass a `.py` file in the place of `<application-jar>`,
 and add Python `.zip`, `.egg` or `.py` files to the search path with `--py-files`.
 
 There are a few options available that are specific to the
 [cluster manager](cluster-overview.html#cluster-manager-types) that is being used.
-For example, with a [Spark standalone cluster](spark-standalone.html) with `cluster` org.apache.spark.blaze.deploy mode,
+For example, with a [Spark standalone cluster](spark-standalone.html) with `cluster` deploy mode,
 you can also specify `--supervise` to make sure that the driver is automatically restarted if it
 fails with a non-zero exit code. To enumerate all such options available to `spark-submit`,
 run it with `--help`. Here are a few examples of common options:
@@ -94,7 +95,7 @@ run it with `--help`. Here are a few examples of common options:
   /path/to/examples.jar \
   100
 
-# Run on a Spark standalone cluster in client org.apache.spark.blaze.deploy mode
+# Run on a Spark standalone cluster in client deploy mode
 ./bin/spark-submit \
   --class org.apache.spark.examples.SparkPi \
   --master spark://207.184.161.138:7077 \
@@ -103,23 +104,23 @@ run it with `--help`. Here are a few examples of common options:
   /path/to/examples.jar \
   1000
 
-# Run on a Spark standalone cluster in cluster org.apache.spark.blaze.deploy mode with supervise
+# Run on a Spark standalone cluster in cluster deploy mode with supervise
 ./bin/spark-submit \
   --class org.apache.spark.examples.SparkPi \
   --master spark://207.184.161.138:7077 \
-  --org.apache.spark.blaze.deploy-mode cluster \
+  --deploy-mode cluster \
   --supervise \
   --executor-memory 20G \
   --total-executor-cores 100 \
   /path/to/examples.jar \
   1000
 
-# Run on a YARN cluster
+# Run on a YARN cluster in cluster deploy mode
 export HADOOP_CONF_DIR=XXX
 ./bin/spark-submit \
   --class org.apache.spark.examples.SparkPi \
   --master yarn \
-  --org.apache.spark.blaze.deploy-mode cluster \  # can be client for client mode
+  --deploy-mode cluster \
   --executor-memory 20G \
   --num-executors 50 \
   /path/to/examples.jar \
@@ -131,22 +132,22 @@ export HADOOP_CONF_DIR=XXX
   examples/src/main/python/pi.py \
   1000
 
-# Run on a Mesos cluster in cluster org.apache.spark.blaze.deploy mode with supervise
+# Run on a Mesos cluster in cluster deploy mode with supervise
 ./bin/spark-submit \
   --class org.apache.spark.examples.SparkPi \
   --master mesos://207.184.161.138:7077 \
-  --org.apache.spark.blaze.deploy-mode cluster \
+  --deploy-mode cluster \
   --supervise \
   --executor-memory 20G \
   --total-executor-cores 100 \
   http://path/to/examples.jar \
   1000
 
-# Run on a Kubernetes cluster in cluster org.apache.spark.blaze.deploy mode
+# Run on a Kubernetes cluster in cluster deploy mode
 ./bin/spark-submit \
   --class org.apache.spark.examples.SparkPi \
   --master k8s://xx.yy.zz.ww:443 \
-  --org.apache.spark.blaze.deploy-mode cluster \
+  --deploy-mode cluster \
   --executor-memory 20G \
   --num-executors 50 \
   http://path/to/examples.jar \
@@ -162,9 +163,10 @@ The master URL passed to Spark can be in one of the following formats:
 <tr><th>Master URL</th><th>Meaning</th></tr>
 <tr><td> <code>local</code> </td><td> Run Spark locally with one worker thread (i.e. no parallelism at all). </td></tr>
 <tr><td> <code>local[K]</code> </td><td> Run Spark locally with K worker threads (ideally, set this to the number of cores on your machine). </td></tr>
-<tr><td> <code>local[K,F]</code> </td><td> Run Spark locally with K worker threads and F maxFailures (see <a href="configuration.html#scheduling">spark.task.maxFailures</a> for an explanation of this variable) </td></tr>
+<tr><td> <code>local[K,F]</code> </td><td> Run Spark locally with K worker threads and F maxFailures (see <a href="configuration.html#scheduling">spark.task.maxFailures</a> for an explanation of this variable). </td></tr>
 <tr><td> <code>local[*]</code> </td><td> Run Spark locally with as many worker threads as logical cores on your machine.</td></tr>
 <tr><td> <code>local[*,F]</code> </td><td> Run Spark locally with as many worker threads as logical cores on your machine and F maxFailures.</td></tr>
+<tr><td> <code>local-cluster[N,C,M]</code> </td><td> Local-cluster mode is only for unit tests. It emulates a distributed cluster in a single JVM with N number of workers, C cores per worker and M MiB of memory per worker.</td></tr>
 <tr><td> <code>spark://HOST:PORT</code> </td><td> Connect to the given <a href="spark-standalone.html">Spark standalone
         cluster</a> master. The port must be whichever one your master is configured to use, which is 7077 by default.
 </td></tr>
@@ -174,10 +176,10 @@ The master URL passed to Spark can be in one of the following formats:
 <tr><td> <code>mesos://HOST:PORT</code> </td><td> Connect to the given <a href="running-on-mesos.html">Mesos</a> cluster.
         The port must be whichever one your is configured to use, which is 5050 by default.
         Or, for a Mesos cluster using ZooKeeper, use <code>mesos://zk://...</code>.
-        To submit with <code>--org.apache.spark.blaze.deploy-mode cluster</code>, the HOST:PORT should be configured to connect to the <a href="running-on-mesos.html#cluster-mode">MesosClusterDispatcher</a>.
+        To submit with <code>--deploy-mode cluster</code>, the HOST:PORT should be configured to connect to the <a href="running-on-mesos.html#cluster-mode">MesosClusterDispatcher</a>.
 </td></tr>
 <tr><td> <code>yarn</code> </td><td> Connect to a <a href="running-on-yarn.html"> YARN </a> cluster in
-        <code>client</code> or <code>cluster</code> mode depending on the value of <code>--org.apache.spark.blaze.deploy-mode</code>.
+        <code>client</code> or <code>cluster</code> mode depending on the value of <code>--deploy-mode</code>.
         The cluster location will be found based on the <code>HADOOP_CONF_DIR</code> or <code>YARN_CONF_DIR</code> variable.
 </td></tr>
 <tr><td> <code>k8s://HOST:PORT</code> </td><td> Connect to a <a href="running-on-kubernetes.html">Kubernetes</a> cluster in

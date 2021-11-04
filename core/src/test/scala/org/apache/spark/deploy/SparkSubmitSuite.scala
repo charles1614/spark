@@ -29,10 +29,9 @@ import com.google.common.io.ByteStreams
 import org.apache.commons.io.FileUtils
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileStatus, FSDataInputStream, Path}
-import org.scalatest.{BeforeAndAfterEach, Matchers}
-import org.scalatest.concurrent.{Signaler, ThreadSignaler, TimeLimits}
-import org.scalatest.time.Span
-import org.scalatest.time.SpanSugar._
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.matchers.should.Matchers._
 
 import org.apache.spark._
 import org.apache.spark.TestUtils
@@ -45,7 +44,7 @@ import org.apache.spark.internal.Logging
 import org.apache.spark.internal.config._
 import org.apache.spark.internal.config.UI._
 import org.apache.spark.launcher.SparkLauncher
-import org.apache.spark.util.{CommandLineUtils, ResetSystemProperties, Utils}
+import org.apache.spark.util.{CommandLineUtils, DependencyUtils, ResetSystemProperties, Utils}
 
 trait TestPrematureExit {
   suite: SparkFunSuite =>
@@ -105,17 +104,11 @@ trait TestPrematureExit {
 // Note: this suite mixes in ResetSystemProperties because SparkSubmit.main() sets a bunch
 // of properties that needed to be cleared after tests.
 class SparkSubmitSuite
-  extends SparkFunSuite
+  extends SparkSubmitTestUtils
   with Matchers
   with BeforeAndAfterEach
   with ResetSystemProperties
-  with TimeLimits
   with TestPrematureExit {
-
-  import SparkSubmitSuite._
-
-  // Necessary to make ScalaTest 3.x interrupt a thread on the JVM like ScalaTest 2.2.x
-  implicit val defaultSignaler: Signaler = ThreadSignaler
 
   private val emptyIvySettings = File.createTempFile("ivy", ".xml")
   FileUtils.write(emptyIvySettings, "<ivysettings />", StandardCharsets.UTF_8)
@@ -210,7 +203,7 @@ class SparkSubmitSuite
     assert(e.getMessage.contains("Number of executors must be a positive number"))
   }
 
-  test("specify org.apache.spark.blaze.deploy mode through configuration") {
+  test("specify deploy mode through configuration") {
     val clArgs = Seq(
       "--master", "yarn",
       "--conf", "spark.submit.deployMode=client",
@@ -226,7 +219,7 @@ class SparkSubmitSuite
     // Both cmd line and configuration are specified, cmdline option takes the priority
     val clArgs1 = Seq(
       "--master", "yarn",
-      "--org.apache.spark.blaze.deploy-mode", "cluster",
+      "--deploy-mode", "cluster",
       "--conf", "spark.submit.deployMode=client",
       "--class", "org.SomeClass",
       "thejar.jar"
@@ -253,7 +246,7 @@ class SparkSubmitSuite
 
   test("handles YARN cluster mode") {
     val clArgs = Seq(
-      "--org.apache.spark.blaze.deploy-mode", "cluster",
+      "--deploy-mode", "cluster",
       "--master", "yarn",
       "--executor-memory", "5g",
       "--executor-cores", "5",
@@ -296,7 +289,7 @@ class SparkSubmitSuite
 
   test("handles YARN client mode") {
     val clArgs = Seq(
-      "--org.apache.spark.blaze.deploy-mode", "client",
+      "--deploy-mode", "client",
       "--master", "yarn",
       "--executor-memory", "5g",
       "--executor-cores", "5",
@@ -333,6 +326,43 @@ class SparkSubmitSuite
     sys.props("SPARK_SUBMIT") should be ("true")
   }
 
+  test("SPARK-33530: handles standalone mode with archives") {
+    val clArgs = Seq(
+      "--master", "spark://localhost:1234",
+      "--executor-memory", "5g",
+      "--executor-cores", "5",
+      "--class", "org.SomeClass",
+      "--jars", "one.jar,two.jar,three.jar",
+      "--driver-memory", "4g",
+      "--files", "file1.txt,file2.txt",
+      "--archives", "archive1.zip,archive2.jar",
+      "--num-executors", "6",
+      "--name", "beauty",
+      "--conf", "spark.ui.enabled=false",
+      "thejar.jar",
+      "arg1", "arg2")
+    val appArgs = new SparkSubmitArguments(clArgs)
+    val (childArgs, classpath, conf, mainClass) = submit.prepareSubmitEnvironment(appArgs)
+    val childArgsStr = childArgs.mkString(" ")
+    childArgsStr should include ("arg1 arg2")
+    mainClass should be ("org.SomeClass")
+
+    classpath(0) should endWith ("thejar.jar")
+    classpath(1) should endWith ("one.jar")
+    classpath(2) should endWith ("two.jar")
+    classpath(3) should endWith ("three.jar")
+
+    conf.get("spark.executor.memory") should be ("5g")
+    conf.get("spark.driver.memory") should be ("4g")
+    conf.get("spark.executor.cores") should be ("5")
+    conf.get("spark.jars") should include regex (".*one.jar,.*two.jar,.*three.jar")
+    conf.get("spark.files") should include regex (".*file1.txt,.*file2.txt")
+    conf.get("spark.archives") should include regex (".*archive1.zip,.*archive2.jar")
+    conf.get("spark.app.name") should be ("beauty")
+    conf.get(UI_ENABLED) should be (false)
+    sys.props("SPARK_SUBMIT") should be ("true")
+  }
+
   test("handles standalone cluster mode") {
     testStandaloneCluster(useRest = true)
   }
@@ -347,7 +377,7 @@ class SparkSubmitSuite
    */
   private def testStandaloneCluster(useRest: Boolean): Unit = {
     val clArgs = Seq(
-      "--org.apache.spark.blaze.deploy-mode", "cluster",
+      "--deploy-mode", "cluster",
       "--master", "spark://h:p",
       "--class", "org.SomeClass",
       "--supervise",
@@ -385,7 +415,7 @@ class SparkSubmitSuite
 
   test("handles standalone client mode") {
     val clArgs = Seq(
-      "--org.apache.spark.blaze.deploy-mode", "client",
+      "--deploy-mode", "client",
       "--master", "spark://h:p",
       "--executor-memory", "5g",
       "--total-executor-cores", "5",
@@ -407,7 +437,7 @@ class SparkSubmitSuite
 
   test("handles mesos client mode") {
     val clArgs = Seq(
-      "--org.apache.spark.blaze.deploy-mode", "client",
+      "--deploy-mode", "client",
       "--master", "mesos://h:p",
       "--executor-memory", "5g",
       "--total-executor-cores", "5",
@@ -429,7 +459,8 @@ class SparkSubmitSuite
 
   test("handles k8s cluster mode") {
     val clArgs = Seq(
-      "--org.apache.spark.blaze.deploy-mode", "cluster",
+      "--deploy-mode", "cluster",
+      "--proxy-user", "test.user",
       "--master", "k8s://host:port",
       "--executor-memory", "5g",
       "--class", "org.SomeClass",
@@ -442,9 +473,10 @@ class SparkSubmitSuite
     val (childArgs, classpath, conf, mainClass) = submit.prepareSubmitEnvironment(appArgs)
 
     val childArgsMap = childArgs.grouped(2).map(a => a(0) -> a(1)).toMap
-    childArgsMap.get("--primary-java-resource") should be (Some("file:/home/thejar.jar"))
+    childArgsMap.get("--primary-java-resource").get should endWith ("/home/thejar.jar")
     childArgsMap.get("--main-class") should be (Some("org.SomeClass"))
     childArgsMap.get("--arg") should be (Some("arg1"))
+    childArgsMap.get("--proxy-user") should be (Some("test.user"))
     mainClass should be (KUBERNETES_CLUSTER_SUBMIT_CLASS)
     classpath should have length (0)
     conf.get("spark.master") should be ("k8s://https://host:port")
@@ -480,8 +512,8 @@ class SparkSubmitSuite
     val clArgs = Seq(
       "--name", "testApp",
       "--master", "yarn",
-      "--org.apache.spark.blaze.deploy-mode", deployMode,
-      "--conf", "spark.hadoop.fs.s3a.impl=org.apache.spark.org.apache.spark.blaze.deploy.TestFileSystem",
+      "--deploy-mode", deployMode,
+      "--conf", "spark.hadoop.fs.s3a.impl=org.apache.spark.deploy.TestFileSystem",
       "--conf", "spark.hadoop.fs.s3a.impl.disable.cache=true",
       s"s3a://${jarUrl.getPath}",
       "arg1", "arg2")
@@ -524,7 +556,7 @@ class SparkSubmitSuite
     val clArgs = Seq(
       "--name", "testApp",
       "--master", "yarn",
-      "--conf", "spark.hadoop.fs.s3a.impl=org.apache.spark.org.apache.spark.blaze.deploy.TestFileSystem",
+      "--conf", "spark.hadoop.fs.s3a.impl=org.apache.spark.deploy.TestFileSystem",
       "--conf", "spark.hadoop.fs.s3a.impl.disable.cache=true",
       s"s3a:///does-not-exist.jar")
 
@@ -533,7 +565,7 @@ class SparkSubmitSuite
 
   test("handles confs with flag equivalents") {
     val clArgs = Seq(
-      "--org.apache.spark.blaze.deploy-mode", "cluster",
+      "--deploy-mode", "cluster",
       "--executor-memory", "5g",
       "--class", "org.SomeClass",
       "--conf", "spark.executor.memory=4g",
@@ -887,7 +919,7 @@ class SparkSubmitSuite
       }
       val clArgs4 = Seq(
         "--master", "yarn",
-        "--org.apache.spark.blaze.deploy-mode", "cluster",
+        "--deploy-mode", "cluster",
         "--properties-file", f4.getPath,
         "hdfs:///tmp/mister.py"
       )
@@ -952,7 +984,7 @@ class SparkSubmitSuite
               "--class", UserClasspathFirstTest.getClass.getName.stripPrefix("$"),
               "--name", "testApp",
               "--master", "yarn",
-              "--org.apache.spark.blaze.deploy-mode", "client",
+              "--deploy-mode", "client",
               "--jars", s"${tmpJarDir.getAbsolutePath}/*.jar",
               "--files", s"${tmpFileDir.getAbsolutePath}/tmpFile*",
               "--py-files", s"${tmpPyFileDir.getAbsolutePath}/tmpPy*",
@@ -1016,7 +1048,7 @@ class SparkSubmitSuite
       "--class", UserClasspathFirstTest.getClass.getName.stripPrefix("$"),
       "--name", "testApp",
       "--master", "yarn",
-      "--org.apache.spark.blaze.deploy-mode", "client",
+      "--deploy-mode", "client",
       "--jars", s"${tmpJarDir.getAbsolutePath}/*.jar",
       "--files", s"${tmpFileDir.getAbsolutePath}/tmpFile*",
       "--py-files", s"${tmpPyFileDir.getAbsolutePath}/tmpPy*",
@@ -1065,8 +1097,8 @@ class SparkSubmitSuite
 
     // The path and filename are preserved.
     assert(outputUri.getPath.endsWith(new Path(sourceUri).getName))
-    assert(FileUtils.readFileToString(new File(outputUri.getPath)) ===
-      FileUtils.readFileToString(new File(sourceUri.getPath)))
+    assert(FileUtils.readFileToString(new File(outputUri.getPath), StandardCharsets.UTF_8) ===
+      FileUtils.readFileToString(new File(sourceUri.getPath), StandardCharsets.UTF_8))
   }
 
   private def deleteTempOutputFile(outputPath: String): Unit = {
@@ -1080,8 +1112,7 @@ class SparkSubmitSuite
     val sparkConf = new SparkConf(false)
     intercept[IOException] {
       DependencyUtils.downloadFile(
-        "abc:/my/file", Utils.createTempDir(), sparkConf, new Configuration(),
-        new SecurityManager(sparkConf))
+        "abc:/my/file", Utils.createTempDir(), sparkConf, new Configuration())
     }
   }
 
@@ -1091,19 +1122,17 @@ class SparkSubmitSuite
     val tmpDir = Utils.createTempDir()
     updateConfWithFakeS3Fs(hadoopConf)
     intercept[FileNotFoundException] {
-      DependencyUtils.downloadFile("s3a:/no/such/file", tmpDir, sparkConf, hadoopConf,
-        new SecurityManager(sparkConf))
+      DependencyUtils.downloadFile("s3a:/no/such/file", tmpDir, sparkConf, hadoopConf)
     }
   }
 
   test("downloadFile does not download local file") {
     val sparkConf = new SparkConf(false)
-    val secMgr = new SecurityManager(sparkConf)
     // empty path is considered as local file.
     val tmpDir = Files.createTempDirectory("tmp").toFile
-    assert(DependencyUtils.downloadFile("", tmpDir, sparkConf, new Configuration(), secMgr) === "")
-    assert(DependencyUtils.downloadFile("/local/file", tmpDir, sparkConf, new Configuration(),
-      secMgr) === "/local/file")
+    assert(DependencyUtils.downloadFile("", tmpDir, sparkConf, new Configuration()) === "")
+    assert(DependencyUtils.downloadFile(
+      "/local/file", tmpDir, sparkConf, new Configuration()) === "/local/file")
   }
 
   test("download one file to local") {
@@ -1111,13 +1140,12 @@ class SparkSubmitSuite
     val jarFile = File.createTempFile("test", ".jar")
     jarFile.deleteOnExit()
     val content = "hello, world"
-    FileUtils.write(jarFile, content)
+    FileUtils.write(jarFile, content, StandardCharsets.UTF_8)
     val hadoopConf = new Configuration()
     val tmpDir = Files.createTempDirectory("tmp").toFile
     updateConfWithFakeS3Fs(hadoopConf)
     val sourcePath = s"s3a://${jarFile.toURI.getPath}"
-    val outputPath = DependencyUtils.downloadFile(sourcePath, tmpDir, sparkConf, hadoopConf,
-      new SecurityManager(sparkConf))
+    val outputPath = DependencyUtils.downloadFile(sourcePath, tmpDir, sparkConf, hadoopConf)
     checkDownloadedFile(sourcePath, outputPath)
     deleteTempOutputFile(outputPath)
   }
@@ -1127,14 +1155,13 @@ class SparkSubmitSuite
     val jarFile = File.createTempFile("test", ".jar")
     jarFile.deleteOnExit()
     val content = "hello, world"
-    FileUtils.write(jarFile, content)
+    FileUtils.write(jarFile, content, StandardCharsets.UTF_8)
     val hadoopConf = new Configuration()
     val tmpDir = Files.createTempDirectory("tmp").toFile
     updateConfWithFakeS3Fs(hadoopConf)
     val sourcePaths = Seq("/local/file", s"s3a://${jarFile.toURI.getPath}")
     val outputPaths = DependencyUtils
-      .downloadFileList(sourcePaths.mkString(","), tmpDir, sparkConf, hadoopConf,
-        new SecurityManager(sparkConf))
+      .downloadFileList(sourcePaths.mkString(","), tmpDir, sparkConf, hadoopConf)
       .split(",")
 
     assert(outputPaths.length === sourcePaths.length)
@@ -1148,7 +1175,6 @@ class SparkSubmitSuite
     val fs = File.separator
     val sparkConf = new SparkConf(false)
     val hadoopConf = new Configuration()
-    val secMgr = new SecurityManager(sparkConf)
 
     val appJarName = "myApp.jar"
     val jar1Name = "myJar1.jar"
@@ -1156,8 +1182,7 @@ class SparkSubmitSuite
     val userJar = s"file:/path${fs}to${fs}app${fs}jar$fs$appJarName"
     val jars = s"file:/$jar1Name,file:/$appJarName,file:/$jar2Name"
 
-    val resolvedJars = DependencyUtils
-      .resolveAndDownloadJars(jars, userJar, sparkConf, hadoopConf, secMgr)
+    val resolvedJars = DependencyUtils.resolveAndDownloadJars(jars, userJar, sparkConf, hadoopConf)
 
     assert(!resolvedJars.contains(appJarName))
     assert(resolvedJars.contains(jar1Name) && resolvedJars.contains(jar2Name))
@@ -1178,7 +1203,7 @@ class SparkSubmitSuite
         "--class", UserClasspathFirstTest.getClass.getName.stripPrefix("$"),
         "--name", "testApp",
         "--master", "yarn",
-        "--org.apache.spark.blaze.deploy-mode", "client",
+        "--deploy-mode", "client",
         "--jars", tmpJarPath,
         "--files", s"s3a://${file.getAbsolutePath}",
         "--py-files", s"s3a://${pyFile.getAbsolutePath}",
@@ -1209,12 +1234,12 @@ class SparkSubmitSuite
     testRemoteResources(enableHttpFs = true)
   }
 
-  test("force download from blacklisted schemes") {
-    testRemoteResources(enableHttpFs = true, blacklistSchemes = Seq("http"))
+  test("force download from forced schemes") {
+    testRemoteResources(enableHttpFs = true, forceDownloadSchemes = Seq("http"))
   }
 
   test("force download for all the schemes") {
-    testRemoteResources(enableHttpFs = true, blacklistSchemes = Seq("*"))
+    testRemoteResources(enableHttpFs = true, forceDownloadSchemes = Seq("*"))
   }
 
   test("SPARK-32119: Jars and files should be loaded when Executors launch for plugins") {
@@ -1299,7 +1324,7 @@ class SparkSubmitSuite
 
   private def testRemoteResources(
       enableHttpFs: Boolean,
-      blacklistSchemes: Seq[String] = Nil): Unit = {
+      forceDownloadSchemes: Seq[String] = Nil): Unit = {
     val hadoopConf = new Configuration()
     updateConfWithFakeS3Fs(hadoopConf)
     if (enableHttpFs) {
@@ -1316,8 +1341,8 @@ class SparkSubmitSuite
     val tmpHttpJar = TestUtils.createJarWithFiles(Map("test.resource" -> "USER"), tmpDir)
     val tmpHttpJarPath = s"http://${new File(tmpHttpJar.toURI).getAbsolutePath}"
 
-    val forceDownloadArgs = if (blacklistSchemes.nonEmpty) {
-      Seq("--conf", s"spark.yarn.dist.forceDownloadSchemes=${blacklistSchemes.mkString(",")}")
+    val forceDownloadArgs = if (forceDownloadSchemes.nonEmpty) {
+      Seq("--conf", s"spark.yarn.dist.forceDownloadSchemes=${forceDownloadSchemes.mkString(",")}")
     } else {
       Nil
     }
@@ -1326,7 +1351,7 @@ class SparkSubmitSuite
       "--class", UserClasspathFirstTest.getClass.getName.stripPrefix("$"),
       "--name", "testApp",
       "--master", "yarn",
-      "--org.apache.spark.blaze.deploy-mode", "client",
+      "--deploy-mode", "client",
       "--jars", s"$tmpS3JarPath,$tmpHttpJarPath"
     ) ++ forceDownloadArgs ++ Seq(s"s3a://$mainResource")
 
@@ -1335,19 +1360,19 @@ class SparkSubmitSuite
 
     val jars = conf.get("spark.yarn.dist.jars").split(",").toSet
 
-    def isSchemeBlacklisted(scheme: String) = {
-      blacklistSchemes.contains("*") || blacklistSchemes.contains(scheme)
+    def isSchemeForcedDownload(scheme: String) = {
+      forceDownloadSchemes.contains("*") || forceDownloadSchemes.contains(scheme)
     }
 
-    if (!isSchemeBlacklisted("s3")) {
+    if (!isSchemeForcedDownload("s3")) {
       assert(jars.contains(tmpS3JarPath))
     }
 
-    if (enableHttpFs && blacklistSchemes.isEmpty) {
+    if (enableHttpFs && forceDownloadSchemes.isEmpty) {
       // If Http FS is supported by yarn service, the URI of remote http resource should
       // still be remote.
       assert(jars.contains(tmpHttpJarPath))
-    } else if (!enableHttpFs || isSchemeBlacklisted("http")) {
+    } else if (!enableHttpFs || isSchemeForcedDownload("http")) {
       // If Http FS is not supported by yarn service, or http scheme is configured to be force
       // downloading, the URI of remote http resource should be changed to a local one.
       val jarName = new File(tmpHttpJar.toURI).getName
@@ -1399,7 +1424,7 @@ class SparkSubmitSuite
         "--class", UserClasspathFirstTest.getClass.getName.stripPrefix("$"),
         "--name", "testApp",
         "--master", "yarn",
-        "--org.apache.spark.blaze.deploy-mode", "client",
+        "--deploy-mode", "client",
         "--py-files", s"s3a://${pyFile.getAbsolutePath}",
         "spark-internal"
       )
@@ -1415,7 +1440,7 @@ class SparkSubmitSuite
         "--class", UserClasspathFirstTest.getClass.getName.stripPrefix("$"),
         "--name", "testApp",
         "--master", "yarn",
-        "--org.apache.spark.blaze.deploy-mode", "client",
+        "--deploy-mode", "client",
         "--conf", s"spark.submit.pyFiles=s3a://${pyFile.getAbsolutePath}",
         "spark-internal"
       )
@@ -1489,36 +1514,6 @@ class SparkSubmitSuite
       masterConf
     ).foreach { case (k, v) =>
       conf.get(k) should be (v)
-    }
-  }
-}
-
-object SparkSubmitSuite extends SparkFunSuite with TimeLimits {
-
-  // Necessary to make ScalaTest 3.x interrupt a thread on the JVM like ScalaTest 2.2.x
-  implicit val defaultSignaler: Signaler = ThreadSignaler
-
-  // NOTE: This is an expensive operation in terms of time (10 seconds+). Use sparingly.
-  def runSparkSubmit(args: Seq[String], root: String = "..", timeout: Span = 1.minute): Unit = {
-    val sparkHome = sys.props.getOrElse("spark.test.home", fail("spark.test.home is not set!"))
-    val sparkSubmitFile = if (Utils.isWindows) {
-      new File(s"$root\\bin\\spark-submit.cmd")
-    } else {
-      new File(s"$root/bin/spark-submit")
-    }
-    val process = Utils.executeCommand(
-      Seq(sparkSubmitFile.getCanonicalPath) ++ args,
-      new File(sparkHome),
-      Map("SPARK_TESTING" -> "1", "SPARK_HOME" -> sparkHome))
-
-    try {
-      val exitCode = failAfter(timeout) { process.waitFor() }
-      if (exitCode != 0) {
-        fail(s"Process returned with exit code $exitCode. See the log4j logs for more detail.")
-      }
-    } finally {
-      // Ensure we still kill the process in case it timed out
-      process.destroy()
     }
   }
 }

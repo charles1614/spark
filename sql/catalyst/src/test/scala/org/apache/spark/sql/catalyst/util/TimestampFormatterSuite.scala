@@ -17,8 +17,9 @@
 
 package org.apache.spark.sql.catalyst.util
 
-import java.time.{DateTimeException, Instant, LocalDateTime, LocalTime}
-import java.util.concurrent.TimeUnit
+import java.time.{DateTimeException, LocalDateTime}
+
+import org.apache.commons.lang3.{JavaVersion, SystemUtils}
 
 import org.apache.spark.SparkUpgradeException
 import org.apache.spark.sql.catalyst.util.DateTimeTestUtils._
@@ -137,6 +138,9 @@ class TimestampFormatterSuite extends DatetimeFormatterSuite {
   test("format fraction of second") {
     val formatter = TimestampFormatter.getFractionFormatter(UTC)
     Seq(
+      -999999 -> "1969-12-31 23:59:59.000001",
+      -999900 -> "1969-12-31 23:59:59.0001",
+      -1 -> "1969-12-31 23:59:59.999999",
       0 -> "1970-01-01 00:00:00",
       1 -> "1970-01-01 00:00:00.000001",
       1000 -> "1970-01-01 00:00:00.001",
@@ -158,26 +162,6 @@ class TimestampFormatterSuite extends DatetimeFormatterSuite {
     withDefaultTimeZone(UTC) { // toJavaTimestamp depends on the default time zone
       assert(TimestampFormatter("yyyy-MM-dd HH:mm:SS G", UTC, isParsing = false)
         .format(toJavaTimestamp(micros)) === "0100-01-01 00:00:00 BC")
-    }
-  }
-
-  test("special timestamp values") {
-    testSpecialDatetimeValues { zoneId =>
-      val formatter = TimestampFormatter(zoneId)
-      val tolerance = TimeUnit.SECONDS.toMicros(30)
-
-      assert(formatter.parse("EPOCH") === 0)
-      val now = instantToMicros(Instant.now())
-      formatter.parse("now") should be(now +- tolerance)
-      val localToday = LocalDateTime.now(zoneId)
-        .`with`(LocalTime.MIDNIGHT)
-        .atZone(zoneId)
-      val yesterday = instantToMicros(localToday.minusDays(1).toInstant)
-      formatter.parse("yesterday CET") should be(yesterday +- tolerance)
-      val today = instantToMicros(localToday.toInstant)
-      formatter.parse(" TODAY ") should be(today +- tolerance)
-      val tomorrow = instantToMicros(localToday.plusDays(1).toInstant)
-      formatter.parse("Tomorrow ") should be(tomorrow +- tolerance)
     }
   }
 
@@ -285,14 +269,14 @@ class TimestampFormatterSuite extends DatetimeFormatterSuite {
         withSQLConf(SQLConf.SESSION_LOCAL_TIMEZONE.key -> zoneId.getId) {
           withDefaultTimeZone(zoneId) {
             withClue(s"zoneId = ${zoneId.getId}") {
-              val formatters = LegacyDateFormats.values.map { legacyFormat =>
+              val formatters = LegacyDateFormats.values.toSeq.map { legacyFormat =>
                 TimestampFormatter(
                   TimestampFormatter.defaultPattern,
                   zoneId,
                   TimestampFormatter.defaultLocale,
                   legacyFormat,
                   isParsing = false)
-              }.toSeq :+ TimestampFormatter.getFractionFormatter(zoneId)
+              } :+ TimestampFormatter.getFractionFormatter(zoneId)
               formatters.foreach { formatter =>
                 assert(microsToInstant(formatter.parse("1000-01-01 01:02:03"))
                   .atZone(zoneId)
@@ -350,9 +334,14 @@ class TimestampFormatterSuite extends DatetimeFormatterSuite {
       val micros1 = formatter.parse("2009-12-12 00 am")
       assert(micros1 === date(2009, 12, 12))
 
+      // JDK-8223773: DateTimeFormatter Fails to throw an Exception on Invalid HOUR_OF_AMPM
       // For `KK`, "12:00:00 am" is the same as "00:00:00 pm".
-      val micros2 = formatter.parse("2009-12-12 12 am")
-      assert(micros2 === date(2009, 12, 12, 12))
+      if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_13)) {
+        intercept[DateTimeException](formatter.parse("2009-12-12 12 am"))
+      } else {
+        val micros2 = formatter.parse("2009-12-12 12 am")
+        assert(micros2 === date(2009, 12, 12, 12))
+      }
 
       val micros3 = formatter.parse("2009-12-12 00 pm")
       assert(micros3 === date(2009, 12, 12, 12))

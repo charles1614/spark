@@ -22,14 +22,13 @@ import java.lang.{Long => JLong}
 import scala.collection.mutable.ArrayBuffer
 
 import org.apache.spark._
-import org.apache.spark.sql.{functions, AnalysisException, Dataset, QueryTest, Row, SparkSession}
-import org.apache.spark.sql.catalyst.analysis.UnresolvedRelation
+import org.apache.spark.sql.{functions, Dataset, QueryTest, Row, SparkSession}
 import org.apache.spark.sql.catalyst.expressions.{Attribute, AttributeReference}
-import org.apache.spark.sql.catalyst.plans.logical.{Aggregate, InsertIntoStatement, LogicalPlan, Project}
+import org.apache.spark.sql.catalyst.plans.logical.{Aggregate, LogicalPlan, Project}
 import org.apache.spark.sql.execution.{QueryExecution, QueryExecutionException, WholeStageCodegenExec}
 import org.apache.spark.sql.execution.adaptive.AdaptiveSparkPlanHelper
-import org.apache.spark.sql.execution.command.RunnableCommand
-import org.apache.spark.sql.execution.datasources.{CreateTable, InsertIntoHadoopFsRelationCommand}
+import org.apache.spark.sql.execution.command.{CreateDataSourceTableAsSelectCommand, LeafRunnableCommand}
+import org.apache.spark.sql.execution.datasources.InsertIntoHadoopFsRelationCommand
 import org.apache.spark.sql.execution.datasources.json.JsonFileFormat
 import org.apache.spark.sql.internal.SQLConf
 import org.apache.spark.sql.test.SharedSparkSession
@@ -197,7 +196,7 @@ class DataFrameCallbackSuite extends QueryTest
       spark.range(10).write.format("json").save(path.getCanonicalPath)
       sparkContext.listenerBus.waitUntilEmpty()
       assert(commands.length == 1)
-      assert(commands.head._1 == "save")
+      assert(commands.head._1 == "command")
       assert(commands.head._2.isInstanceOf[InsertIntoHadoopFsRelationCommand])
       assert(commands.head._2.asInstanceOf[InsertIntoHadoopFsRelationCommand]
         .fileFormat.isInstanceOf[JsonFileFormat])
@@ -208,10 +207,10 @@ class DataFrameCallbackSuite extends QueryTest
       spark.range(10).write.insertInto("tab")
       sparkContext.listenerBus.waitUntilEmpty()
       assert(commands.length == 3)
-      assert(commands(2)._1 == "insertInto")
-      assert(commands(2)._2.isInstanceOf[InsertIntoStatement])
-      assert(commands(2)._2.asInstanceOf[InsertIntoStatement].table
-        .asInstanceOf[UnresolvedRelation].multipartIdentifier == Seq("tab"))
+      assert(commands(2)._1 == "command")
+      assert(commands(2)._2.isInstanceOf[InsertIntoHadoopFsRelationCommand])
+      assert(commands(2)._2.asInstanceOf[InsertIntoHadoopFsRelationCommand]
+        .catalogTable.get.identifier.identifier == "tab")
     }
     // exiting withTable adds commands(3) via onSuccess (drops tab)
 
@@ -219,19 +218,21 @@ class DataFrameCallbackSuite extends QueryTest
       spark.range(10).select($"id", $"id" % 5 as "p").write.partitionBy("p").saveAsTable("tab")
       sparkContext.listenerBus.waitUntilEmpty()
       assert(commands.length == 5)
-      assert(commands(4)._1 == "saveAsTable")
-      assert(commands(4)._2.isInstanceOf[CreateTable])
-      assert(commands(4)._2.asInstanceOf[CreateTable].tableDesc.partitionColumnNames == Seq("p"))
+      assert(commands(4)._1 == "command")
+      assert(commands(4)._2.isInstanceOf[CreateDataSourceTableAsSelectCommand])
+      assert(commands(4)._2.asInstanceOf[CreateDataSourceTableAsSelectCommand]
+        .table.partitionColumnNames == Seq("p"))
     }
 
     withTable("tab") {
       sql("CREATE TABLE tab(i long) using parquet")
-      val e = intercept[AnalysisException] {
-        spark.range(10).select($"id", $"id").write.insertInto("tab")
+      spark.udf.register("illegalUdf", udf((value: Long) => value / 0))
+      val e = intercept[SparkException] {
+        spark.range(10).selectExpr("illegalUdf(id)").write.insertInto("tab")
       }
       sparkContext.listenerBus.waitUntilEmpty()
       assert(exceptions.length == 1)
-      assert(exceptions.head._1 == "insertInto")
+      assert(exceptions.head._1 == "command")
       assert(exceptions.head._2 == e)
     }
   }
@@ -294,7 +295,8 @@ class DataFrameCallbackSuite extends QueryTest
           name = "my_event",
           min($"id").as("min_val"),
           max($"id").as("max_val"),
-          sum($"id").as("sum_val"),
+          // Test unresolved alias
+          sum($"id"),
           count(when($"id" % 2 === 0, 1)).as("num_even"))
         .repartition($"id")
         .observe(
@@ -364,7 +366,7 @@ class DataFrameCallbackSuite extends QueryTest
 }
 
 /** A test command that throws `java.lang.Error` during execution. */
-case class ErrorTestCommand(foo: String) extends RunnableCommand {
+case class ErrorTestCommand(foo: String) extends LeafRunnableCommand {
 
   override val output: Seq[Attribute] = Seq(AttributeReference("foo", StringType)())
 

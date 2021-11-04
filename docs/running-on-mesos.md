@@ -19,6 +19,8 @@ license: |
 ---
 * This will become a table of contents (this text will be scraped).
 {:toc}
+  
+*Note*: Apache Mesos support is deprecated as of Apache Spark 3.2.0. It will be removed in a future version.
 
 Spark can run on hardware clusters managed by [Apache Mesos](http://mesos.apache.org/).
 
@@ -30,7 +32,9 @@ The advantages of deploying Spark with Mesos include:
 
 # Security
 
-Security in Spark is OFF by default. This could mean you are vulnerable to attack by default.
+Security features like authentication are not enabled by default. When deploying a cluster that is open to the internet
+or an untrusted network, it's important to secure access to the cluster to prevent unauthorized applications
+from running on the cluster.
 Please see [Spark Security](security.html) and the specific security sections in this doc before running Spark.
 
 # How it Works
@@ -47,7 +51,7 @@ machines handle what tasks.  Because it takes into account other frameworks when
 many short-lived tasks, multiple frameworks can coexist on the same cluster without resorting to a
 static partitioning of resources.
 
-To get started, follow the steps below to install Mesos and org.apache.spark.blaze.deploy Spark jobs via Mesos.
+To get started, follow the steps below to install Mesos and deploy Spark jobs via Mesos.
 
 
 # Installing Mesos
@@ -91,7 +95,7 @@ but Mesos can be run without ZooKeeper using a single master as well.
 ## Verification
 
 To verify that the Mesos cluster is ready for Spark, navigate to the Mesos master webui at port
-`:5050`  Confirm that all expected machines are present in the slaves tab.
+`:5050`  Confirm that all expected machines are present in the agents tab.
 
 
 # Connecting Spark to Mesos
@@ -99,7 +103,7 @@ To verify that the Mesos cluster is ready for Spark, navigate to the Mesos maste
 To use Mesos from Spark, you need a Spark binary package available in a place accessible by Mesos, and
 a Spark driver program configured to connect to Mesos.
 
-Alternatively, you can also install Spark in the same location in all the Mesos slaves, and configure
+Alternatively, you can also install Spark in the same location in all the Mesos agents, and configure
 `spark.mesos.executor.home` (defaults to SPARK_HOME) to point to that location.
 
 ## Authenticating to Mesos
@@ -125,7 +129,7 @@ An equivalent order applies for the secret.  Essentially we prefer the configura
 
 ### Deploy to a Mesos running on Secure Sockets
 
-If you want to org.apache.spark.blaze.deploy a Spark Application into a Mesos cluster that is running in a secure mode there are some environment variables that need to be set.
+If you want to deploy a Spark Application into a Mesos cluster that is running in a secure mode there are some environment variables that need to be set.
 
 - `LIBPROCESS_SSL_ENABLED=true` enables SSL communication
 - `LIBPROCESS_SSL_VERIFY_CERT=false` verifies the ssl certificate 
@@ -138,7 +142,7 @@ Then submit happens as described in Client mode or Cluster mode below
 
 ## Uploading Spark Package
 
-When Mesos runs a task on a Mesos slave for the first time, that slave must have a Spark binary
+When Mesos runs a task on a Mesos agent for the first time, that agent must have a Spark binary
 package for running the Spark Mesos executor backend.
 The Spark package can be hosted at any Hadoop-accessible URI, including HTTP via `http://`,
 [Amazon Simple Storage Service](http://aws.amazon.com/s3) via `s3n://`, or HDFS via `hdfs://`.
@@ -212,10 +216,10 @@ protected (port 7077 by default).
 
 By setting the Mesos proxy config property (requires mesos version >= 1.4), `--conf spark.mesos.proxy.baseURL=http://localhost:5050` when launching the dispatcher, the mesos sandbox URI for each driver is added to the mesos dispatcher UI.
 
-If you like to run the `MesosClusterDispatcher` with Marathon, you need to run the `MesosClusterDispatcher` in the foreground (i.e: `./bin/spark-class org.apache.spark.org.apache.spark.blaze.deploy.mesos.MesosClusterDispatcher`). Note that the `MesosClusterDispatcher` not yet supports multiple instances for HA.
+If you like to run the `MesosClusterDispatcher` with Marathon, you need to run the `MesosClusterDispatcher` in the foreground (i.e: `./bin/spark-class org.apache.spark.deploy.mesos.MesosClusterDispatcher`). Note that the `MesosClusterDispatcher` not yet supports multiple instances for HA.
 
-The `MesosClusterDispatcher` also supports writing recovery state into Zookeeper. This will allow the `MesosClusterDispatcher` to be able to recover all submitted and running containers on relaunch.   In order to enable this recovery mode, you can set SPARK_DAEMON_JAVA_OPTS in spark-env by configuring `spark.org.apache.spark.blaze.deploy.recoveryMode` and related spark.org.apache.spark.blaze.deploy.zookeeper.* configurations.
-For more information about these configurations please refer to the configurations [doc](configuration.html#org.apache.spark.blaze.deploy).
+The `MesosClusterDispatcher` also supports writing recovery state into Zookeeper. This will allow the `MesosClusterDispatcher` to be able to recover all submitted and running containers on relaunch.   In order to enable this recovery mode, you can set SPARK_DAEMON_JAVA_OPTS in spark-env by configuring `spark.deploy.recoveryMode` and related spark.deploy.zookeeper.* configurations.
+For more information about these configurations please refer to the configurations [doc](configuration.html#deploy).
 
 You can also specify any additional jars required by the `MesosClusterDispatcher` in the classpath by setting the environment variable SPARK_DAEMON_CLASSPATH in spark-env.
 
@@ -228,7 +232,7 @@ For example:
 ./bin/spark-submit \
   --class org.apache.spark.examples.SparkPi \
   --master mesos://207.184.161.138:7077 \
-  --org.apache.spark.blaze.deploy-mode cluster \
+  --deploy-mode cluster \
   --supervise \
   --executor-memory 20G \
   --total-executor-cores 100 \
@@ -237,7 +241,7 @@ For example:
 {% endhighlight %}
 
 
-Note that jars or python files that are passed to spark-submit should be URIs reachable by Mesos slaves, as the Spark driver doesn't automatically upload local jars.
+Note that jars or python files that are passed to spark-submit should be URIs reachable by Mesos agents, as the Spark driver doesn't automatically upload local jars.
 
 # Mesos Run Modes
 
@@ -360,9 +364,9 @@ see [Dynamic Resource Allocation](job-scheduling.html#dynamic-resource-allocatio
 
 The External Shuffle Service to use is the Mesos Shuffle Service. It provides shuffle data cleanup functionality
 on top of the Shuffle Service since Mesos doesn't yet support notifying another framework's
-termination. To launch it, run `$SPARK_HOME/sbin/start-mesos-shuffle-service.sh` on all slave nodes, with `spark.shuffle.service.enabled` set to `true`.
+termination. To launch it, run `$SPARK_HOME/sbin/start-mesos-shuffle-service.sh` on all agent nodes, with `spark.shuffle.service.enabled` set to `true`.
 
-This can also be achieved through Marathon, using a unique host constraint, and the following command: `./bin/spark-class org.apache.spark.org.apache.spark.blaze.deploy.mesos.MesosExternalShuffleService`.
+This can also be achieved through Marathon, using a unique host constraint, and the following command: `./bin/spark-class org.apache.spark.deploy.mesos.MesosExternalShuffleService`.
 
 # Configuration
 
@@ -479,6 +483,15 @@ See the [configuration page](configuration.html) for information on Spark config
     the final overhead will be this value.
   </td>
   <td>1.1.1</td>
+</tr>
+<tr>
+  <td><code>spark.mesos.driver.memoryOverhead</code></td>
+  <td>driver memory * 0.10, with minimum of 384</td>
+  <td>
+    The amount of additional memory, specified in MB, to be allocated to the driver. By default,
+    the overhead will be larger of either 384 or 10% of <code>spark.driver.memory</code>. If set,
+    the final overhead will be this value. Only applies to cluster mode.
+  </td>
 </tr>
 <tr>
   <td><code>spark.mesos.uris</code></td>
@@ -735,6 +748,38 @@ See the [configuration page](configuration.html) for information on Spark config
   <td>2.1.0</td>
 </tr>
 <tr>
+  <td><code>spark.mesos.dispatcher.queue</code></td>
+  <td><code>(none)</code></td>
+  <td>
+    Set the name of the dispatcher queue to which the application is submitted.
+    The specified queue must be added to the dispatcher with <code>spark.mesos.dispatcher.queue.[QueueName]</code>.
+    If no queue is specified, then the application is submitted to the "default" queue with 0.0 priority.
+  </td>
+  <td>3.1.0</td>
+</tr>
+<tr>
+  <td><code>spark.mesos.dispatcher.queue.[QueueName]</code></td>
+  <td><code>0.0</code></td>
+  <td>
+    Add a new queue for submitted drivers with the specified priority.
+    Higher numbers indicate higher priority.
+    The user can specify multiple queues to define a workload management policy for queued drivers in the dispatcher.
+    A driver can then be submitted to a specific queue with <code>spark.mesos.dispatcher.queue</code>.
+    By default, the dispatcher has a single queue with 0.0 priority (cannot be overridden).
+    It is possible to implement a consistent and overall workload management policy throughout the lifecycle of drivers
+    by mapping priority queues to weighted Mesos roles, and by specifying a
+    <code>spark.mesos.role</code> along with a <code>spark.mesos.dispatcher.queue</code> when submitting an application.
+    For example, with the URGENT Mesos role:
+    <pre>
+    spark.mesos.dispatcher.queue.URGENT=1.0
+
+    spark.mesos.dispatcher.queue=URGENT
+    spark.mesos.role=URGENT
+    </pre>
+  </td>
+  <td>3.1.0</td>
+</tr>
+<tr>
   <td><code>spark.mesos.gpus.max</code></td>
   <td><code>0</code></td>
   <td>
@@ -825,7 +870,7 @@ See the [configuration page](configuration.html) for information on Spark config
   <td><code>host</code></td>
   <td>
     Provides support for the `local:///` scheme to reference the app jar resource in cluster mode.
-    If user uses a local resource (`local:///path/to/jar`) and the config option is not used it defaults to `host` eg.
+    If user uses a local resource (`local:///path/to/jar`) and the config option is not used it defaults to `host` e.g.
     the mesos fetcher tries to get the resource from the host's file system.
     If the value is unknown it prints a warning msg in the dispatcher logs and defaults to `host`.
     If the value is `container` then spark submit in the container will use the jar in the container's path:
@@ -840,17 +885,17 @@ See the [configuration page](configuration.html) for information on Spark config
 A few places to look during debugging:
 
 - Mesos master on port `:5050`
-  - Slaves should appear in the slaves tab
+  - Agents should appear in the agents tab
   - Spark applications should appear in the frameworks tab
   - Tasks should appear in the details of a framework
   - Check the stdout and stderr of the sandbox of failed tasks
 - Mesos logs
-  - Master and slave logs are both in `/var/log/mesos` by default
+  - Master and agent logs are both in `/var/log/mesos` by default
 
 And common pitfalls:
 
 - Spark assembly not reachable/accessible
-  - Slaves must be able to download the Spark binary package from the `http://`, `hdfs://` or `s3n://` URL you gave
+  - Agents must be able to download the Spark binary package from the `http://`, `hdfs://` or `s3n://` URL you gave
 - Firewall blocking communications
   - Check for messages about failed connections
   - Temporarily disable firewalls for debugging and then poke appropriate holes

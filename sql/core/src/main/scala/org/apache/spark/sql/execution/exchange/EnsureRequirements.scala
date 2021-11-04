@@ -25,7 +25,6 @@ import org.apache.spark.sql.catalyst.plans.physical._
 import org.apache.spark.sql.catalyst.rules.Rule
 import org.apache.spark.sql.execution._
 import org.apache.spark.sql.execution.joins.{ShuffledHashJoinExec, SortMergeJoinExec}
-import org.apache.spark.sql.internal.SQLConf
 
 /**
  * Ensures that the [[org.apache.spark.sql.catalyst.plans.physical.Partitioning Partitioning]]
@@ -33,8 +32,14 @@ import org.apache.spark.sql.internal.SQLConf
  * [[org.apache.spark.sql.catalyst.plans.physical.Distribution Distribution]] requirements for
  * each operator by inserting [[ShuffleExchangeExec]] Operators where required.  Also ensure that
  * the input partition ordering requirements are met.
+ *
+ * @param optimizeOutRepartition A flag to indicate that if this rule should optimize out
+ *                               user-specified repartition shuffles or not. This is mostly true,
+ *                               but can be false in AQE when AQE optimization may change the plan
+ *                               output partitioning and need to retain the user-specified
+ *                               repartition shuffles in the plan.
  */
-case class EnsureRequirements(conf: SQLConf) extends Rule[SparkPlan] {
+case class EnsureRequirements(optimizeOutRepartition: Boolean = true) extends Rule[SparkPlan] {
 
   private def ensureDistributionAndOrdering(operator: SparkPlan): SparkPlan = {
     val requiredChildDistributions: Seq[Distribution] = operator.requiredChildDistribution
@@ -135,9 +140,14 @@ case class EnsureRequirements(conf: SQLConf) extends Rule[SparkPlan] {
       leftKeys: IndexedSeq[Expression],
       rightKeys: IndexedSeq[Expression],
       expectedOrderOfKeys: Seq[Expression],
-      currentOrderOfKeys: Seq[Expression]): (Seq[Expression], Seq[Expression]) = {
+      currentOrderOfKeys: Seq[Expression]): Option[(Seq[Expression], Seq[Expression])] = {
     if (expectedOrderOfKeys.size != currentOrderOfKeys.size) {
-      return (leftKeys, rightKeys)
+      return None
+    }
+
+    // Check if the current order already satisfies the expected order.
+    if (expectedOrderOfKeys.zip(currentOrderOfKeys).forall(p => p._1.semanticEquals(p._2))) {
+      return Some(leftKeys, rightKeys)
     }
 
     // Build a lookup between an expression and the positions its holds in the current key seq.
@@ -164,10 +174,10 @@ case class EnsureRequirements(conf: SQLConf) extends Rule[SparkPlan] {
           rightKeysBuffer += rightKeys(index)
         case _ =>
           // The expression cannot be found, or we have exhausted all indices for that expression.
-          return (leftKeys, rightKeys)
+          return None
       }
     }
-    (leftKeysBuffer, rightKeysBuffer)
+    Some(leftKeysBuffer.toSeq, rightKeysBuffer.toSeq)
   }
 
   private def reorderJoinKeys(
@@ -176,16 +186,45 @@ case class EnsureRequirements(conf: SQLConf) extends Rule[SparkPlan] {
       leftPartitioning: Partitioning,
       rightPartitioning: Partitioning): (Seq[Expression], Seq[Expression]) = {
     if (leftKeys.forall(_.deterministic) && rightKeys.forall(_.deterministic)) {
-      (leftPartitioning, rightPartitioning) match {
-        case (HashPartitioning(leftExpressions, _), _) =>
-          reorder(leftKeys.toIndexedSeq, rightKeys.toIndexedSeq, leftExpressions, leftKeys)
-        case (_, HashPartitioning(rightExpressions, _)) =>
-          reorder(leftKeys.toIndexedSeq, rightKeys.toIndexedSeq, rightExpressions, rightKeys)
-        case _ =>
-          (leftKeys, rightKeys)
-      }
+      reorderJoinKeysRecursively(
+        leftKeys,
+        rightKeys,
+        Some(leftPartitioning),
+        Some(rightPartitioning))
+        .getOrElse((leftKeys, rightKeys))
     } else {
       (leftKeys, rightKeys)
+    }
+  }
+
+  /**
+   * Recursively reorders the join keys based on partitioning. It starts reordering the
+   * join keys to match HashPartitioning on either side, followed by PartitioningCollection.
+   */
+  private def reorderJoinKeysRecursively(
+      leftKeys: Seq[Expression],
+      rightKeys: Seq[Expression],
+      leftPartitioning: Option[Partitioning],
+      rightPartitioning: Option[Partitioning]): Option[(Seq[Expression], Seq[Expression])] = {
+    (leftPartitioning, rightPartitioning) match {
+      case (Some(HashPartitioning(leftExpressions, _)), _) =>
+        reorder(leftKeys.toIndexedSeq, rightKeys.toIndexedSeq, leftExpressions, leftKeys)
+          .orElse(reorderJoinKeysRecursively(
+            leftKeys, rightKeys, None, rightPartitioning))
+      case (_, Some(HashPartitioning(rightExpressions, _))) =>
+        reorder(leftKeys.toIndexedSeq, rightKeys.toIndexedSeq, rightExpressions, rightKeys)
+          .orElse(reorderJoinKeysRecursively(
+            leftKeys, rightKeys, leftPartitioning, None))
+      case (Some(PartitioningCollection(partitionings)), _) =>
+        partitionings.foldLeft(Option.empty[(Seq[Expression], Seq[Expression])]) { (res, p) =>
+          res.orElse(reorderJoinKeysRecursively(leftKeys, rightKeys, Some(p), rightPartitioning))
+        }.orElse(reorderJoinKeysRecursively(leftKeys, rightKeys, None, rightPartitioning))
+      case (_, Some(PartitioningCollection(partitionings))) =>
+        partitionings.foldLeft(Option.empty[(Seq[Expression], Seq[Expression])]) { (res, p) =>
+          res.orElse(reorderJoinKeysRecursively(leftKeys, rightKeys, leftPartitioning, Some(p)))
+        }.orElse(None)
+      case _ =>
+        None
     }
   }
 
@@ -198,29 +237,41 @@ case class EnsureRequirements(conf: SQLConf) extends Rule[SparkPlan] {
    */
   private def reorderJoinPredicates(plan: SparkPlan): SparkPlan = {
     plan match {
-      case ShuffledHashJoinExec(leftKeys, rightKeys, joinType, buildSide, condition, left, right) =>
+      case ShuffledHashJoinExec(
+        leftKeys, rightKeys, joinType, buildSide, condition, left, right, isSkew) =>
         val (reorderedLeftKeys, reorderedRightKeys) =
           reorderJoinKeys(leftKeys, rightKeys, left.outputPartitioning, right.outputPartitioning)
         ShuffledHashJoinExec(reorderedLeftKeys, reorderedRightKeys, joinType, buildSide, condition,
-          left, right)
+          left, right, isSkew)
 
-      case SortMergeJoinExec(leftKeys, rightKeys, joinType, condition, left, right, isPartial) =>
+      case SortMergeJoinExec(leftKeys, rightKeys, joinType, condition, left, right, isSkew) =>
         val (reorderedLeftKeys, reorderedRightKeys) =
           reorderJoinKeys(leftKeys, rightKeys, left.outputPartitioning, right.outputPartitioning)
         SortMergeJoinExec(reorderedLeftKeys, reorderedRightKeys, joinType, condition,
-          left, right, isPartial)
+          left, right, isSkew)
 
       case other => other
     }
   }
 
   def apply(plan: SparkPlan): SparkPlan = plan.transformUp {
-    // TODO: remove this after we create a physical operator for `RepartitionByExpression`.
-    case operator @ ShuffleExchangeExec(upper: HashPartitioning, child, _) =>
-      child.outputPartitioning match {
-        case lower: HashPartitioning if upper.semanticEquals(lower) => child
-        case _ => operator
+    case operator @ ShuffleExchangeExec(upper: HashPartitioning, child, shuffleOrigin)
+        if optimizeOutRepartition &&
+          (shuffleOrigin == REPARTITION_BY_COL || shuffleOrigin == REPARTITION_BY_NUM) =>
+      def hasSemanticEqualPartitioning(partitioning: Partitioning): Boolean = {
+        partitioning match {
+          case lower: HashPartitioning if upper.semanticEquals(lower) => true
+          case lower: PartitioningCollection =>
+            lower.partitionings.exists(hasSemanticEqualPartitioning)
+          case _ => false
+        }
       }
+      if (hasSemanticEqualPartitioning(child.outputPartitioning)) {
+        child
+      } else {
+        operator
+      }
+
     case operator: SparkPlan =>
       ensureDistributionAndOrdering(reorderJoinPredicates(operator))
   }

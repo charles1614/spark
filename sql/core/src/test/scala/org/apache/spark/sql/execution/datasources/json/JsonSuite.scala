@@ -21,7 +21,7 @@ import java.io._
 import java.nio.charset.{Charset, StandardCharsets, UnsupportedCharsetException}
 import java.nio.file.Files
 import java.sql.{Date, Timestamp}
-import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Locale
 
 import com.fasterxml.jackson.core.JsonFactory
@@ -35,20 +35,29 @@ import org.apache.spark.sql.{functions => F, _}
 import org.apache.spark.sql.catalyst.json._
 import org.apache.spark.sql.catalyst.util.DateTimeUtils
 import org.apache.spark.sql.execution.ExternalRDD
-import org.apache.spark.sql.execution.datasources.DataSource
+import org.apache.spark.sql.execution.datasources.{CommonFileDataSourceSuite, DataSource, InMemoryFileIndex, NoopCache}
+import org.apache.spark.sql.execution.datasources.v2.json.JsonScanBuilder
 import org.apache.spark.sql.internal.SQLConf
 import org.apache.spark.sql.test.SharedSparkSession
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.types.StructType.fromDDL
 import org.apache.spark.sql.types.TestUDT.{MyDenseVector, MyDenseVectorUDT}
+import org.apache.spark.sql.util.CaseInsensitiveStringMap
 import org.apache.spark.util.Utils
 
 class TestFileFilter extends PathFilter {
   override def accept(path: Path): Boolean = path.getParent.getName != "p=2"
 }
 
-abstract class JsonSuite extends QueryTest with SharedSparkSession with TestJsonData {
+abstract class JsonSuite
+  extends QueryTest
+  with SharedSparkSession
+  with TestJsonData
+  with CommonFileDataSourceSuite {
+
   import testImplicits._
+
+  override protected def dataSourceFormat = "json"
 
   test("Type promotion") {
     def checkTypePromotion(expected: Any, actual: Any): Unit = {
@@ -125,7 +134,7 @@ abstract class JsonSuite extends QueryTest with SharedSparkSession with TestJson
           Map("timestampFormat" -> "yyyy-MM-dd'T'HH:mm:ssXXX")))
 
     val ISO8601Date = "1970-01-01"
-    checkTypePromotion(DateTimeUtils.millisToDays(32400000),
+    checkTypePromotion(DateTimeUtils.microsToDays(32400000000L, ZoneId.systemDefault),
       enforceCorrectType(ISO8601Date, DateType))
   }
 
@@ -1501,8 +1510,7 @@ abstract class JsonSuite extends QueryTest with SharedSparkSession with TestJson
       """{"col0":"Spark 1.3.1","col1":"YSBzdHJpbmcgaW4gYmluYXJ5","col3":true,"col4":1,"col5":2,"col6":3,"col7":9223372036854775807,"col8":0.25,"col9":0.75,"col10":1234.23456,"col11":1.23456,"col12":"2015-01-01","col13":"2015-01-01 23:50:59.123","col14":[2,3,4],"col15":{"a string":2000},"col16":{"f1":4.75,"f2":[false,true]},"col17":[0.25,2.25,4.25]}""" ::
       """{"col0":"Spark 1.4.1","col1":"YSBzdHJpbmcgaW4gYmluYXJ5","col3":true,"col4":1,"col5":2,"col6":3,"col7":9223372036854775807,"col8":0.25,"col9":0.75,"col10":1234.23456,"col11":1.23456,"col12":"2015-01-01","col13":"2015-01-01 23:50:59.123","col14":[2,3,4],"col15":{"a string":2000},"col16":{"f1":4.75,"f2":[false,true]},"col17":[0.25,2.25,4.25]}""" ::
       """{"col0":"Spark 1.4.1","col1":"YSBzdHJpbmcgaW4gYmluYXJ5","col3":true,"col4":1,"col5":2,"col6":3,"col7":9223372036854775807,"col8":0.25,"col9":0.75,"col10":1234.23456,"col11":1.23456,"col12":"2015-01-01","col13":"2015-01-01 23:50:59.123","col14":[2,3,4],"col15":{"a string":2000},"col16":{"f1":4.75,"f2":[false,true]},"col17":[0.25,2.25,4.25]}""" ::
-      """{"col0":"Spark 1.5.0","col1":"YSBzdHJpbmcgaW4gYmluYXJ5","col3":true,"col4":1,"col5":2,"col6":3,"col7":9223372036854775807,"col8":0.25,"col9":0.75,"col10":1234.23456,"col11":1.23456,"col12":"2015-01-01","col13":"2015-01-01 23:50:59.123","col14":[2,3,4],"col15":{"a string":2000},"col16":{"f1":4.75,"f2":[false,true]},"col17":[0.25,2.25,4.25]}""" ::
-      """{"col0":"Spark 1.5.0","col1":"YSBzdHJpbmcgaW4gYmluYXJ5","col3":true,"col4":1,"col5":2,"col6":3,"col7":9223372036854775807,"col8":0.25,"col9":0.75,"col10":1234.23456,"col11":1.23456,"col12":"16436","col13":"2015-01-01 23:50:59.123","col14":[2,3,4],"col15":{"a string":2000},"col16":{"f1":4.75,"f2":[false,true]},"col17":[0.25,2.25,4.25]}""" :: Nil
+      """{"col0":"Spark 1.5.0","col1":"YSBzdHJpbmcgaW4gYmluYXJ5","col3":true,"col4":1,"col5":2,"col6":3,"col7":9223372036854775807,"col8":0.25,"col9":0.75,"col10":1234.23456,"col11":1.23456,"col12":"2015-01-01","col13":"2015-01-01 23:50:59.123","col14":[2,3,4],"col15":{"a string":2000},"col16":{"f1":4.75,"f2":[false,true]},"col17":[0.25,2.25,4.25]}""" :: Nil
     // scalastyle:on
 
     // Generate data for the current version.
@@ -1528,7 +1536,6 @@ abstract class JsonSuite extends QueryTest with SharedSparkSession with TestJson
           "Spark 1.3.1",
           "Spark 1.4.1",
           "Spark 1.4.1",
-          "Spark 1.5.0",
           "Spark 1.5.0",
           "Spark " + spark.sparkContext.version,
           "Spark " + spark.sparkContext.version)
@@ -2506,7 +2513,7 @@ abstract class JsonSuite extends QueryTest with SharedSparkSession with TestJson
           .json(testFile("test-data/utf16LE.json"))
           .count()
       }
-      assert(exception.getMessage.contains("encoding must not be included in the blacklist"))
+      assert(exception.getMessage.contains("encoding must not be included in the denyList"))
     }
   }
 
@@ -2675,20 +2682,17 @@ abstract class JsonSuite extends QueryTest with SharedSparkSession with TestJson
   }
 
   test("SPARK-30960, SPARK-31641: parse date/timestamp string with legacy format") {
-    val julianDay = -141704 // 1582-01-01 in Julian calendar
     val ds = Seq(
-      s"{'t': '2020-1-12 3:23:34.12', 'd': '2020-1-12 T', 'd2': '12345', 'd3': '$julianDay'}"
+      s"{'t': '2020-1-12 3:23:34.12', 'd': '2020-1-12 T'}"
     ).toDS()
-    val json = spark.read.schema("t timestamp, d date, d2 date, d3 date").json(ds)
+    val json = spark.read.schema("t timestamp, d date").json(ds)
     checkAnswer(json, Row(
       Timestamp.valueOf("2020-1-12 3:23:34.12"),
-      Date.valueOf("2020-1-12"),
-      Date.valueOf(LocalDate.ofEpochDay(12345)),
-      Date.valueOf("1582-01-01")))
+      Date.valueOf("2020-1-12")))
   }
 
   test("exception mode for parsing date/timestamp string") {
-    val ds = Seq("{'t': '2020-01-27T20:06:11.847-0800'}").toDS()
+    val ds = Seq("{'t': '2020-01-27T20:06:11.847-08000'}").toDS()
     val json = spark.read
       .schema("t timestamp")
       .option("timestampFormat", "yyyy-MM-dd'T'HH:mm:ss.SSSz")
@@ -2707,6 +2711,122 @@ abstract class JsonSuite extends QueryTest with SharedSparkSession with TestJson
     }
   }
 
+  test("filters push down") {
+    withTempPath { path =>
+      val t = "2019-12-17 00:01:02"
+      Seq(
+        """{"c0": "abc", "c1": {"c2": 1, "c3": "2019-11-14 20:35:30"}}""",
+        s"""{"c0": "def", "c1": {"c2": 2, "c3": "$t"}}""",
+        s"""{"c0": "defa", "c1": {"c2": 3, "c3": "$t"}}""",
+        s"""{"c0": "define", "c1": {"c2": 2, "c3": "$t"}}""").toDF("data")
+        .repartition(1)
+        .write.text(path.getAbsolutePath)
+      Seq(true, false).foreach { filterPushdown =>
+        withSQLConf(SQLConf.JSON_FILTER_PUSHDOWN_ENABLED.key -> filterPushdown.toString) {
+          Seq("PERMISSIVE", "DROPMALFORMED", "FAILFAST").foreach { mode =>
+            val readback = spark.read
+              .option("mode", mode)
+              .option("timestampFormat", "yyyy-MM-dd HH:mm:ss")
+              .schema("c0 string, c1 struct<c2:integer,c3:timestamp>")
+              .json(path.getAbsolutePath)
+              .where($"c1.c2" === 2 && $"c0".startsWith("def"))
+              .select($"c1.c3")
+            assert(readback.count() === 2)
+            checkAnswer(readback, Seq(Row(Timestamp.valueOf(t)), Row(Timestamp.valueOf(t))))
+          }
+        }
+      }
+    }
+  }
+
+  test("apply filters to malformed rows") {
+    withSQLConf(SQLConf.JSON_FILTER_PUSHDOWN_ENABLED.key -> "true") {
+      withTempPath { path =>
+        Seq(
+          "{}",
+          """{"invalid": 0}""",
+          """{"i":}""",
+          """{"i": 0}""",
+          """{"i": 1, "t": "2020-01-28 01:00:00"}""",
+          """{"t": "2020-01-28 02:00:00"}""",
+          """{"i": "abc", "t": "2020-01-28 03:00:00"}""",
+          """{"i": 2, "t": "2020-01-28 04:00:00", "d": 3.14}""").toDF("data")
+          .repartition(1)
+          .write.text(path.getAbsolutePath)
+        val schema = "i INTEGER, t TIMESTAMP"
+        val readback = spark.read
+          .schema(schema)
+          .option("timestampFormat", "yyyy-MM-dd HH:mm:ss")
+          .json(path.getAbsolutePath)
+        // readback:
+        // +----+-------------------+
+        // |i   |t                  |
+        // +----+-------------------+
+        // |null|null               |
+        // |null|null               |
+        // |null|null               |
+        // |0   |null               |
+        // |1   |2020-01-28 01:00:00|
+        // |null|2020-01-28 02:00:00|
+        // |null|2020-01-28 03:00:00|
+        // |2   |2020-01-28 04:00:00|
+        // +----+-------------------+
+        checkAnswer(
+          readback.where($"i".isNull && $"t".isNotNull),
+          Seq(
+            Row(null, Timestamp.valueOf("2020-01-28 02:00:00")),
+            Row(null, Timestamp.valueOf("2020-01-28 03:00:00"))))
+        checkAnswer(
+          readback.where($"i" >= 0 && $"t" > "2020-01-28 00:00:00"),
+          Seq(
+            Row(1, Timestamp.valueOf("2020-01-28 01:00:00")),
+            Row(2, Timestamp.valueOf("2020-01-28 04:00:00"))))
+        checkAnswer(
+          readback.where($"t".isNull).select($"i"),
+          Seq(Row(null), Row(null), Row(null), Row(0)))
+      }
+    }
+  }
+
+  test("case sensitivity of filters references") {
+    Seq(true, false).foreach { filterPushdown =>
+      withSQLConf(SQLConf.JSON_FILTER_PUSHDOWN_ENABLED.key -> filterPushdown.toString) {
+        withTempPath { path =>
+          Seq(
+            """{"aaa": 0, "BBB": 1}""",
+            """{"AAA": 2, "bbb": 3}""").toDF().write.text(path.getCanonicalPath)
+          withSQLConf(SQLConf.CASE_SENSITIVE.key -> "false") {
+            val readback = spark.read.schema("aaa integer, BBB integer")
+              .json(path.getCanonicalPath)
+            checkAnswer(readback, Seq(Row(null, null), Row(0, 1)))
+            checkAnswer(readback.filter($"AAA" === 0 && $"bbb" === 1), Seq(Row(0, 1)))
+            checkAnswer(readback.filter($"AAA" === 2 && $"bbb" === 3), Seq())
+            // Schema inferring
+            val errorMsg = intercept[AnalysisException] {
+              spark.read.json(path.getCanonicalPath).collect()
+            }.getMessage
+            assert(errorMsg.contains("Found duplicate column(s) in the data schema"))
+          }
+          withSQLConf(SQLConf.CASE_SENSITIVE.key -> "true") {
+            val readback = spark.read.schema("aaa integer, BBB integer")
+              .json(path.getCanonicalPath)
+            checkAnswer(readback, Seq(Row(null, null), Row(0, 1)))
+            val errorMsg = intercept[AnalysisException] {
+              readback.filter($"AAA" === 0 && $"bbb" === 1).collect()
+            }.getMessage
+            assert(errorMsg.contains("cannot resolve 'AAA'"))
+            // Schema inferring
+            val readback2 = spark.read.json(path.getCanonicalPath)
+            checkAnswer(
+              readback2.filter($"AAA" === 2).select($"AAA", $"bbb"),
+              Seq(Row(2, 3)))
+            checkAnswer(readback2.filter($"aaa" === 2).select($"AAA", $"bbb"), Seq())
+          }
+        }
+      }
+    }
+  }
+
   test("SPARK-32810: JSON data source should be able to read files with " +
     "escaped glob metacharacter in the paths") {
     withTempDir { dir =>
@@ -2718,6 +2838,100 @@ abstract class JsonSuite extends QueryTest with SharedSparkSession with TestJson
         .json(s"$basePath/${"""(\[|\]|\{|\})""".r.replaceAllIn(jsonTableName, """\\$1""")}")
       assert(readback.collect sameElements Array(Row(0), Row(1), Row(2)))
     }
+  }
+
+  test("SPARK-35047: Write Non-ASCII character as codepoint") {
+    // scalastyle:off nonascii
+    withTempPaths(2) { paths =>
+      paths.foreach(_.delete())
+      val seq = Seq("a", "\n", "\u3042")
+      val df = seq.toDF
+
+      val basePath1 = paths(0).getCanonicalPath
+      df.write.option("writeNonAsciiCharacterAsCodePoint", "true")
+        .option("pretty", "false").json(basePath1)
+      val actualText1 = spark.read.option("wholetext", "true").text(basePath1)
+        .sort("value").map(_.getString(0)).collect().mkString
+      val expectedText1 =
+        s"""{"value":"\\n"}
+           |{"value":"\\u3042"}
+           |{"value":"a"}
+           |""".stripMargin
+      assert(actualText1 === expectedText1)
+
+      val actualJson1 = spark.read.json(basePath1)
+        .sort("value").map(_.getString(0)).collect().mkString
+      val expectedJson1 = "\na\u3042"
+      assert(actualJson1 === expectedJson1)
+
+      // Test for pretty printed JSON.
+      // If multiLine option is set to true, the format should be should be
+      // one JSON record per file. So LEAF_NODE_DEFAULT_PARALLELISM is set here.
+      withSQLConf(SQLConf.LEAF_NODE_DEFAULT_PARALLELISM.key -> s"${seq.length}") {
+        val basePath2 = paths(1).getCanonicalPath
+        df.write.option("writeNonAsciiCharacterAsCodePoint", "true")
+          .option("pretty", "true").json(basePath2)
+        val actualText2 = spark.read.option("wholetext", "true").text(basePath2)
+          .sort("value").map(_.getString(0)).collect().mkString
+        val expectedText2 =
+          s"""{
+             |  "value" : "\\n"
+             |}
+             |{
+             |  "value" : "\\u3042"
+             |}
+             |{
+             |  "value" : "a"
+             |}
+             |""".stripMargin
+        assert(actualText2 === expectedText2)
+
+        val actualJson2 = spark.read.option("multiLine", "true").json(basePath2)
+          .sort("value").map(_.getString(0)).collect().mkString
+        val expectedJson2 = "\na\u3042"
+        assert(actualJson2 === expectedJson2)
+      }
+    }
+    // scalastyle:on nonascii
+  }
+
+  test("SPARK-35104: Fix wrong indentation for multiple JSON even if `pretty` option is true") {
+    withSQLConf(SQLConf.LEAF_NODE_DEFAULT_PARALLELISM.key -> "1") {
+      withTempPath { path =>
+        val basePath = path.getCanonicalPath
+        val df = Seq("a", "b", "c").toDF
+        df.write.option("pretty", "true").json(basePath)
+
+        val expectedText =
+          s"""{
+             |  "value" : "a"
+             |}
+             |{
+             |  "value" : "b"
+             |}
+             |{
+             |  "value" : "c"
+             |}
+             |""".stripMargin
+        val actualText = spark.read.option("wholetext", "true")
+          .text(basePath).map(_.getString(0)).collect().mkString
+        assert(actualText === expectedText)
+      }
+    }
+  }
+
+  test("SPARK-36379: proceed parsing with root nulls in permissive mode") {
+    assert(intercept[SparkException] {
+      spark.read.option("mode", "failfast")
+        .schema("a string").json(Seq("""[{"a": "str"}, null]""").toDS).collect()
+    }.getMessage.contains("Malformed records are detected"))
+
+    // Permissive modes should proceed parsing malformed records (null).
+    // Here, since an array fails to parse in the middle, we will return one row.
+    checkAnswer(
+      spark.read.option("mode", "permissive")
+        .json(Seq("""[{"a": "str"}, null, {"a": "str"}]""").toDS),
+      Row(null) :: Nil)
   }
 }
 
@@ -2733,6 +2947,37 @@ class JsonV2Suite extends JsonSuite {
     super
       .sparkConf
       .set(SQLConf.USE_V1_SOURCE_LIST, "")
+
+  test("get pushed filters") {
+    val attr = "col"
+    def getBuilder(path: String): JsonScanBuilder = {
+      val fileIndex = new InMemoryFileIndex(
+        spark,
+        Seq(new org.apache.hadoop.fs.Path(path, "file.json")),
+        Map.empty,
+        None,
+        NoopCache)
+      val schema = new StructType().add(attr, IntegerType)
+      val options = CaseInsensitiveStringMap.empty()
+      new JsonScanBuilder(spark, fileIndex, schema, schema, options)
+    }
+    val filters: Array[sources.Filter] = Array(sources.IsNotNull(attr))
+    withSQLConf(SQLConf.JSON_FILTER_PUSHDOWN_ENABLED.key -> "true") {
+      withTempPath { file =>
+        val scanBuilder = getBuilder(file.getCanonicalPath)
+        assert(scanBuilder.pushFilters(filters) === filters)
+        assert(scanBuilder.pushedFilters() === filters)
+      }
+    }
+
+    withSQLConf(SQLConf.JSON_FILTER_PUSHDOWN_ENABLED.key -> "false") {
+      withTempPath { file =>
+        val scanBuilder = getBuilder(file.getCanonicalPath)
+        assert(scanBuilder.pushFilters(filters) === filters)
+        assert(scanBuilder.pushedFilters() === Array.empty[sources.Filter])
+      }
+    }
+  }
 }
 
 class JsonLegacyTimeParserSuite extends JsonSuite {

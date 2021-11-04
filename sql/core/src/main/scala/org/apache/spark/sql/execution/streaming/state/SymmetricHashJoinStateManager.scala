@@ -25,14 +25,14 @@ import org.apache.spark.TaskContext
 import org.apache.spark.internal.Logging
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.expressions.{Attribute, AttributeReference, Expression, JoinedRow, Literal, SafeProjection, SpecificInternalRow, UnsafeProjection, UnsafeRow}
-import org.apache.spark.sql.execution.streaming.{StatefulOperatorStateInfo, StreamingSymmetricHashJoinExec}
+import org.apache.spark.sql.execution.streaming.StatefulOperatorStateInfo
 import org.apache.spark.sql.execution.streaming.StreamingSymmetricHashJoinHelper._
-import org.apache.spark.sql.execution.streaming.state.SymmetricHashJoinStateManager.KeyToValuePair
 import org.apache.spark.sql.types.{BooleanType, LongType, StructField, StructType}
 import org.apache.spark.util.NextIterator
 
 /**
- * Helper class to manage state required by a single side of [[StreamingSymmetricHashJoinExec]].
+ * Helper class to manage state required by a single side of
+ * [[org.apache.spark.sql.execution.streaming.StreamingSymmetricHashJoinExec]].
  * The interface of this class is basically that of a multi-map:
  * - Get: Returns an iterator of multiple values for given key
  * - Append: Append a new value to the given key
@@ -99,13 +99,20 @@ class SymmetricHashJoinStateManager(
   /**
    * Get all the matched values for given join condition, with marking matched.
    * This method is designed to mark joined rows properly without exposing internal index of row.
+   *
+   * @param excludeRowsAlreadyMatched Do not join with rows already matched previously.
+   *                                  This is used for right side of left semi join in
+   *                                  [[StreamingSymmetricHashJoinExec]] only.
    */
   def getJoinedRows(
       key: UnsafeRow,
       generateJoinedRow: InternalRow => JoinedRow,
-      predicate: JoinedRow => Boolean): Iterator[JoinedRow] = {
+      predicate: JoinedRow => Boolean,
+      excludeRowsAlreadyMatched: Boolean = false): Iterator[JoinedRow] = {
     val numValues = keyToNumValues.get(key)
-    keyWithIndexToValue.getAll(key, numValues).map { keyIdxToValue =>
+    keyWithIndexToValue.getAll(key, numValues).filterNot { keyIdxToValue =>
+      excludeRowsAlreadyMatched && keyIdxToValue.matched
+    }.map { keyIdxToValue =>
       val joinedRow = generateJoinedRow(keyIdxToValue.value)
       if (predicate(joinedRow)) {
         if (!keyIdxToValue.matched) {
@@ -171,7 +178,7 @@ class SymmetricHashJoinStateManager(
         return null
       }
 
-      override def close: Unit = {}
+      override def close(): Unit = {}
     }
   }
 
@@ -280,7 +287,7 @@ class SymmetricHashJoinStateManager(
         return reusedRet.withNew(currentKey, currentValue.value, currentValue.matched)
       }
 
-      override def close: Unit = {}
+      override def close(): Unit = {}
     }
   }
 
@@ -312,15 +319,7 @@ class SymmetricHashJoinStateManager(
       keyWithIndexToValueMetrics.numKeys,       // represent each buffered row only once
       keyToNumValuesMetrics.memoryUsedBytes + keyWithIndexToValueMetrics.memoryUsedBytes,
       keyWithIndexToValueMetrics.customMetrics.map {
-        case (s @ StateStoreCustomSumMetric(_, desc), value) =>
-          s.copy(desc = newDesc(desc)) -> value
-        case (s @ StateStoreCustomSizeMetric(_, desc), value) =>
-          s.copy(desc = newDesc(desc)) -> value
-        case (s @ StateStoreCustomTimingMetric(_, desc), value) =>
-          s.copy(desc = newDesc(desc)) -> value
-        case (s, _) =>
-          throw new IllegalArgumentException(
-            s"Unknown state store custom metric is found at metrics: $s")
+        case (metric, value) => (metric.withNewDesc(desc = newDesc(metric.desc)), value)
       }
     )
   }
@@ -365,7 +364,7 @@ class SymmetricHashJoinStateManager(
       val storeProviderId = StateStoreProviderId(
         stateInfo.get, partitionId, getStateStoreName(joinSide, stateStoreType))
       val store = StateStore.get(
-        storeProviderId, keySchema, valueSchema, None,
+        storeProviderId, keySchema, valueSchema, numColsPrefixKey = 0,
         stateInfo.get.storeVersion, storeConf, hadoopConf)
       logInfo(s"Loaded store ${store.id}")
       store
@@ -411,7 +410,7 @@ class SymmetricHashJoinStateManager(
 
     def iterator: Iterator[KeyAndNumValues] = {
       val keyAndNumValues = new KeyAndNumValues()
-      stateStore.getRange(None, None).map { case pair =>
+      stateStore.iterator().map { pair =>
         keyAndNumValues.withNew(pair.key, pair.value.getLong(0))
       }
     }
@@ -606,7 +605,7 @@ class SymmetricHashJoinStateManager(
 
     def iterator: Iterator[KeyWithIndexAndValue] = {
       val keyWithIndexAndValue = new KeyWithIndexAndValue()
-      stateStore.getRange(None, None).map { pair =>
+      stateStore.iterator().map { pair =>
         val valuePair = valueRowConverter.convertValue(pair.value)
         keyWithIndexAndValue.withNew(
           keyRowGenerator(pair.key), pair.key.getLong(indexOrdinalInKeyWithIndexRow), valuePair)

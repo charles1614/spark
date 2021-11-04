@@ -165,6 +165,19 @@ object JoinBenchmark extends SqlBasedBenchmark {
     }
   }
 
+  def broadcastNestedLoopJoin(): Unit = {
+    val N = 20 << 20
+    val M = 1 << 4
+
+    val dim = broadcast(spark.range(M).selectExpr("id as k", "cast(id as string) as v"))
+    codegenBenchmark("broadcast nested loop join", N) {
+      val df = spark.range(N).join(dim)
+      assert(df.queryExecution.sparkPlan.find(
+        _.isInstanceOf[BroadcastNestedLoopJoinExec]).isDefined)
+      df.noop()
+    }
+  }
+
   override def runBenchmarkSuite(mainArgs: Array[String]): Unit = {
     runBenchmark("Join Benchmark") {
       broadcastHashJoinLongKey()
@@ -177,6 +190,7 @@ object JoinBenchmark extends SqlBasedBenchmark {
       sortMergeJoin()
       sortMergeJoinWithDuplicates()
       shuffleHashJoin()
+      broadcastNestedLoopJoin()
     }
   }
 }

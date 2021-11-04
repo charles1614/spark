@@ -113,7 +113,9 @@ class SparkEnv (
   }
 
   private[spark]
-  def createPythonWorker(pythonExec: String, envVars: Map[String, String]): java.net.Socket = {
+  def createPythonWorker(
+      pythonExec: String,
+      envVars: Map[String, String]): (java.net.Socket, Option[Int]) = {
     synchronized {
       val key = (pythonExec, envVars)
       pythonWorkers.getOrElseUpdate(key, new PythonWorkerFactory(pythonExec, envVars)).create()
@@ -270,33 +272,7 @@ object SparkEnv extends Logging {
       conf.set(DRIVER_PORT, rpcEnv.address.port)
     }
 
-    // Create an instance of the class with the given name, possibly initializing it with our conf
-    def instantiateClass[T](className: String): T = {
-      val cls = Utils.classForName(className)
-      // Look for a constructor taking a SparkConf and a boolean isDriver, then one taking just
-      // SparkConf, then one taking no arguments
-      try {
-        cls.getConstructor(classOf[SparkConf], java.lang.Boolean.TYPE)
-          .newInstance(conf, java.lang.Boolean.valueOf(isDriver))
-          .asInstanceOf[T]
-      } catch {
-        case _: NoSuchMethodException =>
-          try {
-            cls.getConstructor(classOf[SparkConf]).newInstance(conf).asInstanceOf[T]
-          } catch {
-            case _: NoSuchMethodException =>
-              cls.getConstructor().newInstance().asInstanceOf[T]
-          }
-      }
-    }
-
-    // Create an instance of the class named by the given SparkConf property
-    // if the property is not set, possibly initializing it with our conf
-    def instantiateClassFromConf[T](propertyName: ConfigEntry[String]): T = {
-      instantiateClass[T](conf.get(propertyName))
-    }
-
-    val serializer = instantiateClassFromConf[Serializer](SERIALIZER)
+    val serializer = Utils.instantiateSerializerFromConf[Serializer](SERIALIZER, conf, isDriver)
     logDebug(s"Using serializer: ${serializer.getClass}")
 
     val serializerManager = new SerializerManager(serializer, conf, ioEncryptionKey)
@@ -314,7 +290,7 @@ object SparkEnv extends Logging {
       }
     }
 
-    val broadcastManager = new BroadcastManager(isDriver, conf, securityManager)
+    val broadcastManager = new BroadcastManager(isDriver, conf)
 
     val mapOutputTracker = if (isDriver) {
       new MapOutputTrackerMaster(conf, broadcastManager, isLocal)
@@ -335,7 +311,8 @@ object SparkEnv extends Logging {
     val shuffleMgrName = conf.get(config.SHUFFLE_MANAGER)
     val shuffleMgrClass =
       shortShuffleMgrNames.getOrElse(shuffleMgrName.toLowerCase(Locale.ROOT), shuffleMgrName)
-    val shuffleManager = instantiateClass[ShuffleManager](shuffleMgrClass)
+    val shuffleManager = Utils.instantiateSerializerOrShuffleManager[ShuffleManager](
+      shuffleMgrClass, conf, isDriver)
 
     val memoryManager: MemoryManager = UnifiedMemoryManager(conf, numUsableCores)
 
@@ -367,7 +344,8 @@ object SparkEnv extends Logging {
             externalShuffleClient
           } else {
             None
-          }, blockManagerInfo)),
+          }, blockManagerInfo,
+          mapOutputTracker.asInstanceOf[MapOutputTrackerMaster], isDriver)),
       registerOrLookupEndpoint(
         BlockManagerMaster.DRIVER_HEARTBEAT_ENDPOINT_NAME,
         new BlockManagerMasterHeartbeatEndpoint(rpcEnv, isLocal, blockManagerInfo)),
@@ -396,14 +374,13 @@ object SparkEnv extends Logging {
       // Don't start metrics system right now for Driver.
       // We need to wait for the task scheduler to give us an app ID.
       // Then we can start the metrics system.
-      MetricsSystem.createMetricsSystem(MetricsSystemInstances.DRIVER, conf, securityManager)
+      MetricsSystem.createMetricsSystem(MetricsSystemInstances.DRIVER, conf)
     } else {
       // We need to set the executor ID before the MetricsSystem is created because sources and
       // sinks specified in the metrics configuration file will want to incorporate this executor's
       // ID into the metrics they report.
       conf.set(EXECUTOR_ID, executorId)
-      val ms = MetricsSystem.createMetricsSystem(MetricsSystemInstances.EXECUTOR, conf,
-        securityManager)
+      val ms = MetricsSystem.createMetricsSystem(MetricsSystemInstances.EXECUTOR, conf)
       ms.start(conf.get(METRICS_STATIC_SOURCES_ENABLED))
       ms
     }
@@ -453,7 +430,8 @@ object SparkEnv extends Logging {
       hadoopConf: Configuration,
       schedulingMode: String,
       addedJars: Seq[String],
-      addedFiles: Seq[String]): Map[String, Seq[(String, String)]] = {
+      addedFiles: Seq[String],
+      addedArchives: Seq[String]): Map[String, Seq[(String, String)]] = {
 
     import Properties._
     val jvmInformation = Seq(
@@ -483,7 +461,7 @@ object SparkEnv extends Logging {
       .split(File.pathSeparator)
       .filterNot(_.isEmpty)
       .map((_, "System Classpath"))
-    val addedJarsAndFiles = (addedJars ++ addedFiles).map((_, "Added By User"))
+    val addedJarsAndFiles = (addedJars ++ addedFiles ++ addedArchives).map((_, "Added By User"))
     val classPaths = (addedJarsAndFiles ++ classPathEntries).sorted
 
     // Add Hadoop properties, it will not ignore configs including in Spark. Some spark

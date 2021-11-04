@@ -17,9 +17,7 @@
 
 package org.apache.spark.util
 
-import java.io.{ByteArrayInputStream, ByteArrayOutputStream, DataOutput, DataOutputStream, File,
-  FileOutputStream, InputStream, PrintStream, SequenceInputStream}
-import java.lang.{Double => JDouble, Float => JFloat}
+import java.io._
 import java.lang.reflect.Field
 import java.net.{BindException, ServerSocket, URI}
 import java.nio.{ByteBuffer, ByteOrder}
@@ -42,6 +40,8 @@ import org.apache.hadoop.fs.Path
 import org.apache.spark.{SparkConf, SparkException, SparkFunSuite, TaskContext}
 import org.apache.spark.internal.Logging
 import org.apache.spark.internal.config._
+import org.apache.spark.internal.config.Tests.IS_TESTING
+import org.apache.spark.launcher.SparkLauncher
 import org.apache.spark.network.util.ByteUnit
 import org.apache.spark.scheduler.SparkListener
 import org.apache.spark.util.io.ChunkedByteBufferInputStream
@@ -1303,6 +1303,164 @@ class UtilsSuite extends SparkFunSuite with ResetSystemProperties with Logging {
       assert(Utils.trimExceptCRLF(s"a${s}") === "a")
       assert(Utils.trimExceptCRLF(s"b${s}b") === s"b${s}b")
     }
+  }
+
+  test("pathsToMetadata") {
+    val paths = (0 to 4).map(i => new Path(s"path$i"))
+    assert(Utils.buildLocationMetadata(paths, 10) == "(5 paths)[...]")
+    // 11 is the minimum threshold to print at least one path
+    assert(Utils.buildLocationMetadata(paths, 11) == "(5 paths)[path0, ...]")
+    // 11 + 5 + 2 = 18 is the minimum threshold to print two paths
+    assert(Utils.buildLocationMetadata(paths, 18) == "(5 paths)[path0, path1, ...]")
+  }
+
+  test("checkHost supports both IPV4 and IPV6") {
+    // IPV4 ips
+    Utils.checkHost("0.0.0.0")
+    var e: AssertionError = intercept[AssertionError] {
+      Utils.checkHost("0.0.0.0:0")
+    }
+    assert(e.getMessage.contains("Expected hostname or IP but got 0.0.0.0:0"))
+    e = intercept[AssertionError] {
+      Utils.checkHost("0.0.0.0:")
+    }
+    assert(e.getMessage.contains("Expected hostname or IP but got 0.0.0.0:"))
+    // IPV6 ips
+    Utils.checkHost("[::1]")
+    e = intercept[AssertionError] {
+      Utils.checkHost("[::1]:0")
+    }
+    assert(e.getMessage.contains("Expected hostname or IPv6 IP enclosed in [] but got [::1]:0"))
+    e = intercept[AssertionError] {
+      Utils.checkHost("[::1]:")
+    }
+    assert(e.getMessage.contains("Expected hostname or IPv6 IP enclosed in [] but got [::1]:"))
+    // hostname
+    Utils.checkHost("localhost")
+    e = intercept[AssertionError] {
+      Utils.checkHost("localhost:0")
+    }
+    assert(e.getMessage.contains("Expected hostname or IP but got localhost:0"))
+    e = intercept[AssertionError] {
+      Utils.checkHost("localhost:")
+    }
+    assert(e.getMessage.contains("Expected hostname or IP but got localhost:"))
+  }
+
+  test("checkHostPort support IPV6 and IPV4") {
+    // IPV4 ips
+    Utils.checkHostPort("0.0.0.0:0")
+    var e: AssertionError = intercept[AssertionError] {
+      Utils.checkHostPort("0.0.0.0")
+    }
+    assert(e.getMessage.contains("Expected host and port but got 0.0.0.0"))
+
+    // IPV6 ips
+    Utils.checkHostPort("[::1]:0")
+    e = intercept[AssertionError] {
+      Utils.checkHostPort("[::1]")
+    }
+    assert(e.getMessage.contains("Expected host and port but got [::1]"))
+
+    // hostname
+    Utils.checkHostPort("localhost:0")
+    e = intercept[AssertionError] {
+      Utils.checkHostPort("localhost")
+    }
+    assert(e.getMessage.contains("Expected host and port but got localhost"))
+  }
+
+  test("parseHostPort support IPV6 and IPV4") {
+    // IPV4 ips
+    var hostnamePort = Utils.parseHostPort("0.0.0.0:80")
+    assert(hostnamePort._1.equals("0.0.0.0"))
+    assert(hostnamePort._2 === 80)
+
+    hostnamePort = Utils.parseHostPort("0.0.0.0")
+    assert(hostnamePort._1.equals("0.0.0.0"))
+    assert(hostnamePort._2 === 0)
+
+    hostnamePort = Utils.parseHostPort("0.0.0.0:")
+    assert(hostnamePort._1.equals("0.0.0.0"))
+    assert(hostnamePort._2 === 0)
+
+    // IPV6 ips
+    hostnamePort = Utils.parseHostPort("[::1]:80")
+    assert(hostnamePort._1.equals("[::1]"))
+    assert(hostnamePort._2 === 80)
+
+    hostnamePort = Utils.parseHostPort("[::1]")
+    assert(hostnamePort._1.equals("[::1]"))
+    assert(hostnamePort._2 === 0)
+
+    hostnamePort = Utils.parseHostPort("[::1]:")
+    assert(hostnamePort._1.equals("[::1]"))
+    assert(hostnamePort._2 === 0)
+
+    // hostname
+    hostnamePort = Utils.parseHostPort("localhost:80")
+    assert(hostnamePort._1.equals("localhost"))
+    assert(hostnamePort._2 === 80)
+
+    hostnamePort = Utils.parseHostPort("localhost")
+    assert(hostnamePort._1.equals("localhost"))
+    assert(hostnamePort._2 === 0)
+
+    hostnamePort = Utils.parseHostPort("localhost:")
+    assert(hostnamePort._1.equals("localhost"))
+    assert(hostnamePort._2 === 0)
+  }
+
+  test("executorOffHeapMemorySizeAsMb when MEMORY_OFFHEAP_ENABLED is false") {
+    val executorOffHeapMemory = Utils.executorOffHeapMemorySizeAsMb(new SparkConf())
+    assert(executorOffHeapMemory == 0)
+  }
+
+  test("executorOffHeapMemorySizeAsMb when MEMORY_OFFHEAP_ENABLED is true") {
+    val offHeapMemoryInMB = 50
+    val offHeapMemory: Long = offHeapMemoryInMB * 1024 * 1024
+    val sparkConf = new SparkConf()
+      .set(MEMORY_OFFHEAP_ENABLED, true)
+      .set(MEMORY_OFFHEAP_SIZE, offHeapMemory)
+    val executorOffHeapMemory = Utils.executorOffHeapMemorySizeAsMb(sparkConf)
+    assert(executorOffHeapMemory == offHeapMemoryInMB)
+  }
+
+  test("executorMemoryOverhead when MEMORY_OFFHEAP_ENABLED is true, " +
+    "but MEMORY_OFFHEAP_SIZE not config scene") {
+    val sparkConf = new SparkConf()
+      .set(MEMORY_OFFHEAP_ENABLED, true)
+    val expected =
+      s"${MEMORY_OFFHEAP_SIZE.key} must be > 0 when ${MEMORY_OFFHEAP_ENABLED.key} == true"
+    val message = intercept[IllegalArgumentException] {
+      Utils.executorOffHeapMemorySizeAsMb(sparkConf)
+    }.getMessage
+    assert(message.contains(expected))
+  }
+
+  test("isPushBasedShuffleEnabled when PUSH_BASED_SHUFFLE_ENABLED " +
+    "and SHUFFLE_SERVICE_ENABLED are both set to true in YARN mode with maxAttempts set to 1") {
+    val conf = new SparkConf()
+    assert(Utils.isPushBasedShuffleEnabled(conf, isDriver = true) === false)
+    conf.set(PUSH_BASED_SHUFFLE_ENABLED, true)
+    conf.set(IS_TESTING, false)
+    assert(Utils.isPushBasedShuffleEnabled(
+      conf, isDriver = false, checkSerializer = false) === false)
+    conf.set(SHUFFLE_SERVICE_ENABLED, true)
+    conf.set(SparkLauncher.SPARK_MASTER, "yarn")
+    conf.set("spark.yarn.maxAppAttempts", "1")
+    conf.set(SERIALIZER, "org.apache.spark.serializer.KryoSerializer")
+    assert(Utils.isPushBasedShuffleEnabled(conf, isDriver = true) === true)
+    conf.set("spark.yarn.maxAppAttempts", "2")
+    assert(Utils.isPushBasedShuffleEnabled(
+      conf, isDriver = false, checkSerializer = false) === true)
+    conf.set(IO_ENCRYPTION_ENABLED, true)
+    assert(Utils.isPushBasedShuffleEnabled(conf, isDriver = true) === false)
+    conf.set(IO_ENCRYPTION_ENABLED, false)
+    assert(Utils.isPushBasedShuffleEnabled(
+      conf, isDriver = false, checkSerializer = false) === true)
+    conf.set(SERIALIZER, "org.apache.spark.serializer.JavaSerializer")
+    assert(Utils.isPushBasedShuffleEnabled(conf, isDriver = true) === false)
   }
 }
 

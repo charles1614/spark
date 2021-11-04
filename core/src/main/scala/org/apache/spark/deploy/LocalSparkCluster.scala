@@ -63,8 +63,11 @@ class LocalSparkCluster(
 
     /* Start the Workers */
     for (workerNum <- 1 to numWorkers) {
+      val workDir = if (Utils.isTesting) {
+        Utils.createTempDir(namePrefix = "worker").getAbsolutePath
+      } else null
       val workerEnv = Worker.startRpcEnvAndEndpoint(localHostname, 0, 0, coresPerWorker,
-        memoryPerWorker, masters, null, Some(workerNum), _conf,
+        memoryPerWorker, masters, workDir, Some(workerNum), _conf,
         conf.get(config.Worker.SPARK_WORKER_RESOURCE_FILE))
       workerRpcEnvs += workerEnv
     }
@@ -76,8 +79,8 @@ class LocalSparkCluster(
     logInfo("Shutting down local Spark cluster.")
     // Stop the workers before the master so they don't get upset that it disconnected
     workerRpcEnvs.foreach(_.shutdown())
-    masterRpcEnvs.foreach(_.shutdown())
     workerRpcEnvs.foreach(_.awaitTermination())
+    masterRpcEnvs.foreach(_.shutdown())
     masterRpcEnvs.foreach(_.awaitTermination())
     masterRpcEnvs.clear()
     workerRpcEnvs.clear()

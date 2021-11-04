@@ -26,8 +26,8 @@ import scala.util.Try
 import org.apache.spark.SparkContext
 import org.apache.spark.internal.Logging
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.functions.col
-import org.apache.spark.sql.types.{StringType, StructField, StructType}
+import org.apache.spark.sql.functions.{col, rpad}
+import org.apache.spark.sql.types.{CharType, StringType, StructField, StructType, VarcharType}
 
 // The classes in this file are basically moved from https://github.com/databricks/spark-sql-perf
 
@@ -110,7 +110,7 @@ class Dsdgen(dsdgenDir: String) extends Serializable {
         val commands = Seq(
           "bash", "-c",
           s"cd $localToolsDir && ./dsdgen -table $tableName -filter Y -scale $scaleFactor " +
-            s"-RNGSEED 100 $parallel")
+          s"-RNGSEED 100 $parallel")
         BlockingLineStream(commands)
       }
     }
@@ -126,10 +126,16 @@ class TPCDSTables(sqlContext: SQLContext, dsdgenDir: String, scaleFactor: Int)
   private val dataGenerator = new Dsdgen(dsdgenDir)
 
   private def tables: Seq[Table] = tableColumns.map { case (tableName, schemaString) =>
-    Table(tableName, StructType.fromDDL(schemaString))
+    val partitionColumns = tablePartitionColumns.getOrElse(tableName, Nil)
+      .map(_.stripPrefix("`").stripSuffix("`"))
+    Table(tableName, partitionColumns, StructType.fromDDL(schemaString))
   }.toSeq
 
-  private case class Table(name: String, schema: StructType) {
+  private case class Table(name: String, partitionColumns: Seq[String], schema: StructType) {
+    def nonPartitioned: Table = {
+      Table(name, Nil, schema)
+    }
+
     private def df(numPartition: Int) = {
       val generatedData = dataGenerator.generate(
         sqlContext.sparkContext, name, numPartition, scaleFactor)
@@ -154,7 +160,14 @@ class TPCDSTables(sqlContext: SQLContext, dsdgenDir: String, scaleFactor: Int)
 
       val convertedData = {
         val columns = schema.fields.map { f =>
-          col(f.name).cast(f.dataType).as(f.name)
+          val c = f.dataType match {
+            // Needs right-padding for char types
+            case CharType(n) => rpad(Column(f.name), n, " ")
+            // Don't need a cast for varchar types
+            case _: VarcharType => col(f.name)
+            case _ => col(f.name).cast(f.dataType)
+          }
+          c.as(f.name)
         }
         stringData.select(columns: _*)
       }
@@ -175,7 +188,35 @@ class TPCDSTables(sqlContext: SQLContext, dsdgenDir: String, scaleFactor: Int)
       val tempTableName = s"${name}_text"
       data.createOrReplaceTempView(tempTableName)
 
-      val writer = {
+      val writer = if (partitionColumns.nonEmpty) {
+        if (clusterByPartitionColumns) {
+          val columnString = data.schema.fields.map { field =>
+            field.name
+          }.mkString(",")
+          val partitionColumnString = partitionColumns.mkString(",")
+          val predicates = if (filterOutNullPartitionValues) {
+            partitionColumns.map(col => s"$col IS NOT NULL").mkString("WHERE ", " AND ", "")
+          } else {
+            ""
+          }
+
+          val query =
+            s"""
+               |SELECT
+               |  $columnString
+               |FROM
+               |  $tempTableName
+               |$predicates
+               |DISTRIBUTE BY
+               |  $partitionColumnString
+            """.stripMargin
+          val grouped = sqlContext.sql(query)
+          logInfo(s"Pre-clustering with partitioning columns with query $query.")
+          grouped.write
+        } else {
+          data.write
+        }
+      } else {
         // treat non-partitioned tables as "one partition" that we want to coalesce
         if (clusterByPartitionColumns) {
           // in case data has more than maxRecordsPerFile, split into multiple writers to improve
@@ -198,6 +239,9 @@ class TPCDSTables(sqlContext: SQLContext, dsdgenDir: String, scaleFactor: Int)
         }
       }
       writer.format(format).mode(mode)
+      if (partitionColumns.nonEmpty) {
+        writer.partitionBy(partitionColumns: _*)
+      }
       logInfo(s"Generating table $name in database to $location with save mode $mode.")
       writer.save(location)
       sqlContext.dropTempTable(tempTableName)
@@ -208,11 +252,16 @@ class TPCDSTables(sqlContext: SQLContext, dsdgenDir: String, scaleFactor: Int)
       location: String,
       format: String,
       overwrite: Boolean,
+      partitionTables: Boolean,
       clusterByPartitionColumns: Boolean,
       filterOutNullPartitionValues: Boolean,
       tableFilter: String = "",
       numPartitions: Int = 100): Unit = {
-    var tablesToBeGenerated = tables
+    var tablesToBeGenerated = if (partitionTables) {
+      tables
+    } else {
+      tables.map(_.nonPartitioned)
+    }
 
     if (!tableFilter.isEmpty) {
       tablesToBeGenerated = tablesToBeGenerated.filter(_.name == tableFilter)
@@ -236,6 +285,7 @@ class GenTPCDSDataConfig(args: Array[String]) {
   var scaleFactor: Int = 1
   var format: String = "parquet"
   var overwrite: Boolean = false
+  var partitionTables: Boolean = false
   var clusterByPartitionColumns: Boolean = false
   var filterOutNullPartitionValues: Boolean = false
   var tableFilter: String = ""
@@ -270,6 +320,10 @@ class GenTPCDSDataConfig(args: Array[String]) {
 
         case "--overwrite" :: tail =>
           overwrite = true
+          args = tail
+
+        case "--partitionTables" :: tail =>
+          partitionTables = true
           args = tail
 
         case "--clusterByPartitionColumns" :: tail =>
@@ -313,6 +367,7 @@ class GenTPCDSDataConfig(args: Array[String]) {
       |  --scaleFactor                   size of the dataset to generate (in GB)
       |  --format                        generated data format, Parquet, ORC ...
       |  --overwrite                     whether to overwrite the data that is already there
+      |  --partitionTables               whether to create the partitioned fact tables
       |  --clusterByPartitionColumns     whether to shuffle to get partitions coalesced into single files
       |  --filterOutNullPartitionValues  whether to filter out the partition with NULL key value
       |  --tableFilter                   comma-separated list of table names to generate (e.g., store_sales,store_returns),
@@ -378,6 +433,7 @@ object GenTPCDSData {
       location = config.location,
       format = config.format,
       overwrite = config.overwrite,
+      partitionTables = config.partitionTables,
       clusterByPartitionColumns = config.clusterByPartitionColumns,
       filterOutNullPartitionValues = config.filterOutNullPartitionValues,
       tableFilter = config.tableFilter,

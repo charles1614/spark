@@ -23,7 +23,7 @@ import java.nio.file.{Files, Paths}
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.catalyst.util.{fileToString, resourceToString, stringToFile}
 import org.apache.spark.sql.internal.SQLConf
-import org.apache.spark.sql.test.{SharedSparkSession, TestSparkSession}
+import org.apache.spark.sql.test.TestSparkSession
 
 /**
  * End-to-end tests to check TPCDS query results.
@@ -64,6 +64,9 @@ class TPCDSQueryTestSuite extends QueryTest with TPCDSBase with SQLQueryTestHelp
     new TestSparkSession(new SparkContext("local[1]", this.getClass.getSimpleName, sparkConf))
   }
 
+  // We use SF=1 table data here, so we cannot use SF=100 stats
+  protected override val injectStats: Boolean = false
+
   if (tpcdsDataPath.nonEmpty) {
     val nonExistentTables = tableNames.filterNot { tableName =>
       Files.exists(Paths.get(s"${tpcdsDataPath.get}/$tableName"))
@@ -76,14 +79,8 @@ class TPCDSQueryTestSuite extends QueryTest with TPCDSBase with SQLQueryTestHelp
 
   protected val baseResourcePath = {
     // use the same way as `SQLQueryTestSuite` to get the resource path
-    java.nio.file.Paths.get("src", "test", "resources", "tpcds-query-results")
+    getWorkspaceFilePath("sql", "core", "src", "test", "resources", "tpcds-query-results")
       .toFile.getAbsolutePath
-  }
-
-  override val tpcdsQueries = {
-    // SPARK-35327: Filters out the TPC-DS queries that can cause flaky test results
-    val excludedQueries = Set("q6", "q75")
-    super.tpcdsQueries.filterNot(excludedQueries.contains)
   }
 
   override def createTable(

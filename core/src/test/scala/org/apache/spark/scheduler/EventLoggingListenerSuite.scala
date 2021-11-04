@@ -39,6 +39,7 @@ import org.apache.spark.internal.Logging
 import org.apache.spark.internal.config.{EVENT_LOG_DIR, EVENT_LOG_ENABLED}
 import org.apache.spark.io._
 import org.apache.spark.metrics.{ExecutorMetricType, MetricsSystem}
+import org.apache.spark.resource.ResourceProfile
 import org.apache.spark.scheduler.cluster.ExecutorInfo
 import org.apache.spark.util.{JsonProtocol, Utils}
 
@@ -89,7 +90,8 @@ class EventLoggingListenerSuite extends SparkFunSuite with LocalSparkContext wit
     val conf = getLoggingConf(testDirPath, None)
       .set(key, secretPassword)
     val hadoopconf = SparkHadoopUtil.get.newConfiguration(new SparkConf())
-    val envDetails = SparkEnv.environmentDetails(conf, hadoopconf, "FIFO", Seq.empty, Seq.empty)
+    val envDetails = SparkEnv.environmentDetails(
+      conf, hadoopconf, "FIFO", Seq.empty, Seq.empty, Seq.empty)
     val event = SparkListenerEnvironmentUpdate(envDetails)
     val redactedProps = EventLoggingListener
       .redactEvent(conf, event).environmentDetails("Spark Properties").toMap
@@ -114,7 +116,8 @@ class EventLoggingListenerSuite extends SparkFunSuite with LocalSparkContext wit
     val stageId = 1
     val jobId = 1
     val stageInfo = new StageInfo(stageId, 0, stageId.toString, 0,
-      Seq.empty, Seq.empty, "details")
+      Seq.empty, Seq.empty, "details",
+      resourceProfileId = ResourceProfile.DEFAULT_RESOURCE_PROFILE_ID)
 
     val events = Array(SparkListenerStageSubmitted(stageInfo, properties),
       SparkListenerJobStart(jobId, 0, Seq(stageInfo), properties))
@@ -385,7 +388,7 @@ class EventLoggingListenerSuite extends SparkFunSuite with LocalSparkContext wit
       8000L, 5000L, 7000L, 4000L, 6000L, 3000L, 10L, 90L, 2L, 20L)
 
     def max(a: Array[Long], b: Array[Long]): Array[Long] =
-      (a, b).zipped.map(Math.max)
+      (a, b).zipped.map(Math.max).toArray
 
     // calculated metric peaks per stage per executor
     // metrics sent during stage 0 for each executor
@@ -512,14 +515,15 @@ class EventLoggingListenerSuite extends SparkFunSuite with LocalSparkContext wit
     try {
       val lines = readLines(logData)
       val logStart = SparkListenerLogStart(SPARK_VERSION)
-      assert(lines.size === 22)
+      assert(lines.size === 25)
       assert(lines(0).contains("SparkListenerLogStart"))
       assert(lines(1).contains("SparkListenerApplicationStart"))
       assert(JsonProtocol.sparkEventFromJson(parse(lines(0))) === logStart)
       var logIdx = 1
       events.foreach { event =>
         event match {
-          case metricsUpdate: SparkListenerExecutorMetricsUpdate =>
+          case metricsUpdate: SparkListenerExecutorMetricsUpdate
+            if metricsUpdate.execId != SparkContext.DRIVER_IDENTIFIER =>
           case stageCompleted: SparkListenerStageCompleted =>
             val execIds = Set[String]()
             (1 to 3).foreach { _ =>
@@ -543,12 +547,14 @@ class EventLoggingListenerSuite extends SparkFunSuite with LocalSparkContext wit
 
   private def createStageSubmittedEvent(stageId: Int) = {
     SparkListenerStageSubmitted(new StageInfo(stageId, 0, stageId.toString, 0,
-      Seq.empty, Seq.empty, "details"))
+      Seq.empty, Seq.empty, "details",
+      resourceProfileId = ResourceProfile.DEFAULT_RESOURCE_PROFILE_ID))
   }
 
   private def createStageCompletedEvent(stageId: Int) = {
     SparkListenerStageCompleted(new StageInfo(stageId, 0, stageId.toString, 0,
-      Seq.empty, Seq.empty, "details"))
+      Seq.empty, Seq.empty, "details",
+      resourceProfileId = ResourceProfile.DEFAULT_RESOURCE_PROFILE_ID))
   }
 
   private def createExecutorAddedEvent(executorId: Int) = {
@@ -613,6 +619,10 @@ class EventLoggingListenerSuite extends SparkFunSuite with LocalSparkContext wit
         assert(expected.stageInfo.stageId === actual.stageInfo.stageId)
       case (expected: SparkListenerTaskEnd, actual: SparkListenerTaskEnd) =>
         assert(expected.stageId === actual.stageId)
+      case (expected: SparkListenerExecutorMetricsUpdate,
+          actual: SparkListenerExecutorMetricsUpdate) =>
+        assert(expected.execId == actual.execId)
+        assert(expected.execId == SparkContext.DRIVER_IDENTIFIER)
       case (expected: SparkListenerEvent, actual: SparkListenerEvent) =>
         assert(expected === actual)
     }

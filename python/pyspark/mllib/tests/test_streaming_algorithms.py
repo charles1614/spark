@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-from time import time, sleep
+import os
 import unittest
 
 from numpy import array, random, exp, dot, all, mean, abs
@@ -118,7 +118,7 @@ class StreamingKMeansTest(MLLibStreamingTestCase):
             self.assertTrue(all(finalModel.centers == array(initCenters)))
             self.assertEqual(finalModel.clusterWeights, [5.0, 5.0, 5.0, 5.0])
             return True
-        eventually(condition, catch_assertions=True)
+        eventually(condition, 90, catch_assertions=True)
 
     def test_predictOn_model(self):
         """Test that the model predicts correctly on toy data."""
@@ -190,7 +190,7 @@ class StreamingLogisticRegressionWithSGDTests(MLLibStreamingTestCase):
         Generate 1 / (1 + exp(-x * scale + offset))
 
         where,
-        x is randomnly distributed and the threshold
+        x is randomly distributed and the threshold
         and labels for each sample in x is obtained from a random uniform
         distribution.
         """
@@ -252,7 +252,7 @@ class StreamingLogisticRegressionWithSGDTests(MLLibStreamingTestCase):
             return True
 
         # We want all batches to finish for this test.
-        eventually(condition, 60.0, catch_assertions=True)
+        eventually(condition, 120, catch_assertions=True)
 
         t_models = array(models)
         diff = t_models[1:] - t_models[:-1]
@@ -293,6 +293,10 @@ class StreamingLogisticRegressionWithSGDTests(MLLibStreamingTestCase):
             self.assertTrue(
                 self.calculate_accuracy_error(true, predicted) < 0.4)
 
+    @unittest.skipIf(
+        "COVERAGE_PROCESS_START" in os.environ,
+        "Flaky with coverage enabled, skipping for now."
+    )
     def test_training_and_prediction(self):
         """Test that the model improves on toy data with no. of batches"""
         input_batches = [
@@ -389,7 +393,7 @@ class StreamingLinearRegressionWithTests(MLLibStreamingTestCase):
             return True
 
         # We want all batches to finish for this test.
-        eventually(condition, catch_assertions=True)
+        eventually(condition, 90, catch_assertions=True)
 
         w = array(model_weights)
         diff = w[1:] - w[:-1]
@@ -429,6 +433,10 @@ class StreamingLinearRegressionWithTests(MLLibStreamingTestCase):
             true, predicted = zip(*batch)
             self.assertTrue(mean(abs(array(true) - array(predicted))) < 0.1)
 
+    @unittest.skipIf(
+        "COVERAGE_PROCESS_START" in os.environ,
+        "Flaky with coverage enabled, skipping for now."
+    )
     def test_train_prediction(self):
         """Test that error on test data improves as model is trained."""
         slr = StreamingLinearRegressionWithSGD(stepSize=0.2, numIterations=25)
@@ -467,10 +475,10 @@ class StreamingLinearRegressionWithTests(MLLibStreamingTestCase):
 
 
 if __name__ == "__main__":
-    from pyspark.mllib.tests.test_streaming_algorithms import *
+    from pyspark.mllib.tests.test_streaming_algorithms import *  # noqa: F401
 
     try:
-        import xmlrunner
+        import xmlrunner  # type: ignore[import]
         testRunner = xmlrunner.XMLTestRunner(output='target/test-reports', verbosity=2)
     except ImportError:
         testRunner = None

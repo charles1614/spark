@@ -17,16 +17,19 @@
 
 package org.apache.spark.executor
 
-import java.io.{Externalizable, File, ObjectInput, ObjectOutput}
+import java.io.{Externalizable, ObjectInput, ObjectOutput}
 import java.lang.Thread.UncaughtExceptionHandler
 import java.net.URL
 import java.nio.ByteBuffer
 import java.util.Properties
 import java.util.concurrent.{ConcurrentHashMap, CountDownLatch, TimeUnit}
 import java.util.concurrent.atomic.AtomicBoolean
+
 import scala.collection.immutable
 import scala.collection.mutable.{ArrayBuffer, Map}
 import scala.concurrent.duration._
+
+import com.google.common.cache.{CacheBuilder, CacheLoader}
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.{any, eq => meq}
 import org.mockito.Mockito.{inOrder, verify, when}
@@ -36,13 +39,13 @@ import org.scalatest.Assertions._
 import org.scalatest.PrivateMethodTester
 import org.scalatest.concurrent.Eventually
 import org.scalatestplus.mockito.MockitoSugar
+
 import org.apache.spark._
 import org.apache.spark.TaskState.TaskState
 import org.apache.spark.broadcast.Broadcast
-import org.apache.spark.deploy.{SimpleApplicationTest, SparkSubmitSuite}
 import org.apache.spark.internal.config._
 import org.apache.spark.internal.config.UI._
-import org.apache.spark.memory.TestMemoryManager
+import org.apache.spark.memory.{SparkOutOfMemoryError, TestMemoryManager}
 import org.apache.spark.metrics.MetricsSystem
 import org.apache.spark.rdd.RDD
 import org.apache.spark.resource.ResourceInformation
@@ -51,7 +54,7 @@ import org.apache.spark.scheduler.{DirectTaskResult, FakeTask, ResultTask, Task,
 import org.apache.spark.serializer.{JavaSerializer, SerializerInstance, SerializerManager}
 import org.apache.spark.shuffle.FetchFailedException
 import org.apache.spark.storage.{BlockManager, BlockManagerId}
-import org.apache.spark.util.{LongAccumulator, SparkUncaughtExceptionHandler, UninterruptibleThread, Utils}
+import org.apache.spark.util.{LongAccumulator, SparkUncaughtExceptionHandler, ThreadUtils, UninterruptibleThread}
 
 class ExecutorSuite extends SparkFunSuite
     with LocalSparkContext with MockitoSugar with Eventually with PrivateMethodTester {
@@ -267,6 +270,17 @@ class ExecutorSuite extends SparkFunSuite
     heartbeatZeroAccumulatorUpdateTest(false)
   }
 
+  private def withMockHeartbeatReceiverRef(executor: Executor)
+      (func: RpcEndpointRef => Unit): Unit = {
+    val executorClass = classOf[Executor]
+    val mockReceiverRef = mock[RpcEndpointRef]
+    val receiverRef = executorClass.getDeclaredField("heartbeatReceiverRef")
+    receiverRef.setAccessible(true)
+    receiverRef.set(executor, mockReceiverRef)
+
+    func(mockReceiverRef)
+  }
+
   private def withHeartbeatExecutor(confs: (String, String)*)
       (f: (Executor, ArrayBuffer[Heartbeat]) => Unit): Unit = {
     val conf = new SparkConf
@@ -274,22 +288,18 @@ class ExecutorSuite extends SparkFunSuite
     val serializer = new JavaSerializer(conf)
     val env = createMockEnv(conf, serializer)
     withExecutor("id", "localhost", SparkEnv.get) { executor =>
-      val executorClass = classOf[Executor]
+      withMockHeartbeatReceiverRef(executor) { mockReceiverRef =>
+        // Save all heartbeats sent into an ArrayBuffer for verification
+        val heartbeats = ArrayBuffer[Heartbeat]()
+        when(mockReceiverRef.askSync(any[Heartbeat], any[RpcTimeout])(any))
+          .thenAnswer((invocation: InvocationOnMock) => {
+            val args = invocation.getArguments()
+            heartbeats += args(0).asInstanceOf[Heartbeat]
+            HeartbeatResponse(false)
+          })
 
-      // Save all heartbeats sent into an ArrayBuffer for verification
-      val heartbeats = ArrayBuffer[Heartbeat]()
-      val mockReceiver = mock[RpcEndpointRef]
-      when(mockReceiver.askSync(any[Heartbeat], any[RpcTimeout])(any))
-        .thenAnswer((invocation: InvocationOnMock) => {
-          val args = invocation.getArguments()
-          heartbeats += args(0).asInstanceOf[Heartbeat]
-          HeartbeatResponse(false)
-        })
-      val receiverRef = executorClass.getDeclaredField("heartbeatReceiverRef")
-      receiverRef.setAccessible(true)
-      receiverRef.set(executor, mockReceiver)
-
-      f(executor, heartbeats)
+        f(executor, heartbeats)
+      }
     }
   }
 
@@ -413,6 +423,103 @@ class ExecutorSuite extends SparkFunSuite
     assert(taskMetrics.getMetricValue("JVMHeapMemory") > 0)
   }
 
+  test("SPARK-34949: do not re-register BlockManager when executor is shutting down") {
+    val reregisterInvoked = new AtomicBoolean(false)
+    val mockBlockManager = mock[BlockManager]
+    when(mockBlockManager.reregister()).thenAnswer { (_: InvocationOnMock) =>
+      reregisterInvoked.getAndSet(true)
+    }
+    val conf = new SparkConf(false).setAppName("test").setMaster("local[2]")
+    val mockEnv = createMockEnv(conf, new JavaSerializer(conf))
+    when(mockEnv.blockManager).thenReturn(mockBlockManager)
+
+    withExecutor("id", "localhost", mockEnv) { executor =>
+      withMockHeartbeatReceiverRef(executor) { mockReceiverRef =>
+        when(mockReceiverRef.askSync(any[Heartbeat], any[RpcTimeout])(any)).thenAnswer {
+          (_: InvocationOnMock) => HeartbeatResponse(reregisterBlockManager = true)
+        }
+        val reportHeartbeat = PrivateMethod[Unit](Symbol("reportHeartBeat"))
+        executor.invokePrivate(reportHeartbeat())
+        assert(reregisterInvoked.get(), "BlockManager.reregister should be invoked " +
+          "on HeartbeatResponse(reregisterBlockManager = true) when executor is not shutting down")
+
+        reregisterInvoked.getAndSet(false)
+        executor.stop()
+        executor.invokePrivate(reportHeartbeat())
+        assert(!reregisterInvoked.get(),
+          "BlockManager.reregister should not be invoked when executor is shutting down")
+      }
+    }
+  }
+
+  test("SPARK-33587: isFatalError") {
+    def errorInThreadPool(e: => Throwable): Throwable = {
+      intercept[Throwable] {
+        val taskPool = ThreadUtils.newDaemonFixedThreadPool(1, "test")
+        try {
+          val f = taskPool.submit(new java.util.concurrent.Callable[String] {
+            override def call(): String = throw e
+          })
+          f.get()
+        } finally {
+          taskPool.shutdown()
+        }
+      }
+    }
+
+    def errorInGuavaCache(e: => Throwable): Throwable = {
+      val cache = CacheBuilder.newBuilder()
+        .build(new CacheLoader[String, String] {
+          override def load(key: String): String = throw e
+        })
+      intercept[Throwable] {
+        cache.get("test")
+      }
+    }
+
+    def testThrowable(
+        e: => Throwable,
+        depthToCheck: Int,
+        isFatal: Boolean): Unit = {
+      import Executor.isFatalError
+      // `e`'s depth is 1 so `depthToCheck` needs to be at least 3 to detect fatal errors.
+      assert(isFatalError(e, depthToCheck) == (depthToCheck >= 1 && isFatal))
+      // `e`'s depth is 2 so `depthToCheck` needs to be at least 3 to detect fatal errors.
+      assert(isFatalError(errorInThreadPool(e), depthToCheck) == (depthToCheck >= 2 && isFatal))
+      assert(isFatalError(errorInGuavaCache(e), depthToCheck) == (depthToCheck >= 2 && isFatal))
+      assert(isFatalError(
+        new SparkException("foo", e),
+        depthToCheck) == (depthToCheck >= 2 && isFatal))
+      // `e`'s depth is 3 so `depthToCheck` needs to be at least 3 to detect fatal errors.
+      assert(isFatalError(
+        errorInThreadPool(errorInGuavaCache(e)),
+        depthToCheck) == (depthToCheck >= 3 && isFatal))
+      assert(isFatalError(
+        errorInGuavaCache(errorInThreadPool(e)),
+        depthToCheck) == (depthToCheck >= 3 && isFatal))
+      assert(isFatalError(
+        new SparkException("foo", new SparkException("foo", e)),
+        depthToCheck) == (depthToCheck >= 3 && isFatal))
+    }
+
+    for (depthToCheck <- 0 to 5) {
+      testThrowable(new OutOfMemoryError(), depthToCheck, isFatal = true)
+      testThrowable(new InterruptedException(), depthToCheck, isFatal = false)
+      testThrowable(new RuntimeException("test"), depthToCheck, isFatal = false)
+      testThrowable(new SparkOutOfMemoryError("test"), depthToCheck, isFatal = false)
+    }
+
+    // Verify we can handle the cycle in the exception chain
+    val e1 = new Exception("test1")
+    val e2 = new Exception("test2")
+    e1.initCause(e2)
+    e2.initCause(e1)
+    for (depthToCheck <- 0 to 5) {
+      testThrowable(e1, depthToCheck, isFatal = false)
+      testThrowable(e2, depthToCheck, isFatal = false)
+    }
+  }
+
   private def createMockEnv(conf: SparkConf, serializer: JavaSerializer): SparkEnv = {
     val mockEnv = mock[SparkEnv]
     val mockRpcEnv = mock[RpcEnv]
@@ -459,10 +566,9 @@ class ExecutorSuite extends SparkFunSuite
       name = "",
       index = 0,
       partitionId = 0,
-      false,
-//      mpienv = Map[String, String](),
       addedFiles = Map[String, Long](),
       addedJars = Map[String, Long](),
+      addedArchives = Map[String, Long](),
       properties = new Properties,
       resources = immutable.Map[String, ResourceInformation](),
       serializedTask)
@@ -495,7 +601,7 @@ class ExecutorSuite extends SparkFunSuite
               if (poll) {
                 executor.metricsPoller.poll()
               }
-              executor.killAllTasks(true, "Killed task, eg. because of speculative execution")
+              executor.killAllTasks(true, "Killed task, e.g. because of speculative execution")
             } else {
               timedOut.set(true)
             }

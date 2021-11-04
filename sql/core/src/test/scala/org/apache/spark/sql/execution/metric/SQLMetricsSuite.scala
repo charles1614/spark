@@ -22,13 +22,19 @@ import java.io.File
 import scala.reflect.{classTag, ClassTag}
 import scala.util.Random
 
+import org.apache.hadoop.mapreduce.TaskAttemptContext
+
+import org.apache.spark.internal.io.FileCommitProtocol
 import org.apache.spark.sql._
 import org.apache.spark.sql.catalyst.expressions.aggregate.{Final, Partial}
 import org.apache.spark.sql.catalyst.plans.logical.LocalRelation
-import org.apache.spark.sql.execution.{FilterExec, RangeExec, SparkPlan, WholeStageCodegenExec}
+import org.apache.spark.sql.execution._
 import org.apache.spark.sql.execution.adaptive.DisableAdaptiveExecutionSuite
 import org.apache.spark.sql.execution.aggregate.HashAggregateExec
-import org.apache.spark.sql.execution.exchange.ShuffleExchangeExec
+import org.apache.spark.sql.execution.command.DataWritingCommandExec
+import org.apache.spark.sql.execution.datasources.{BasicWriteJobStatsTracker, SQLHadoopMapReduceCommitProtocol}
+import org.apache.spark.sql.execution.exchange.{BroadcastExchangeExec, ShuffleExchangeExec}
+import org.apache.spark.sql.execution.joins.ShuffledHashJoinExec
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.internal.SQLConf
 import org.apache.spark.sql.test.SharedSparkSession
@@ -72,11 +78,14 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
   test("Filter metrics") {
     // Assume the execution plan is
     // PhysicalRDD(nodeId = 1) -> Filter(nodeId = 0)
-    val df = person.filter('age < 25)
-    testSparkPlanMetrics(df, 1, Map(
-      0L -> (("Filter", Map(
-        "number of output rows" -> 1L))))
-    )
+    Seq((0L, false), (1L, true)).foreach { case (nodeId, enableWholeStage) =>
+      val df = person.filter('age < 25)
+      testSparkPlanMetrics(df, 1, Map(
+        nodeId -> (("Filter", Map(
+          "number of output rows" -> 1L)))),
+        enableWholeStage
+      )
+    }
   }
 
   test("WholeStageCodegen metrics") {
@@ -101,10 +110,12 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
     val expected1 = Seq(
       Map("number of output rows" -> 2L,
         "avg hash probe bucket list iters" ->
-          aggregateMetricsPattern),
+          aggregateMetricsPattern,
+        "number of sort fallback tasks" -> 0L),
       Map("number of output rows" -> 1L,
         "avg hash probe bucket list iters" ->
-          aggregateMetricsPattern))
+          aggregateMetricsPattern,
+        "number of sort fallback tasks" -> 0L))
     val shuffleExpected1 = Map(
       "records read" -> 2L,
       "local blocks read" -> 2L,
@@ -121,10 +132,12 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
     val expected2 = Seq(
       Map("number of output rows" -> 4L,
         "avg hash probe bucket list iters" ->
-          aggregateMetricsPattern),
+          aggregateMetricsPattern,
+        "number of sort fallback tasks" -> 0L),
       Map("number of output rows" -> 3L,
         "avg hash probe bucket list iters" ->
-          aggregateMetricsPattern))
+          aggregateMetricsPattern,
+        "number of sort fallback tasks" -> 0L))
 
     val shuffleExpected2 = Map(
       "records read" -> 4L,
@@ -163,7 +176,7 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
     //           Exchange(nodeId = 5)
     //             LocalTableScan(nodeId = 6)
     Seq(true, false).foreach { enableWholeStage =>
-      val df = generateRandomBytesDF().repartition(1).groupBy('a).count()
+      val df = generateRandomBytesDF().repartition(2).groupBy('a).count()
       val nodeIds = if (enableWholeStage) {
         Set(4L, 1L)
       } else {
@@ -177,7 +190,7 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
           assert(probes.toDouble > 1.0)
         } else {
           val mainValue = probes.split("\n").apply(1).stripPrefix("(").stripSuffix(")")
-          // Extract min, med, max from the string and strip off everthing else.
+          // Extract min, med, max from the string and strip off everything else.
           val index = mainValue.indexOf(" (", 0)
           mainValue.slice(0, index).split(", ").foreach {
             probe => assert(probe.toDouble > 1.0)
@@ -205,14 +218,41 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
     // 2 partitions and each partition contains 2 keys
     val df2 = testData2.groupBy('a).agg(collect_set('a))
     testSparkPlanMetrics(df2, 1, Map(
-      2L -> (("ObjectHashAggregate", Map("number of output rows" -> 4L))),
+      2L -> (("ObjectHashAggregate", Map(
+        "number of output rows" -> 4L,
+        "number of sort fallback tasks" -> 0L))),
       1L -> (("Exchange", Map(
         "shuffle records written" -> 4L,
         "records read" -> 4L,
         "local blocks read" -> 4L,
         "remote blocks read" -> 0L))),
-      0L -> (("ObjectHashAggregate", Map("number of output rows" -> 3L))))
+      0L -> (("ObjectHashAggregate", Map(
+        "number of output rows" -> 3L,
+        "number of sort fallback tasks" -> 0L))))
     )
+
+    // 2 partitions and each partition contains 2 keys, with fallback to sort-based aggregation
+    withSQLConf(SQLConf.OBJECT_AGG_SORT_BASED_FALLBACK_THRESHOLD.key -> "1") {
+      val df3 = testData2.groupBy('a).agg(collect_set('a))
+      testSparkPlanMetrics(df3, 1, Map(
+        2L -> (("ObjectHashAggregate", Map(
+          "number of output rows" -> 4L,
+          "number of sort fallback tasks" -> 2L))),
+        0L -> (("ObjectHashAggregate", Map(
+          "number of output rows" -> 3L,
+          "number of sort fallback tasks" -> 1L))))
+      )
+      testSparkPlanMetricsWithPredicates(df3, 1, Map(
+        2L -> (("ObjectHashAggregate", Map(
+          "spill size" -> {
+            _.toString.matches(sizeMetricPattern)
+          }))),
+        0L -> (("ObjectHashAggregate", Map(
+          "spill size" -> {
+            _.toString.matches(sizeMetricPattern)
+          }))))
+      )
+    }
   }
 
   test("Sort metrics") {
@@ -246,18 +286,21 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
     withTempView("testDataForJoin") {
       // Assume the execution plan is
       // ... -> SortMergeJoin(nodeId = 1) -> TungstenProject(nodeId = 0)
-      val df = spark.sql(
-        "SELECT * FROM testData2 JOIN testDataForJoin ON testData2.a = testDataForJoin.a")
-      testSparkPlanMetrics(df, 1, Map(
-        0L -> (("SortMergeJoin", Map(
-          // It's 4 because we only read 3 rows in the first partition and 1 row in the second one
-          "number of output rows" -> 4L))),
-        2L -> (("Exchange", Map(
-          "records read" -> 4L,
-          "local blocks read" -> 2L,
-          "remote blocks read" -> 0L,
-          "shuffle records written" -> 2L))))
-      )
+      val query = "SELECT * FROM testData2 JOIN testDataForJoin ON testData2.a = testDataForJoin.a"
+      Seq((0L, 2L, false), (1L, 4L, true)).foreach { case (nodeId1, nodeId2, enableWholeStage) =>
+        val df = spark.sql(query)
+        testSparkPlanMetrics(df, 1, Map(
+          nodeId1 -> (("SortMergeJoin", Map(
+            // It's 4 because we only read 3 rows in the first partition and 1 row in the second one
+            "number of output rows" -> 4L))),
+          nodeId2 -> (("Exchange", Map(
+            "records read" -> 4L,
+            "local blocks read" -> 2L,
+            "remote blocks read" -> 0L,
+            "shuffle records written" -> 2L)))),
+          enableWholeStage
+        )
+      }
     }
   }
 
@@ -269,21 +312,21 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
     withTempView("testDataForJoin") {
       // Assume the execution plan is
       // ... -> SortMergeJoin(nodeId = 1) -> TungstenProject(nodeId = 0)
-      val df = spark.sql(
-        "SELECT * FROM testData2 left JOIN testDataForJoin ON testData2.a = testDataForJoin.a")
-      testSparkPlanMetrics(df, 1, Map(
-        0L -> (("SortMergeJoin", Map(
-          // It's 8 because we read 6 rows in the left and 2 row in the right one
-          "number of output rows" -> 8L))))
-      )
+      val leftJoinQuery = "SELECT * FROM testData2 left JOIN testDataForJoin ON " +
+        "testData2.a = testDataForJoin.a"
+      val rightJoinQuery = "SELECT * FROM testDataForJoin right JOIN testData2 ON " +
+        "testData2.a = testDataForJoin.a"
 
-      val df2 = spark.sql(
-        "SELECT * FROM testDataForJoin right JOIN testData2 ON testData2.a = testDataForJoin.a")
-      testSparkPlanMetrics(df2, 1, Map(
-        0L -> (("SortMergeJoin", Map(
-          // It's 8 because we read 6 rows in the left and 2 row in the right one
-          "number of output rows" -> 8L))))
-      )
+      Seq((leftJoinQuery, 0L, false), (leftJoinQuery, 1L, true), (rightJoinQuery, 0L, false),
+        (rightJoinQuery, 1L, true)).foreach { case (query, nodeId, enableWholeStage) =>
+        val df = spark.sql(query)
+        testSparkPlanMetrics(df, 1, Map(
+          nodeId -> (("SortMergeJoin", Map(
+            // It's 8 because we read 6 rows in the left and 2 row in the right one
+            "number of output rows" -> 8L)))),
+          enableWholeStage
+        )
+      }
     }
   }
 
@@ -292,17 +335,20 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
     val df2 = Seq((1, "1"), (2, "2"), (3, "3"), (4, "4")).toDF("key", "value")
     // Assume the execution plan is
     // ... -> BroadcastHashJoin(nodeId = 1) -> TungstenProject(nodeId = 0)
-    val df = df1.join(broadcast(df2), "key")
-    testSparkPlanMetrics(df, 2, Map(
-      1L -> (("BroadcastHashJoin", Map(
-        "number of output rows" -> 2L))))
-    )
+    Seq((1L, false), (2L, true)).foreach { case (nodeId, enableWholeStage) =>
+      val df = df1.join(broadcast(df2), "key")
+      testSparkPlanMetrics(df, 2, Map(
+        nodeId -> (("BroadcastHashJoin", Map(
+          "number of output rows" -> 2L)))),
+        enableWholeStage
+      )
+    }
   }
 
   test("ShuffledHashJoin metrics") {
     withSQLConf(SQLConf.AUTO_BROADCASTJOIN_THRESHOLD.key -> "40",
-        SQLConf.SHUFFLE_PARTITIONS.key -> "2",
-        SQLConf.PREFER_SORTMERGEJOIN.key -> "false") {
+      SQLConf.SHUFFLE_PARTITIONS.key -> "2",
+      SQLConf.PREFER_SORTMERGEJOIN.key -> "false") {
       val df1 = Seq((1, "1"), (2, "2")).toDF("key", "value")
       val df2 = (1 to 10).map(i => (i, i.toString)).toSeq.toDF("key", "value")
       // Assume the execution plan is
@@ -314,36 +360,95 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
       // +- Exchange(nodeId = 5)
       // +- Project(nodeId = 6)
       // +- LocalTableScan(nodeId = 7)
-      val df = df1.join(df2, "key")
-      testSparkPlanMetrics(df, 1, Map(
-        1L -> (("ShuffledHashJoin", Map(
-          "number of output rows" -> 2L))),
-        2L -> (("Exchange", Map(
-          "shuffle records written" -> 2L,
-          "records read" -> 2L))),
-        5L -> (("Exchange", Map(
-          "shuffle records written" -> 10L,
-          "records read" -> 10L))))
-      )
+      Seq((1L, 2L, 5L, false), (2L, 3L, 7L, true)).foreach {
+        case (nodeId1, nodeId2, nodeId3, enableWholeStage) =>
+          val df = df1.join(df2, "key")
+          testSparkPlanMetrics(df, 1, Map(
+            nodeId1 -> (("ShuffledHashJoin", Map(
+              "number of output rows" -> 2L))),
+            nodeId2 -> (("Exchange", Map(
+              "shuffle records written" -> 2L,
+              "records read" -> 2L))),
+            nodeId3 -> (("Exchange", Map(
+              "shuffle records written" -> 10L,
+              "records read" -> 10L)))),
+            enableWholeStage
+          )
+      }
+    }
+  }
+
+  test("ShuffledHashJoin(left, outer) metrics") {
+    val leftDf = Seq((1, "1"), (2, "2")).toDF("key", "value")
+    val rightDf = (1 to 10).map(i => (i, i.toString)).toSeq.toDF("key2", "value")
+    Seq((0L, "right_outer", leftDf, rightDf, 10L, false),
+      (0L, "left_outer", rightDf, leftDf, 10L, false),
+      (1L, "right_outer", leftDf, rightDf, 10L, true),
+      (1L, "left_outer", rightDf, leftDf, 10L, true),
+      (2L, "left_anti", rightDf, leftDf, 8L, true),
+      (2L, "left_semi", rightDf, leftDf, 2L, true),
+      (1L, "left_anti", rightDf, leftDf, 8L, false),
+      (1L, "left_semi", rightDf, leftDf, 2L, false))
+      .foreach { case (nodeId, joinType, leftDf, rightDf, rows, enableWholeStage) =>
+        val df = leftDf.hint("shuffle_hash").join(
+          rightDf.hint("shuffle_hash"), $"key" === $"key2", joinType)
+        testSparkPlanMetrics(df, 1, Map(
+          nodeId -> (("ShuffledHashJoin", Map(
+            "number of output rows" -> rows)))),
+          enableWholeStage
+        )
+      }
+  }
+
+  test("SPARK-32629: ShuffledHashJoin(full outer) metrics") {
+    val uniqueLeftDf = Seq(("1", "1"), ("11", "11")).toDF("key", "value")
+    val nonUniqueLeftDf = Seq(("1", "1"), ("1", "2"), ("11", "11")).toDF("key", "value")
+    val rightDf = (1 to 10).map(i => (i.toString, i.toString)).toDF("key2", "value")
+    Seq(
+      // Test unique key on build side
+      (uniqueLeftDf, rightDf, 11, 10),
+      // Test non-unique key on build side
+      (nonUniqueLeftDf, rightDf, 12, 11)
+    ).foreach { case (leftDf, rightDf, fojRows, rojRows) =>
+      val fojDf = leftDf.hint("shuffle_hash").join(
+        rightDf, $"key" === $"key2", "full_outer")
+      fojDf.collect()
+      val fojPlan = fojDf.queryExecution.executedPlan.collectFirst {
+        case s: ShuffledHashJoinExec => s
+      }
+      assert(fojPlan.isDefined, "The query plan should have shuffled hash join")
+      testMetricsInSparkPlanOperator(fojPlan.get, Map("numOutputRows" -> fojRows))
+      val fojBuildSize = fojPlan.get.metrics("buildDataSize").value
+
+      // Test right outer join as well to verify build data size to be different
+      // from full outer join. This makes sure we take extra BitSet/OpenHashSet
+      // for full outer join into account.
+      val rojDf = leftDf.hint("shuffle_hash").join(
+        rightDf, $"key" === $"key2", "right_outer")
+      rojDf.collect()
+      val rojPlan = rojDf.queryExecution.executedPlan.collectFirst {
+        case s: ShuffledHashJoinExec => s
+      }
+      assert(rojPlan.isDefined, "The query plan should have shuffled hash join")
+      testMetricsInSparkPlanOperator(rojPlan.get, Map("numOutputRows" -> rojRows))
+      val rojBuildSize = rojPlan.get.metrics("buildDataSize").value
+      assert(fojBuildSize > rojBuildSize && rojBuildSize > 0,
+        "Build size of full outer join should be larger than the size of right outer join")
     }
   }
 
   test("BroadcastHashJoin(outer) metrics") {
     val df1 = Seq((1, "a"), (1, "b"), (4, "c")).toDF("key", "value")
     val df2 = Seq((1, "a"), (1, "b"), (2, "c"), (3, "d")).toDF("key2", "value")
-    // Assume the execution plan is
-    // ... -> BroadcastHashJoin(nodeId = 0)
-    val df = df1.join(broadcast(df2), $"key" === $"key2", "left_outer")
-    testSparkPlanMetrics(df, 2, Map(
-      0L -> (("BroadcastHashJoin", Map(
-        "number of output rows" -> 5L))))
-    )
-
-    val df3 = df1.join(broadcast(df2), $"key" === $"key2", "right_outer")
-    testSparkPlanMetrics(df3, 2, Map(
-      0L -> (("BroadcastHashJoin", Map(
-        "number of output rows" -> 6L))))
-    )
+    Seq(("left_outer", 0L, 5L, false), ("right_outer", 0L, 6L, false), ("left_outer", 1L, 5L, true),
+      ("right_outer", 1L, 6L, true)).foreach { case (joinType, nodeId, numRows, enableWholeStage) =>
+      val df = df1.join(broadcast(df2), $"key" === $"key2", joinType)
+      testSparkPlanMetrics(df, 2, Map(
+        nodeId -> (("BroadcastHashJoin", Map(
+          "number of output rows" -> numRows)))),
+        enableWholeStage
+      )
+    }
   }
 
   test("BroadcastNestedLoopJoin metrics") {
@@ -353,13 +458,19 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
       withTempView("testDataForJoin") {
         // Assume the execution plan is
         // ... -> BroadcastNestedLoopJoin(nodeId = 1) -> TungstenProject(nodeId = 0)
-        val df = spark.sql(
-          "SELECT * FROM testData2 left JOIN testDataForJoin ON " +
-            "testData2.a * testDataForJoin.a != testData2.a + testDataForJoin.a")
-        testSparkPlanMetrics(df, 3, Map(
-          1L -> (("BroadcastNestedLoopJoin", Map(
-            "number of output rows" -> 12L))))
-        )
+        val leftQuery = "SELECT * FROM testData2 LEFT JOIN testDataForJoin ON " +
+          "testData2.a * testDataForJoin.a != testData2.a + testDataForJoin.a"
+        val rightQuery = "SELECT * FROM testData2 RIGHT JOIN testDataForJoin ON " +
+          "testData2.a * testDataForJoin.a != testData2.a + testDataForJoin.a"
+        Seq((leftQuery, 0L, false), (rightQuery, 0L, false), (leftQuery, 1L, true),
+          (rightQuery, 1L, true)).foreach { case (query, nodeId, enableWholeStage) =>
+          val df = spark.sql(query)
+          testSparkPlanMetrics(df, 2, Map(
+            nodeId -> (("BroadcastNestedLoopJoin", Map(
+              "number of output rows" -> 12L)))),
+            enableWholeStage
+          )
+        }
       }
     }
   }
@@ -369,11 +480,27 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
     val df2 = Seq((1, "1"), (2, "2"), (3, "3"), (4, "4")).toDF("key2", "value")
     // Assume the execution plan is
     // ... -> BroadcastHashJoin(nodeId = 1)
-    val df = df1.join(broadcast(df2), $"key" === $"key2", "leftsemi")
-    testSparkPlanMetrics(df, 2, Map(
-      1L -> (("BroadcastHashJoin", Map(
-        "number of output rows" -> 2L))))
-    )
+    Seq((1L, false), (2L, true)).foreach { case (nodeId, enableWholeStage) =>
+      val df = df1.join(broadcast(df2), $"key" === $"key2", "leftsemi")
+      testSparkPlanMetrics(df, 2, Map(
+        nodeId -> (("BroadcastHashJoin", Map(
+          "number of output rows" -> 2L)))),
+        enableWholeStage
+      )
+    }
+  }
+
+  test("BroadcastLeftAntiJoinHash metrics") {
+    val df1 = Seq((1, "1"), (2, "2")).toDF("key", "value")
+    val df2 = Seq((1, "1"), (2, "2"), (3, "3"), (4, "4")).toDF("key2", "value")
+    Seq((1L, false), (2L, true)).foreach { case (nodeId, enableWholeStage) =>
+      val df = df2.join(broadcast(df1), $"key" === $"key2", "left_anti")
+      testSparkPlanMetrics(df, 2, Map(
+        nodeId -> (("BroadcastHashJoin", Map(
+          "number of output rows" -> 2L)))),
+        enableWholeStage
+      )
+    }
   }
 
   test("CartesianProduct metrics") {
@@ -383,11 +510,14 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
       withTempView("testDataForJoin") {
         // Assume the execution plan is
         // ... -> CartesianProduct(nodeId = 1) -> TungstenProject(nodeId = 0)
-        val df = spark.sql(
-          "SELECT * FROM testData2 JOIN testDataForJoin")
-        testSparkPlanMetrics(df, 1, Map(
-          0L -> (("CartesianProduct", Map("number of output rows" -> 12L))))
-        )
+        val query = "SELECT * FROM testData2 JOIN testDataForJoin"
+        Seq(true, false).foreach { enableWholeStage =>
+          val df = spark.sql(query)
+          testSparkPlanMetrics(df, 1, Map(
+            0L -> (("CartesianProduct", Map("number of output rows" -> 12L)))),
+            enableWholeStage
+          )
+        }
       }
     }
   }
@@ -396,11 +526,14 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
     val anti = testData2.filter("a > 2")
     withTempView("antiData") {
       anti.createOrReplaceTempView("antiData")
-      val df = spark.sql(
-        "SELECT * FROM testData2 ANTI JOIN antiData ON testData2.a = antiData.a")
-      testSparkPlanMetrics(df, 1, Map(
-        0L -> (("SortMergeJoin", Map("number of output rows" -> 4L))))
-      )
+      val query = "SELECT * FROM testData2 ANTI JOIN antiData ON testData2.a = antiData.a"
+      Seq((0L, false), (1L, true)).foreach { case (nodeId, enableWholeStage) =>
+        val df = spark.sql(query)
+        testSparkPlanMetrics(df, 1, Map(
+          nodeId -> (("SortMergeJoin", Map("number of output rows" -> 4L)))),
+          enableWholeStage
+        )
+      }
     }
   }
 
@@ -610,7 +743,7 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
       sql("CREATE TEMPORARY VIEW inMemoryTable AS SELECT 1 AS c1")
       sql("CACHE TABLE inMemoryTable")
       testSparkPlanMetrics(spark.table("inMemoryTable"), 1,
-        Map(1L -> (("Scan In-memory table `inMemoryTable`", Map.empty)))
+        Map(1L -> (("Scan In-memory table inMemoryTable", Map.empty)))
       )
 
       sql("CREATE TEMPORARY VIEW ```a``b``` AS SELECT 2 AS c1")
@@ -627,16 +760,6 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
   }
 
   test("SPARK-28332: SQLMetric merge should handle -1 properly") {
-    def checkSparkPlanMetrics(plan: SparkPlan, expected: Map[String, Long]): Unit = {
-      expected.foreach { case (metricName: String, metricValue: Long) =>
-        assert(plan.metrics.contains(metricName), s"The query plan should have metric $metricName")
-        val actualMetric = plan.metrics.get(metricName).get
-        assert(actualMetric.value == metricValue,
-          s"The query plan metric $metricName did not match, " +
-            s"expected:$metricValue, actual:${actualMetric.value}")
-      }
-    }
-
     val df = testData.join(testData2.filter('b === 0), $"key" === $"a", "left_outer")
     df.collect()
     val plan = df.queryExecution.executedPlan
@@ -647,7 +770,74 @@ class SQLMetricsSuite extends SharedSparkSession with SQLMetricsTestUtils
 
     assert(exchanges.size == 2, "The query plan should have two shuffle exchanges")
 
-    checkSparkPlanMetrics(exchanges(0), Map("dataSize" -> 3200, "shuffleRecordsWritten" -> 100))
-    checkSparkPlanMetrics(exchanges(1), Map("dataSize" -> 0, "shuffleRecordsWritten" -> 0))
+    testMetricsInSparkPlanOperator(exchanges.head,
+      Map("dataSize" -> 3200, "shuffleRecordsWritten" -> 100))
+    testMetricsInSparkPlanOperator(exchanges(1), Map("dataSize" -> 0, "shuffleRecordsWritten" -> 0))
+  }
+
+  test("Add numRows to metric of BroadcastExchangeExec") {
+    withSQLConf(SQLConf.AUTO_SIZE_UPDATE_ENABLED.key -> "true") {
+      withTable("t1", "t2") {
+        spark.range(2).write.saveAsTable("t1")
+        spark.range(2).write.saveAsTable("t2")
+        val df = sql("SELECT t1.* FROM t1 JOIN t2 ON t1.id = t2.id")
+        df.collect()
+        val plan = df.queryExecution.executedPlan
+
+        val exchanges = plan.collect {
+          case s: BroadcastExchangeExec => s
+        }
+
+        assert(exchanges.size === 1)
+        testMetricsInSparkPlanOperator(exchanges.head, Map("numOutputRows" -> 2))
+      }
+    }
+  }
+
+  test("SPARK-34399: Add job commit duration metrics for DataWritingCommand") {
+    withSQLConf(SQLConf.FILE_COMMIT_PROTOCOL_CLASS.key ->
+      "org.apache.spark.sql.execution.metric.CustomFileCommitProtocol") {
+      withTable("t", "t2") {
+        sql("CREATE TABLE t(id STRING) USING PARQUET")
+        val df = sql("INSERT INTO TABLE t SELECT 'abc'")
+        val insert = df.queryExecution.executedPlan.collect {
+          case CommandResultExec(_, dataWriting: DataWritingCommandExec, _) => dataWriting.cmd
+        }
+        assert(insert.size == 1)
+        assert(insert.head.metrics.contains(BasicWriteJobStatsTracker.JOB_COMMIT_TIME))
+        assert(insert.head.metrics.contains(BasicWriteJobStatsTracker.TASK_COMMIT_TIME))
+        assert(insert.head.metrics(BasicWriteJobStatsTracker.JOB_COMMIT_TIME).value > 0)
+        assert(insert.head.metrics(BasicWriteJobStatsTracker.TASK_COMMIT_TIME).value > 0)
+      }
+    }
+  }
+
+  test("SPARK-34567: Add metrics for CTAS operator") {
+    withTable("t") {
+      val df = sql("CREATE TABLE t USING PARQUET AS SELECT 1 as a")
+      assert(df.queryExecution.executedPlan.isInstanceOf[CommandResultExec])
+      val commandResultExec = df.queryExecution.executedPlan.asInstanceOf[CommandResultExec]
+      val dataWritingCommandExec =
+        commandResultExec.commandPhysicalPlan.asInstanceOf[DataWritingCommandExec]
+      val createTableAsSelect = dataWritingCommandExec.cmd
+      assert(createTableAsSelect.metrics.contains("numFiles"))
+      assert(createTableAsSelect.metrics("numFiles").value == 1)
+      assert(createTableAsSelect.metrics.contains("numOutputBytes"))
+      assert(createTableAsSelect.metrics("numOutputBytes").value > 0)
+      assert(createTableAsSelect.metrics.contains("numOutputRows"))
+      assert(createTableAsSelect.metrics("numOutputRows").value == 1)
+    }
+  }
+}
+
+case class CustomFileCommitProtocol(
+    jobId: String,
+    path: String,
+    dynamicPartitionOverwrite: Boolean = false)
+  extends SQLHadoopMapReduceCommitProtocol(jobId, path, dynamicPartitionOverwrite) {
+  override def commitTask(
+    taskContext: TaskAttemptContext): FileCommitProtocol.TaskCommitMessage = {
+    Thread.sleep(Random.nextInt(100))
+    super.commitTask(taskContext)
   }
 }

@@ -33,6 +33,43 @@ trait SQLQueryTestHelper {
   private val clsName = this.getClass.getCanonicalName
   protected val emptySchema = StructType(Seq.empty).catalogString
 
+  protected def replaceNotIncludedMsg(line: String): String = {
+    line.replaceAll("#\\d+", "#x")
+      .replaceAll(
+        s"Location.*$clsName/",
+        s"Location $notIncludedMsg/{warehouse_dir}/")
+      .replaceAll("Created By.*", s"Created By $notIncludedMsg")
+      .replaceAll("Created Time.*", s"Created Time $notIncludedMsg")
+      .replaceAll("Last Access.*", s"Last Access $notIncludedMsg")
+      .replaceAll("Partition Statistics\t\\d+", s"Partition Statistics\t$notIncludedMsg")
+      .replaceAll("\\*\\(\\d+\\) ", "*") // remove the WholeStageCodegen codegenStageIds
+  }
+
+
+  /** Executes a query and returns the result as (schema of the output, normalized output). */
+  protected def getNormalizedResult(session: SparkSession, sql: String): (String, Seq[String]) = {
+    // Returns true if the plan is supposed to be sorted.
+    def isSorted(plan: LogicalPlan): Boolean = plan match {
+      case _: Join | _: Aggregate | _: Generate | _: Sample | _: Distinct => false
+      case _: DescribeCommandBase
+          | _: DescribeColumnCommand
+          | _: DescribeRelation
+          | _: DescribeColumn => true
+      case PhysicalOperation(_, _, Sort(_, true, _)) => true
+      case _ => plan.children.iterator.exists(isSorted)
+    }
+
+    val df = session.sql(sql)
+    val schema = df.schema.catalogString
+    // Get answer, but also get rid of the #1234 expression ids that show up in explain plans
+    val answer = SQLExecution.withNewExecutionId(df.queryExecution, Some(sql)) {
+      hiveResultString(df.queryExecution.executedPlan).map(replaceNotIncludedMsg)
+    }
+
+    // If the output is not pre-sorted, sort it.
+    if (isSorted(df.queryExecution.analyzed)) (schema, answer) else (schema, answer.sorted)
+  }
+
   /**
    * This method handles exceptions occurred during query execution as they may need special care
    * to become comparable to the expected output.
@@ -59,41 +96,5 @@ trait SQLQueryTestHelper {
         // If there is an exception, put the exception class followed by the message.
         (emptySchema, Seq(e.getClass.getName, e.getMessage))
     }
-  }
-
-  /** Executes a query and returns the result as (schema of the output, normalized output). */
-  protected def getNormalizedResult(session: SparkSession, sql: String): (String, Seq[String]) = {
-    // Returns true if the plan is supposed to be sorted.
-    def isSorted(plan: LogicalPlan): Boolean = plan match {
-      case _: Join | _: Aggregate | _: Generate | _: Sample | _: Distinct => false
-      case _: DescribeCommandBase
-          | _: DescribeColumnCommand
-          | _: DescribeRelation
-          | _: DescribeColumnStatement => true
-      case PhysicalOperation(_, _, Sort(_, true, _)) => true
-      case _ => plan.children.iterator.exists(isSorted)
-    }
-
-    val df = session.sql(sql)
-    val schema = df.schema.catalogString
-    // Get answer, but also get rid of the #1234 expression ids that show up in explain plans
-    val answer = SQLExecution.withNewExecutionId(df.queryExecution, Some(sql)) {
-      hiveResultString(df.queryExecution.executedPlan).map(replaceNotIncludedMsg)
-    }
-
-    // If the output is not pre-sorted, sort it.
-    if (isSorted(df.queryExecution.analyzed)) (schema, answer) else (schema, answer.sorted)
-  }
-
-  protected def replaceNotIncludedMsg(line: String): String = {
-    line.replaceAll("#\\d+", "#x")
-      .replaceAll(
-        s"Location.*$clsName/",
-        s"Location $notIncludedMsg/{warehouse_dir}/")
-      .replaceAll("Created By.*", s"Created By $notIncludedMsg")
-      .replaceAll("Created Time.*", s"Created Time $notIncludedMsg")
-      .replaceAll("Last Access.*", s"Last Access $notIncludedMsg")
-      .replaceAll("Partition Statistics\t\\d+", s"Partition Statistics\t$notIncludedMsg")
-      .replaceAll("\\*\\(\\d+\\) ", "*") // remove the WholeStageCodegen codegenStageIds
   }
 }

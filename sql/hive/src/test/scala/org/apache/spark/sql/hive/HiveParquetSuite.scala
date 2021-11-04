@@ -17,7 +17,7 @@
 
 package org.apache.spark.sql.hive
 
-import org.apache.spark.sql.{QueryTest, Row}
+import org.apache.spark.sql.{AnalysisException, QueryTest, Row}
 import org.apache.spark.sql.execution.datasources.parquet.ParquetTest
 import org.apache.spark.sql.hive.test.TestHiveSingleton
 import org.apache.spark.sql.internal.SQLConf
@@ -103,6 +103,47 @@ class HiveParquetSuite extends QueryTest with ParquetTest with TestHiveSingleton
         sql(s"CREATE TABLE $targetTable STORED AS PARQUET AS SELECT m FROM p")
         checkAnswer(sql(s"SELECT m FROM $targetTable"),
           Row(Map(1 -> "a")) :: Row(Map.empty[Int, String]) :: Nil)
+      }
+    }
+  }
+
+  test("SPARK-33323: Add query resolved check before convert hive relation") {
+    withTable("t") {
+      val msg = intercept[AnalysisException] {
+        sql(
+          s"""
+             |CREATE TABLE t STORED AS PARQUET AS
+             |SELECT * FROM (
+             | SELECT c3 FROM (
+             |  SELECT c1, c2 from values(1,2) t(c1, c2)
+             |  )
+             |)
+          """.stripMargin)
+      }.getMessage
+      assert(msg.contains("cannot resolve 'c3' given input columns"))
+    }
+  }
+
+  test("SPARK-37098: Alter table properties should invalidate cache") {
+    // specify the compression in case we change it in future
+    withSQLConf(SQLConf.PARQUET_COMPRESSION.key -> "snappy") {
+      withTempPath { dir =>
+        withTable("t") {
+          sql(s"CREATE TABLE t (c int) STORED AS PARQUET LOCATION '${dir.getCanonicalPath}'")
+          // cache table metadata
+          sql("SELECT * FROM t")
+          sql("ALTER TABLE t SET TBLPROPERTIES('parquet.compression'='zstd')")
+          sql("INSERT INTO TABLE t values(1)")
+          val files1 = dir.listFiles().filter(_.getName.endsWith("zstd.parquet"))
+          assert(files1.length == 1)
+
+          // cache table metadata again
+          sql("SELECT * FROM t")
+          sql("ALTER TABLE t UNSET TBLPROPERTIES('parquet.compression')")
+          sql("INSERT INTO TABLE t values(1)")
+          val files2 = dir.listFiles().filter(_.getName.endsWith("snappy.parquet"))
+          assert(files2.length == 1)
+        }
       }
     }
   }

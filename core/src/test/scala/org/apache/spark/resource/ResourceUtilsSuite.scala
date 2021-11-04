@@ -165,6 +165,7 @@ class ResourceUtilsSuite extends SparkFunSuite
       val rpBuilder = new ResourceProfileBuilder()
       val ereqs = new ExecutorResourceRequests().resource(GPU, 2, gpuDiscovery)
       val treqs = new TaskResourceRequests().resource(GPU, 1)
+
       val rp = rpBuilder.require(ereqs).require(treqs).build
       val resourcesFromBoth = getOrDiscoverAllResourcesForResourceProfile(
         Some(resourcesFile), SPARK_EXECUTOR_PREFIX, rp, conf)
@@ -177,7 +178,7 @@ class ResourceUtilsSuite extends SparkFunSuite
   test("list resource ids") {
     val conf = new SparkConf
     conf.set(DRIVER_GPU_ID.amountConf, "2")
-    var resources = listResourceIds(conf, SPARK_DRIVER_PREFIX)
+    val resources = listResourceIds(conf, SPARK_DRIVER_PREFIX)
     assert(resources.size === 1, "should only have GPU for resource")
     assert(resources(0).resourceName == GPU, "name should be gpu")
 
@@ -220,7 +221,7 @@ class ResourceUtilsSuite extends SparkFunSuite
     val conf = new SparkConf
     assume(!(Utils.isWindows))
     withTempDir { dir =>
-      val gpuDiscovery = createTempScriptWithExpectedOutput(dir, "gpuDisocveryScript",
+      val gpuDiscovery = createTempScriptWithExpectedOutput(dir, "gpuDiscoveryScript",
         """{"name": "gpu", "addresses": ["0", "1"]}""")
       conf.set(DRIVER_GPU_ID.amountConf, "2")
       conf.set(DRIVER_GPU_ID.discoveryScriptConf, gpuDiscovery)

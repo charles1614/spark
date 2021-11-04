@@ -24,7 +24,6 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -46,6 +45,8 @@ import org.slf4j.LoggerFactory;
 
 import org.apache.spark.network.buffer.FileSegmentManagedBuffer;
 import org.apache.spark.network.buffer.ManagedBuffer;
+import org.apache.spark.network.shuffle.checksum.Cause;
+import org.apache.spark.network.shuffle.checksum.ShuffleChecksumHelper;
 import org.apache.spark.network.shuffle.protocol.ExecutorShuffleInfo;
 import org.apache.spark.network.util.LevelDBProvider;
 import org.apache.spark.network.util.LevelDBProvider.StoreVersion;
@@ -71,8 +72,6 @@ public class ExternalShuffleBlockResolver {
   private static final String APP_KEY_PREFIX = "AppExecShuffleInfo";
   private static final StoreVersion CURRENT_VERSION = new StoreVersion(1, 0);
 
-  private static final Pattern MULTIPLE_SEPARATORS = Pattern.compile(File.separator + "{2,}");
-
   // Map containing all registered executors' metadata.
   @VisibleForTesting
   final ConcurrentMap<AppExecId, ExecutorShuffleInfo> executors;
@@ -94,10 +93,6 @@ public class ExternalShuffleBlockResolver {
   final File registeredExecutorFile;
   @VisibleForTesting
   final DB db;
-
-  private final List<String> knownManagers = Arrays.asList(
-    "org.apache.spark.shuffle.sort.SortShuffleManager",
-    "org.apache.spark.shuffle.unsafe.UnsafeShuffleManager");
 
   public ExternalShuffleBlockResolver(TransportConf conf, File registeredExecutorFile)
       throws IOException {
@@ -151,10 +146,6 @@ public class ExternalShuffleBlockResolver {
       ExecutorShuffleInfo executorInfo) {
     AppExecId fullId = new AppExecId(appId, execId);
     logger.info("Registered executor {} with {}", fullId, executorInfo);
-    if (!knownManagers.contains(executorInfo.shuffleManager)) {
-      throw new UnsupportedOperationException(
-        "Unsupported shuffle manager of executor: " + executorInfo);
-    }
     try {
       if (db != null) {
         byte[] key = dbAppExecKey(fullId);
@@ -372,8 +363,8 @@ public class ExternalShuffleBlockResolver {
     return numRemovedBlocks;
   }
 
-  public Map<String, String[]> getLocalDirs(String appId, String[] execIds) {
-    return Arrays.stream(execIds)
+  public Map<String, String[]> getLocalDirs(String appId, Set<String> execIds) {
+    return execIds.stream()
       .map(exec -> {
         ExecutorShuffleInfo info = executors.get(new AppExecId(appId, exec));
         if (info == null) {
@@ -383,6 +374,29 @@ public class ExternalShuffleBlockResolver {
         return Pair.of(exec, info.localDirs);
       })
       .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
+  }
+
+  /**
+   * Diagnose the possible cause of the shuffle data corruption by verifying the shuffle checksums
+   */
+  public Cause diagnoseShuffleBlockCorruption(
+      String appId,
+      String execId,
+      int shuffleId,
+      long mapId,
+      int reduceId,
+      long checksumByReader,
+      String algorithm) {
+    ExecutorShuffleInfo executor = executors.get(new AppExecId(appId, execId));
+    // This should be in sync with IndexShuffleBlockResolver.getChecksumFile
+    String fileName = "shuffle_" + shuffleId + "_" + mapId + "_0.checksum." + algorithm;
+    File checksumFile = ExecutorDiskUtils.getFile(
+      executor.localDirs,
+      executor.subDirsPerLocalDir,
+      fileName);
+    ManagedBuffer data = getBlockData(appId, execId, shuffleId, mapId, reduceId);
+    return ShuffleChecksumHelper.diagnoseCorruption(
+      algorithm, checksumFile, reduceId, data, checksumByReader);
   }
 
   /** Simply encodes an executor's full ID, which is appId + execId. */

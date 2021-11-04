@@ -20,19 +20,25 @@ package org.apache.spark.sql
 import java.io.File
 import java.net.{MalformedURLException, URL}
 import java.sql.{Date, Timestamp}
+import java.time.{Duration, Period}
+import java.util.Locale
 import java.util.concurrent.atomic.AtomicBoolean
+
+import org.apache.commons.io.FileUtils
 
 import org.apache.spark.{AccumulatorSuite, SparkException}
 import org.apache.spark.scheduler.{SparkListener, SparkListenerJobStart}
 import org.apache.spark.sql.catalyst.expressions.GenericRow
 import org.apache.spark.sql.catalyst.expressions.aggregate.{Complete, Partial}
 import org.apache.spark.sql.catalyst.optimizer.{ConvertToLocalRelation, NestedColumnAliasingSuite}
-import org.apache.spark.sql.catalyst.plans.logical.Project
+import org.apache.spark.sql.catalyst.plans.logical.{LocalLimit, Project, RepartitionByExpression, Sort}
 import org.apache.spark.sql.catalyst.util.StringUtils
+import org.apache.spark.sql.execution.{CommandResultExec, UnionExec}
 import org.apache.spark.sql.execution.adaptive.AdaptiveSparkPlanHelper
 import org.apache.spark.sql.execution.aggregate.{HashAggregateExec, ObjectHashAggregateExec, SortAggregateExec}
 import org.apache.spark.sql.execution.columnar.InMemoryTableScanExec
-import org.apache.spark.sql.execution.command.FunctionsCommand
+import org.apache.spark.sql.execution.command.{DataWritingCommandExec, FunctionsCommand}
+import org.apache.spark.sql.execution.datasources.{InsertIntoHadoopFsRelationCommand, LogicalRelation}
 import org.apache.spark.sql.execution.datasources.v2.BatchScanExec
 import org.apache.spark.sql.execution.datasources.v2.orc.OrcScan
 import org.apache.spark.sql.execution.datasources.v2.parquet.ParquetScan
@@ -40,12 +46,14 @@ import org.apache.spark.sql.execution.exchange.ReusedExchangeExec
 import org.apache.spark.sql.execution.joins.{BroadcastHashJoinExec, CartesianProductExec, SortMergeJoinExec}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.internal.SQLConf
-import org.apache.spark.sql.test.{SharedSparkSession, TestSQLContext}
+import org.apache.spark.sql.test.SharedSparkSession
 import org.apache.spark.sql.test.SQLTestData._
 import org.apache.spark.sql.types._
 import org.apache.spark.unsafe.types.CalendarInterval
+import org.apache.spark.util.ResetSystemProperties
 
-class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSparkPlanHelper {
+class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSparkPlanHelper
+    with ResetSystemProperties {
   import testImplicits._
 
   setupTestData()
@@ -118,10 +126,18 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
     checkKeywordsExist(sql("describe functioN abcadf"), "Function: abcadf not found.")
   }
 
+  test("SPARK-34678: describe functions for table-valued functions") {
+    checkKeywordsExist(sql("describe function range"),
+      "Function: range",
+      "Class: org.apache.spark.sql.catalyst.plans.logical.Range",
+      "range(end: long)"
+    )
+  }
+
   test("SPARK-14415: All functions should have own descriptions") {
     for (f <- spark.sessionState.functionRegistry.listFunction()) {
-      if (!Seq("cube", "grouping", "grouping_id", "rollup", "window").contains(f.unquotedString)) {
-        checkKeywordsNotExist(sql(s"describe function `$f`"), "N/A.")
+      if (!Seq("cube", "grouping", "grouping_id", "rollup").contains(f.unquotedString)) {
+        checkKeywordsNotExist(sql(s"describe function $f"), "N/A.")
       }
     }
   }
@@ -961,100 +977,6 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
       sql("SELECT * FROM lowerCaseData INTERSECT SELECT * FROM upperCaseData"), Nil)
   }
 
-  test("SET commands semantics using sql()") {
-    spark.sessionState.conf.clear()
-    val testKey = "test.key.0"
-    val testVal = "test.val.0"
-    val nonexistentKey = "nonexistent"
-
-    // "set" itself returns all config variables currently specified in SQLConf.
-    assert(sql("SET").collect().size === TestSQLContext.overrideConfs.size)
-    sql("SET").collect().foreach { row =>
-      val key = row.getString(0)
-      val value = row.getString(1)
-      assert(
-        TestSQLContext.overrideConfs.contains(key),
-        s"$key should exist in SQLConf.")
-      assert(
-        TestSQLContext.overrideConfs(key) === value,
-        s"The value of $key should be ${TestSQLContext.overrideConfs(key)} instead of $value.")
-    }
-    val overrideConfs = sql("SET").collect()
-
-    // "set key=val"
-    sql(s"SET $testKey=$testVal")
-    checkAnswer(
-      sql("SET"),
-      overrideConfs ++ Seq(Row(testKey, testVal))
-    )
-
-    sql(s"SET ${testKey + testKey}=${testVal + testVal}")
-    checkAnswer(
-      sql("set"),
-      overrideConfs ++ Seq(Row(testKey, testVal), Row(testKey + testKey, testVal + testVal))
-    )
-
-    // "set key"
-    checkAnswer(
-      sql(s"SET $testKey"),
-      Row(testKey, testVal)
-    )
-    checkAnswer(
-      sql(s"SET $nonexistentKey"),
-      Row(nonexistentKey, "<undefined>")
-    )
-    spark.sessionState.conf.clear()
-  }
-
-  test("SPARK-19218 SET command should show a result in a sorted order") {
-    val overrideConfs = sql("SET").collect()
-    sql(s"SET test.key3=1")
-    sql(s"SET test.key2=2")
-    sql(s"SET test.key1=3")
-    val result = sql("SET").collect()
-    assert(result ===
-      (overrideConfs ++ Seq(
-        Row("test.key1", "3"),
-        Row("test.key2", "2"),
-        Row("test.key3", "1"))).sortBy(_.getString(0))
-    )
-    spark.sessionState.conf.clear()
-  }
-
-  test("SPARK-19218 `SET -v` should not fail with null value configuration") {
-    import SQLConf._
-    val confEntry = buildConf("spark.test").doc("doc").stringConf.createWithDefault(null)
-
-    try {
-      val result = sql("SET -v").collect()
-      assert(result === result.sortBy(_.getString(0)))
-    } finally {
-      SQLConf.unregister(confEntry)
-    }
-  }
-
-  test("SET commands with illegal or inappropriate argument") {
-    spark.sessionState.conf.clear()
-    // Set negative mapred.reduce.tasks for automatically determining
-    // the number of reducers is not supported
-    intercept[IllegalArgumentException](sql(s"SET mapred.reduce.tasks=-1"))
-    intercept[IllegalArgumentException](sql(s"SET mapred.reduce.tasks=-01"))
-    intercept[IllegalArgumentException](sql(s"SET mapred.reduce.tasks=-2"))
-    spark.sessionState.conf.clear()
-  }
-
-  test("SET mapreduce.job.reduces automatically converted to spark.sql.shuffle.partitions") {
-    spark.sessionState.conf.clear()
-    val before = spark.conf.get(SQLConf.SHUFFLE_PARTITIONS.key).toInt
-    val newConf = before + 1
-    sql(s"SET mapreduce.job.reduces=${newConf.toString}")
-    val after = spark.conf.get(SQLConf.SHUFFLE_PARTITIONS.key).toInt
-    assert(before != after)
-    assert(newConf === after)
-    intercept[IllegalArgumentException](sql(s"SET mapreduce.job.reduces=-1"))
-    spark.sessionState.conf.clear()
-  }
-
   test("apply schema") {
     withTempView("applySchema1", "applySchema2", "applySchema3") {
       val schema1 = StructType(
@@ -1176,7 +1098,7 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
             |order by struct.a, struct.b
             |""".stripMargin)
     }
-    assert(error.message contains "cannot resolve '`struct.a`' given input columns: [a, b]")
+    assert(error.message contains "cannot resolve 'struct.a' given input columns: [a, b]")
 
   }
 
@@ -1317,7 +1239,7 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
     )
   }
 
-  test("oder by asc by default when not specify ascending and descending") {
+  test("order by asc by default when not specify ascending and descending") {
     checkAnswer(
       sql("SELECT a, b FROM testData2 ORDER BY a desc, b"),
       Seq(Row(3, 1), Row(3, 2), Row(2, 1), Row(2, 2), Row(1, 1), Row(1, 2))
@@ -1521,30 +1443,52 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
   test("SPARK-8753: add interval type") {
     import org.apache.spark.unsafe.types.CalendarInterval
 
-    val df = sql("select interval 3 years -3 month 7 week 123 microseconds")
-    checkAnswer(df, Row(new CalendarInterval(12 * 3 - 3, 7 * 7, 123 )))
+    val ymDF = sql("select interval 3 years -3 month")
+    checkAnswer(ymDF, Row(Period.of(2, 9, 0)))
     withTempPath(f => {
-      // Currently we don't yet support saving out values of interval data type.
       val e = intercept[AnalysisException] {
-        df.write.json(f.getCanonicalPath)
+        ymDF.write.json(f.getCanonicalPath)
       }
       e.message.contains("Cannot save interval data type into external storage")
     })
+
+    val dtDF = sql("select interval 5 days 8 hours 12 minutes 50 seconds")
+    checkAnswer(dtDF, Row(Duration.ofDays(5).plusHours(8).plusMinutes(12).plusSeconds(50)))
+    withTempPath(f => {
+      val e = intercept[AnalysisException] {
+        dtDF.write.json(f.getCanonicalPath)
+      }
+      e.message.contains("Cannot save interval data type into external storage")
+    })
+
+    withSQLConf(SQLConf.LEGACY_INTERVAL_ENABLED.key -> "true") {
+      val df = sql("select interval 3 years -3 month 7 week 123 microseconds")
+      checkAnswer(df, Row(new CalendarInterval(12 * 3 - 3, 7 * 7, 123)))
+      withTempPath(f => {
+        // Currently we don't yet support saving out values of interval data type.
+        val e = intercept[AnalysisException] {
+          df.write.json(f.getCanonicalPath)
+        }
+        e.message.contains("Cannot save interval data type into external storage")
+      })
+    }
   }
 
   test("SPARK-8945: add and subtract expressions for interval type") {
-    val df = sql("select interval 3 years -3 month 7 week 123 microseconds as i")
-    checkAnswer(df, Row(new CalendarInterval(12 * 3 - 3, 7 * 7, 123)))
+    withSQLConf(SQLConf.LEGACY_INTERVAL_ENABLED.key -> "true") {
+      val df = sql("select interval 3 years -3 month 7 week 123 microseconds as i")
+      checkAnswer(df, Row(new CalendarInterval(12 * 3 - 3, 7 * 7, 123)))
 
-    checkAnswer(df.select(df("i") + new CalendarInterval(2, 1, 123)),
-      Row(new CalendarInterval(12 * 3 - 3 + 2, 7 * 7 + 1, 123 + 123)))
+      checkAnswer(df.select(df("i") + new CalendarInterval(2, 1, 123)),
+        Row(new CalendarInterval(12 * 3 - 3 + 2, 7 * 7 + 1, 123 + 123)))
 
-    checkAnswer(df.select(df("i") - new CalendarInterval(2, 1, 123)),
-      Row(new CalendarInterval(12 * 3 - 3 - 2, 7 * 7 - 1, 123 - 123)))
+      checkAnswer(df.select(df("i") - new CalendarInterval(2, 1, 123)),
+        Row(new CalendarInterval(12 * 3 - 3 - 2, 7 * 7 - 1, 123 - 123)))
 
-    // unary minus
-    checkAnswer(df.select(-df("i")),
-      Row(new CalendarInterval(-(12 * 3 - 3), -7 * 7, -123)))
+      // unary minus
+      checkAnswer(df.select(-df("i")),
+        Row(new CalendarInterval(-(12 * 3 - 3), -7 * 7, -123)))
+    }
   }
 
   test("aggregation with codegen updates peak execution memory") {
@@ -2764,8 +2708,8 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
         }.message
         assert(
           m.contains(
-            "cannot resolve '(spark_catalog.default.t.`c` = spark_catalog.default.S.`C`)' " +
-            "due to data type mismatch"))
+            "cannot resolve '(spark_catalog.default.t.c = " +
+            "spark_catalog.default.S.C)' due to data type mismatch"))
       }
     }
   }
@@ -2777,7 +2721,7 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
 
       val e = intercept[AnalysisException](sql("SELECT v.i from (SELECT i FROM v)"))
       assert(e.message ==
-        "cannot resolve '`v.i`' given input columns: [__auto_generated_subquery_name.i]")
+        "cannot resolve 'v.i' given input columns: [__auto_generated_subquery_name.i]")
 
       checkAnswer(sql("SELECT __auto_generated_subquery_name.i from (SELECT i FROM v)"), Row(1))
     }
@@ -2813,7 +2757,7 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
     }
   }
 
-  test("SRARK-22266: the same aggregate function was calculated multiple times") {
+  test("SPARK-22266: the same aggregate function was calculated multiple times") {
     val query = "SELECT a, max(b+1), max(b+1) + 1 FROM testData2 GROUP BY a"
     val df = sql(query)
     val physical = df.queryExecution.sparkPlan
@@ -3093,7 +3037,7 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
           assert(scan.isInstanceOf[ParquetScan])
           assert(scan.asInstanceOf[ParquetScan].pushedFilters === filters)
         case _ =>
-          fail(s"unknow format $format")
+          fail(s"unknown format $format")
       }
     }
 
@@ -3427,6 +3371,52 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
     checkAnswer(df2, Row(1) :: Nil)
   }
 
+  test("SPARK-30279 Support 32 or more grouping attributes for GROUPING_ID()") {
+    withTempView("t") {
+      sql("CREATE TEMPORARY VIEW t AS SELECT * FROM " +
+        s"VALUES(${(0 until 65).map { _ => 1 }.mkString(", ")}, 3) AS " +
+        s"t(${(0 until 65).map { i => s"k$i" }.mkString(", ")}, v)")
+
+      def testGroupingIDs(numGroupingSet: Int, expectedIds: Seq[Any] = Nil): Unit = {
+        val groupingCols = (0 until numGroupingSet).map { i => s"k$i" }
+        val df = sql("SELECT GROUPING_ID(), SUM(v) FROM t GROUP BY " +
+          s"GROUPING SETS ((${groupingCols.mkString(",")}), (${groupingCols.init.mkString(",")}))")
+        checkAnswer(df, expectedIds.map { id => Row(id, 3) })
+      }
+
+      withSQLConf(SQLConf.LEGACY_INTEGER_GROUPING_ID.key -> "true") {
+        testGroupingIDs(32, Seq(0, 1))
+        val ex = intercept[AnalysisException] {
+          testGroupingIDs(33)
+        }
+        assert(ex.getMessage.contains("Grouping sets size cannot be greater than 32"))
+        assert(ex.getErrorClass == "GROUPING_SIZE_LIMIT_EXCEEDED")
+      }
+
+      withSQLConf(SQLConf.LEGACY_INTEGER_GROUPING_ID.key -> "false") {
+        testGroupingIDs(64, Seq(0L, 1L))
+        val ex = intercept[AnalysisException] {
+          testGroupingIDs(65)
+        }
+        assert(ex.getMessage.contains("Grouping sets size cannot be greater than 64"))
+        assert(ex.getErrorClass == "GROUPING_SIZE_LIMIT_EXCEEDED")
+      }
+    }
+  }
+
+  test("SPARK-36339: References to grouping attributes should be replaced") {
+    withTempView("t") {
+      Seq("a", "a", "b").toDF("x").createOrReplaceTempView("t")
+      checkAnswer(
+        sql(
+          """
+            |select count(x) c, x from t
+            |group by x grouping sets(x)
+          """.stripMargin),
+        Seq(Row(2, "a"), Row(1, "b")))
+    }
+  }
+
   test("SPARK-31166: UNION map<null, null> and other maps should not fail") {
     checkAnswer(
       sql("(SELECT map()) UNION ALL (SELECT map(1, 2))"),
@@ -3440,6 +3430,131 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
       val cloned = spark.cloneSession()
       SparkSession.setActiveSession(cloned)
       assert(SQLConf.get.getConf(SQLConf.CODEGEN_FALLBACK) === true)
+    }
+  }
+
+  test("SPARK-31594: Do not display the seed of rand/randn with no argument in output schema") {
+    def checkIfSeedExistsInExplain(df: DataFrame): Unit = {
+      val output = new java.io.ByteArrayOutputStream()
+      Console.withOut(output) {
+        df.explain()
+      }
+      val projectExplainOutput = output.toString.split("\n").find(_.contains("Project")).get
+      assert(projectExplainOutput.matches(""".*randn?\(-?[0-9]+\).*"""))
+    }
+    val df1 = sql("SELECT rand()")
+    assert(df1.schema.head.name === "rand()")
+    checkIfSeedExistsInExplain(df1)
+    val df2 = sql("SELECT rand(1L)")
+    assert(df2.schema.head.name === "rand(1)")
+    checkIfSeedExistsInExplain(df2)
+    val df3 = sql("SELECT randn()")
+    assert(df3.schema.head.name === "randn()")
+    checkIfSeedExistsInExplain(df1)
+    val df4 = sql("SELECT randn(1L)")
+    assert(df4.schema.head.name === "randn(1)")
+    checkIfSeedExistsInExplain(df2)
+  }
+
+  test("SPARK-31670: Trim unnecessary Struct field alias in Aggregate/GroupingSets") {
+    withTempView("t") {
+      sql(
+        """
+          |CREATE TEMPORARY VIEW t(a, b, c) AS
+          |SELECT * FROM VALUES
+          |('A', 1, NAMED_STRUCT('row_id', 1, 'json_string', '{"i": 1}')),
+          |('A', 2, NAMED_STRUCT('row_id', 2, 'json_string', '{"i": 1}')),
+          |('A', 2, NAMED_STRUCT('row_id', 2, 'json_string', '{"i": 2}')),
+          |('B', 1, NAMED_STRUCT('row_id', 3, 'json_string', '{"i": 1}')),
+          |('C', 3, NAMED_STRUCT('row_id', 4, 'json_string', '{"i": 1}'))
+        """.stripMargin)
+
+      checkAnswer(
+        sql(
+          """
+            |SELECT a, c.json_string, SUM(b)
+            |FROM t
+            |GROUP BY a, c.json_string
+            |""".stripMargin),
+        Row("A", "{\"i\": 1}", 3) :: Row("A", "{\"i\": 2}", 2) ::
+          Row("B", "{\"i\": 1}", 1) :: Row("C", "{\"i\": 1}", 3) :: Nil)
+
+      checkAnswer(
+        sql(
+          """
+            |SELECT a, c.json_string, SUM(b)
+            |FROM t
+            |GROUP BY a, c.json_string
+            |WITH CUBE
+            |""".stripMargin),
+        Row("A", "{\"i\": 1}", 3) :: Row("A", "{\"i\": 2}", 2) :: Row("A", null, 5) ::
+          Row("B", "{\"i\": 1}", 1) :: Row("B", null, 1) ::
+          Row("C", "{\"i\": 1}", 3) :: Row("C", null, 3) ::
+          Row(null, "{\"i\": 1}", 7) :: Row(null, "{\"i\": 2}", 2) :: Row(null, null, 9) :: Nil)
+
+      checkAnswer(
+        sql(
+          """
+            |SELECT a, get_json_object(c.json_string, '$.i'), SUM(b)
+            |FROM t
+            |GROUP BY a, get_json_object(c.json_string, '$.i')
+            |WITH CUBE
+            |""".stripMargin),
+        Row("A", "1", 3) :: Row("A", "2", 2) :: Row("A", null, 5) ::
+          Row("B", "1", 1) :: Row("B", null, 1) ::
+          Row("C", "1", 3) :: Row("C", null, 3) ::
+          Row(null, "1", 7) :: Row(null, "2", 2) :: Row(null, null, 9) :: Nil)
+
+      checkAnswer(
+        sql(
+          """
+            |SELECT a, c.json_string AS json_string, SUM(b)
+            |FROM t
+            |GROUP BY a, c.json_string
+            |WITH CUBE
+            |""".stripMargin),
+        Row("A", null, 5) :: Row("A", "{\"i\": 1}", 3) :: Row("A", "{\"i\": 2}", 2) ::
+          Row("B", null, 1) :: Row("B", "{\"i\": 1}", 1) ::
+          Row("C", null, 3) :: Row("C", "{\"i\": 1}", 3) ::
+          Row(null, null, 9) :: Row(null, "{\"i\": 1}", 7) :: Row(null, "{\"i\": 2}", 2) :: Nil)
+
+      checkAnswer(
+        sql(
+          """
+            |SELECT a, c.json_string as js, SUM(b)
+            |FROM t
+            |GROUP BY a, c.json_string
+            |WITH CUBE
+            |""".stripMargin),
+        Row("A", null, 5) :: Row("A", "{\"i\": 1}", 3) :: Row("A", "{\"i\": 2}", 2) ::
+          Row("B", null, 1) :: Row("B", "{\"i\": 1}", 1) ::
+          Row("C", null, 3) :: Row("C", "{\"i\": 1}", 3) ::
+          Row(null, null, 9) :: Row(null, "{\"i\": 1}", 7) :: Row(null, "{\"i\": 2}", 2) :: Nil)
+
+      checkAnswer(
+        sql(
+          """
+            |SELECT a, c.json_string as js, SUM(b)
+            |FROM t
+            |GROUP BY a, c.json_string
+            |WITH ROLLUP
+            |""".stripMargin),
+        Row("A", null, 5) :: Row("A", "{\"i\": 1}", 3) :: Row("A", "{\"i\": 2}", 2) ::
+          Row("B", null, 1) :: Row("B", "{\"i\": 1}", 1) ::
+          Row("C", null, 3) :: Row("C", "{\"i\": 1}", 3) ::
+          Row(null, null, 9) :: Nil)
+
+      checkAnswer(
+        sql(
+          """
+            |SELECT a, c.json_string, SUM(b)
+            |FROM t
+            |GROUP BY a, c.json_string
+            |GROUPING sets((a),(a, c.json_string))
+            |""".stripMargin),
+        Row("A", null, 5) :: Row("A", "{\"i\": 1}", 3) :: Row("A", "{\"i\": 2}", 2) ::
+          Row("B", null, 1) :: Row("B", "{\"i\": 1}", 1) ::
+          Row("C", null, 3) :: Row("C", "{\"i\": 1}", 3) :: Nil)
     }
   }
 
@@ -3469,38 +3584,69 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
     }
   }
 
-  test("SPARK-32237: Hint in CTE") {
-    withTable("t") {
-      sql("CREATE TABLE t USING PARQUET AS SELECT 1 AS id")
-      checkAnswer(
-        sql("""
-              |WITH cte AS (SELECT /*+ REPARTITION(3) */ * FROM t)
-              |SELECT * FROM cte
-            """.stripMargin),
-        Row(1) :: Nil)
+  test("SPARK-31875: remove hints from plan when spark.sql.optimizer.disableHints = true") {
+    withSQLConf(SQLConf.DISABLE_HINTS.key -> "true") {
+      withTempView("t1", "t2") {
+        Seq[Integer](1, 2).toDF("c1").createOrReplaceTempView("t1")
+        Seq[Integer](1, 2).toDF("c1").createOrReplaceTempView("t2")
+        val repartitionHints = Seq(
+          "COALESCE(2)",
+          "REPARTITION(c1)",
+          "REPARTITION(c1, 2)",
+          "REPARTITION_BY_RANGE(c1, 2)",
+          "REPARTITION_BY_RANGE(c1)"
+        )
+        val joinHints = Seq(
+          "BROADCASTJOIN (t1)",
+          "MAPJOIN(t1)",
+          "SHUFFLE_MERGE(t1)",
+          "MERGEJOIN(t1)",
+          "SHUFFLE_REPLICATE_NL(t1)"
+        )
+
+        repartitionHints.foreach { hintName =>
+          val sqlText = s"SELECT /*+ $hintName */ * FROM t1"
+          val sqlTextWithoutHint = "SELECT * FROM t1"
+          val expectedPlan = sql(sqlTextWithoutHint)
+          val actualPlan = sql(sqlText)
+          comparePlans(actualPlan.queryExecution.analyzed, expectedPlan.queryExecution.analyzed)
+        }
+
+        joinHints.foreach { hintName =>
+          val sqlText = s"SELECT /*+ $hintName */ * FROM t1 INNER JOIN t2 ON t1.c1 = t2.c1"
+          val sqlTextWithoutHint = "SELECT * FROM t1 INNER JOIN t2 ON t1.c1 = t2.c1"
+          val expectedPlan = sql(sqlTextWithoutHint)
+          val actualPlan = sql(sqlText)
+          comparePlans(actualPlan.queryExecution.analyzed, expectedPlan.queryExecution.analyzed)
+        }
+      }
     }
   }
 
   test("SPARK-32372: ResolveReferences.dedupRight should only rewrite attributes for ancestor " +
     "plans of the conflict plan") {
-    sql("SELECT name, avg(age) as avg_age FROM person GROUP BY name")
-      .createOrReplaceTempView("person_a")
-    sql("SELECT p1.name, p2.avg_age FROM person p1 JOIN person_a p2 ON p1.name = p2.name")
-      .createOrReplaceTempView("person_b")
-    sql("SELECT * FROM person_a UNION SELECT * FROM person_b")
-      .createOrReplaceTempView("person_c")
-    checkAnswer(
-      sql("SELECT p1.name, p2.avg_age FROM person_c p1 JOIN person_c p2 ON p1.name = p2.name"),
-      Row("jim", 20.0) :: Row("mike", 30.0) :: Nil)
+    withTempView("person_a", "person_b", "person_c") {
+      sql("SELECT name, avg(age) as avg_age FROM person GROUP BY name")
+        .createOrReplaceTempView("person_a")
+      sql("SELECT p1.name, p2.avg_age FROM person p1 JOIN person_a p2 ON p1.name = p2.name")
+        .createOrReplaceTempView("person_b")
+      sql("SELECT * FROM person_a UNION SELECT * FROM person_b")
+        .createOrReplaceTempView("person_c")
+      checkAnswer(
+        sql("SELECT p1.name, p2.avg_age FROM person_c p1 JOIN person_c p2 ON p1.name = p2.name"),
+        Row("jim", 20.0) :: Row("mike", 30.0) :: Nil)
+    }
   }
 
   test("SPARK-32280: Avoid duplicate rewrite attributes when there're multiple JOINs") {
-    sql("SELECT 1 AS id").createOrReplaceTempView("A")
-    sql("SELECT id, 'foo' AS kind FROM A").createOrReplaceTempView("B")
-    sql("SELECT l.id as id FROM B AS l LEFT SEMI JOIN B AS r ON l.kind = r.kind")
-      .createOrReplaceTempView("C")
-    checkAnswer(sql("SELECT 0 FROM ( SELECT * FROM B JOIN C USING (id)) " +
-      "JOIN ( SELECT * FROM B JOIN C USING (id)) USING (id)"), Row(0))
+    withTempView("A", "B", "C") {
+      sql("SELECT 1 AS id").createOrReplaceTempView("A")
+      sql("SELECT id, 'foo' AS kind FROM A").createOrReplaceTempView("B")
+      sql("SELECT l.id as id FROM B AS l LEFT SEMI JOIN B AS r ON l.kind = r.kind")
+        .createOrReplaceTempView("C")
+      checkAnswer(sql("SELECT 0 FROM ( SELECT * FROM B JOIN C USING (id)) " +
+        "JOIN ( SELECT * FROM B JOIN C USING (id)) USING (id)"), Row(0))
+    }
   }
 
   test("SPARK-32788: non-partitioned table scan should not have partition filter") {
@@ -3526,15 +3672,37 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
   }
 
   test("SPARK-33338: GROUP BY using literal map should not fail") {
-    withTempDir { dir =>
-      sql(s"CREATE TABLE t USING ORC LOCATION '${dir.toURI}' AS SELECT map('k1', 'v1') m, 'k1' k")
-      Seq(
-        "SELECT map('k1', 'v1')[k] FROM t GROUP BY 1",
-        "SELECT map('k1', 'v1')[k] FROM t GROUP BY map('k1', 'v1')[k]",
-        "SELECT map('k1', 'v1')[k] a FROM t GROUP BY a").foreach { statement =>
-        checkAnswer(sql(statement), Row("v1"))
+    withTable("t") {
+      withTempDir { dir =>
+        sql(s"CREATE TABLE t USING ORC LOCATION '${dir.toURI}' AS SELECT map('k1', 'v1') m, 'k1' k")
+        Seq(
+          "SELECT map('k1', 'v1')[k] FROM t GROUP BY 1",
+          "SELECT map('k1', 'v1')[k] FROM t GROUP BY map('k1', 'v1')[k]",
+          "SELECT map('k1', 'v1')[k] a FROM t GROUP BY a").foreach { statement =>
+          checkAnswer(sql(statement), Row("v1"))
+        }
       }
     }
+  }
+
+  test("SPARK-33084: Add jar support Ivy URI in SQL") {
+    val sc = spark.sparkContext
+    val hiveVersion = "2.3.9"
+    // transitive=false, only download specified jar
+    sql(s"ADD JAR ivy://org.apache.hive.hcatalog:hive-hcatalog-core:$hiveVersion?transitive=false")
+    assert(sc.listJars()
+      .exists(_.contains(s"org.apache.hive.hcatalog_hive-hcatalog-core-$hiveVersion.jar")))
+
+    // default transitive=true, test download ivy URL jar return multiple jars
+    sql("ADD JAR ivy://org.scala-js:scalajs-test-interface_2.12:1.2.0")
+    assert(sc.listJars().exists(_.contains("scalajs-library_2.12")))
+    assert(sc.listJars().exists(_.contains("scalajs-test-interface_2.12")))
+
+    sql(s"ADD JAR ivy://org.apache.hive:hive-contrib:$hiveVersion" +
+      "?exclude=org.pentaho:pentaho-aggdesigner-algorithm&transitive=true")
+    assert(sc.listJars().exists(_.contains(s"org.apache.hive_hive-contrib-$hiveVersion.jar")))
+    assert(sc.listJars().exists(_.contains(s"org.apache.hive_hive-exec-$hiveVersion.jar")))
+    assert(!sc.listJars().exists(_.contains("org.pentaho.pentaho_aggdesigner-algorithm")))
   }
 
   test("SPARK-33677: LikeSimplification should be skipped if pattern contains any escapeChar") {
@@ -3548,6 +3716,43 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
         "the escape character is not allowed to precede '@'"))
 
       checkAnswer(sql("SELECT s LIKE 'm@@ca' ESCAPE '@' FROM df"), Row(true))
+    }
+  }
+
+  test("limit partition num to 1 when distributing by foldable expressions") {
+    withSQLConf((SQLConf.SHUFFLE_PARTITIONS.key, "5")) {
+      Seq(1, "1, 2", null, "version()").foreach { expr =>
+        val plan = sql(s"select * from values (1), (2), (3) t(a) distribute by $expr")
+          .queryExecution.optimizedPlan
+        val res = plan.collect {
+          case r: RepartitionByExpression if r.numPartitions == 1 => true
+        }
+        assert(res.nonEmpty)
+      }
+    }
+  }
+
+  test("Fold RepartitionExpression num partition should check if partition expression is empty") {
+    withSQLConf((SQLConf.SHUFFLE_PARTITIONS.key, "5")) {
+      val df = spark.range(1).hint("REPARTITION_BY_RANGE")
+      val plan = df.queryExecution.optimizedPlan
+      val res = plan.collect {
+        case r: RepartitionByExpression if r.numPartitions == 5 => true
+      }
+      assert(res.nonEmpty)
+    }
+  }
+
+  test("SPARK-34030: Fold RepartitionExpression num partition should at Optimizer") {
+    withSQLConf((SQLConf.SHUFFLE_PARTITIONS.key, "2")) {
+      Seq(1, "1, 2", null, "version()").foreach { expr =>
+        val plan = sql(s"select * from values (1), (2), (3) t(a) distribute by $expr")
+          .queryExecution.analyzed
+        val res = plan.collect {
+          case r: RepartitionByExpression if r.numPartitions == 2 => true
+        }
+        assert(res.nonEmpty)
+      }
     }
   }
 
@@ -3586,6 +3791,93 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
         }
       }
     })
+  }
+
+  test("SPARK-33084: Add jar support Ivy URI in SQL -- jar contains udf class") {
+    val sumFuncClass = "org.apache.spark.examples.sql.Spark33084"
+    val functionName = "test_udf"
+    withTempDir { dir =>
+      System.setProperty("ivy.home", dir.getAbsolutePath)
+      val sourceJar = new File(Thread.currentThread().getContextClassLoader
+        .getResource("SPARK-33084.jar").getFile)
+      val targetCacheJarDir = new File(dir.getAbsolutePath +
+        "/local/org.apache.spark/SPARK-33084/1.0/jars/")
+      targetCacheJarDir.mkdir()
+      // copy jar to local cache
+      FileUtils.copyFileToDirectory(sourceJar, targetCacheJarDir)
+      withTempView("v1") {
+        withUserDefinedFunction(
+          s"default.$functionName" -> false,
+          functionName -> true) {
+          // create temporary function without class
+          val e = intercept[AnalysisException] {
+            sql(s"CREATE TEMPORARY FUNCTION $functionName AS '$sumFuncClass'")
+          }.getMessage
+          assert(e.contains("Can not load class 'org.apache.spark.examples.sql.Spark33084"))
+          sql("ADD JAR ivy://org.apache.spark:SPARK-33084:1.0")
+          sql(s"CREATE TEMPORARY FUNCTION $functionName AS '$sumFuncClass'")
+          // create a view using a function in 'default' database
+          sql(s"CREATE TEMPORARY VIEW v1 AS SELECT $functionName(col1) FROM VALUES (1), (2), (3)")
+          // view v1 should still using function defined in `default` database
+          checkAnswer(sql("SELECT * FROM v1"), Seq(Row(2.0)))
+        }
+      }
+    }
+  }
+
+  test("SPARK-33964: Combine distinct unions that have noop project between them") {
+    val df = sql("""
+      |SELECT a, b FROM (
+      |  SELECT a, b FROM testData2
+      |  UNION
+      |  SELECT a, sum(b) FROM testData2 GROUP BY a
+      |  UNION
+      |  SELECT null AS a, sum(b) FROM testData2
+      |)""".stripMargin)
+
+    val unions = df.queryExecution.sparkPlan.collect {
+      case u: UnionExec => u
+    }
+
+    assert(unions.size == 1)
+  }
+
+  test("SPARK-34421: Resolve temporary objects in temporary views with CTEs") {
+    val tempFuncName = "temp_func"
+    withUserDefinedFunction(tempFuncName -> true) {
+      spark.udf.register(tempFuncName, identity[Int](_))
+
+      val tempViewName = "temp_view"
+      withTempView(tempViewName) {
+        sql(s"CREATE TEMPORARY VIEW $tempViewName AS SELECT 1")
+
+        val testViewName = "test_view"
+
+        withTempView(testViewName) {
+          sql(
+            s"""
+              |CREATE TEMPORARY VIEW $testViewName AS
+              |WITH cte AS (
+              |  SELECT $tempFuncName(0)
+              |)
+              |SELECT * FROM cte
+              |""".stripMargin)
+          checkAnswer(sql(s"SELECT * FROM $testViewName"), Row(0))
+        }
+
+        withTempView(testViewName) {
+          sql(
+            s"""
+              |CREATE TEMPORARY VIEW $testViewName AS
+              |WITH cte AS (
+              |  SELECT * FROM $tempViewName
+              |)
+              |SELECT * FROM cte
+              |""".stripMargin)
+          checkAnswer(sql(s"SELECT * FROM $testViewName"), Row(1))
+        }
+      }
+    }
   }
 
   test("SPARK-34421: Resolve temporary objects in permanent views with CTEs") {
@@ -3628,6 +3920,100 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
     }
   }
 
+  test("SPARK-26138 Pushdown limit through InnerLike when condition is empty") {
+    withTable("t1", "t2") {
+      spark.range(5).repartition(1).write.saveAsTable("t1")
+      spark.range(5).repartition(1).write.saveAsTable("t2")
+      val df = spark.sql("SELECT * FROM t1 CROSS JOIN t2 LIMIT 3")
+      val pushedLocalLimits = df.queryExecution.optimizedPlan.collect {
+        case l @ LocalLimit(_, _: LogicalRelation) => l
+      }
+      assert(pushedLocalLimits.length === 2)
+      checkAnswer(df, Row(0, 0) :: Row(0, 1) :: Row(0, 2) :: Nil)
+    }
+  }
+
+  test("SPARK-34514: Push down limit through LEFT SEMI and LEFT ANTI join") {
+    withTable("left_table", "nonempty_right_table", "empty_right_table") {
+      spark.range(5).toDF().repartition(1).write.saveAsTable("left_table")
+      spark.range(3).write.saveAsTable("nonempty_right_table")
+      spark.range(0).write.saveAsTable("empty_right_table")
+      Seq("LEFT SEMI", "LEFT ANTI").foreach { joinType =>
+        val joinWithNonEmptyRightDf = spark.sql(
+          s"SELECT * FROM left_table $joinType JOIN nonempty_right_table LIMIT 3")
+        val joinWithEmptyRightDf = spark.sql(
+          s"SELECT * FROM left_table $joinType JOIN empty_right_table LIMIT 3")
+
+        Seq(joinWithNonEmptyRightDf, joinWithEmptyRightDf).foreach { df =>
+          val pushedLocalLimits = df.queryExecution.optimizedPlan.collect {
+            case l @ LocalLimit(_, _: LogicalRelation) => l
+          }
+          assert(pushedLocalLimits.length === 1)
+        }
+
+        val expectedAnswer = Seq(Row(0), Row(1), Row(2))
+        if (joinType == "LEFT SEMI") {
+          checkAnswer(joinWithNonEmptyRightDf, expectedAnswer)
+          checkAnswer(joinWithEmptyRightDf, Seq.empty)
+        } else {
+          checkAnswer(joinWithNonEmptyRightDf, Seq.empty)
+          checkAnswer(joinWithEmptyRightDf, expectedAnswer)
+        }
+      }
+    }
+  }
+
+  test("SPARK-34575 Push down limit through window when partitionSpec is empty") {
+    withTable("t1") {
+      val numRows = 10
+      spark.range(numRows)
+        .selectExpr("if (id % 2 = 0, null, id) AS a", s"$numRows - id AS b")
+        .write
+        .saveAsTable("t1")
+
+      val df1 = spark.sql(
+        """
+          |SELECT a, b, ROW_NUMBER() OVER(ORDER BY a, b) AS rn
+          |FROM t1 LIMIT 3
+          |""".stripMargin)
+      val pushedLocalLimits1 = df1.queryExecution.optimizedPlan.collect {
+        case l @ LocalLimit(_, _: Sort) => l
+      }
+      assert(pushedLocalLimits1.length === 1)
+      checkAnswer(df1, Seq(Row(null, 2, 1), Row(null, 4, 2), Row(null, 6, 3)))
+
+      val df2 = spark.sql(
+        """
+          |SELECT b, RANK() OVER(ORDER BY a, b) AS rk, DENSE_RANK(b) OVER(ORDER BY a, b) AS s
+          |FROM t1 LIMIT 2
+          |""".stripMargin)
+      val pushedLocalLimits2 = df2.queryExecution.optimizedPlan.collect {
+        case l @ LocalLimit(_, _: Sort) => l
+      }
+      assert(pushedLocalLimits2.length === 1)
+      checkAnswer(df2, Seq(Row(2, 1, 1), Row(4, 2, 2)))
+    }
+  }
+
+  test("SPARK-34796: Avoid code-gen compilation error for LIMIT query") {
+    withTable("left_table", "empty_right_table", "output_table") {
+      spark.range(5).toDF("k").write.saveAsTable("left_table")
+      spark.range(0).toDF("k").write.saveAsTable("empty_right_table")
+
+      withSQLConf(SQLConf.ADAPTIVE_EXECUTION_ENABLED.key -> "false") {
+        spark.sql("CREATE TABLE output_table (k INT) USING parquet")
+        spark.sql(
+          """
+            |INSERT INTO TABLE output_table
+            |SELECT t1.k FROM left_table t1
+            |JOIN empty_right_table t2
+            |ON t1.k = t2.k
+            |LIMIT 3
+          """.stripMargin)
+      }
+    }
+  }
+
   test("SPARK-33482: Fix FileScan canonicalization") {
     withSQLConf(SQLConf.USE_V1_SOURCE_LIST.key -> "") {
       withTempPath { path =>
@@ -3648,6 +4034,191 @@ class SQLQuerySuite extends QueryTest with SharedSparkSession with AdaptiveSpark
           assert(reusedExchanges.size == 1)
         }
       }
+    }
+  }
+
+  test("SPARK-35331: Fix resolving original expression in RepartitionByExpression after aliased") {
+    Seq("CLUSTER", "DISTRIBUTE").foreach { keyword =>
+      Seq("a", "substr(a, 0, 3)").foreach { expr =>
+        val clause = keyword + " by " + expr
+        withClue(clause) {
+          checkAnswer(sql(s"select a b from values('123') t(a) $clause"), Row("123"))
+        }
+      }
+    }
+    checkAnswer(sql(s"select /*+ REPARTITION(3, a) */ a b from values('123') t(a)"), Row("123"))
+  }
+
+  test("SPARK-35737: Parse day-time interval literals to tightest types") {
+    import DayTimeIntervalType._
+    val dayToSecDF = spark.sql("SELECT INTERVAL '13 02:02:10' DAY TO SECOND")
+    assert(dayToSecDF.schema.head.dataType === DayTimeIntervalType(DAY, SECOND))
+    val dayToMinuteDF = spark.sql("SELECT INTERVAL '-2 13:00' DAY TO MINUTE")
+    assert(dayToMinuteDF.schema.head.dataType === DayTimeIntervalType(DAY, MINUTE))
+    val dayToHourDF = spark.sql("SELECT INTERVAL '0 15' DAY TO HOUR")
+    assert(dayToHourDF.schema.head.dataType === DayTimeIntervalType(DAY, HOUR))
+    val dayDF = spark.sql("SELECT INTERVAL '23' DAY")
+    assert(dayDF.schema.head.dataType === DayTimeIntervalType(DAY))
+    val hourToSecDF = spark.sql("SELECT INTERVAL '00:21:02.03' HOUR TO SECOND")
+    assert(hourToSecDF.schema.head.dataType === DayTimeIntervalType(HOUR, SECOND))
+    val hourToMinuteDF = spark.sql("SELECT INTERVAL '01:02' HOUR TO MINUTE")
+    assert(hourToMinuteDF.schema.head.dataType === DayTimeIntervalType(HOUR, MINUTE))
+    val hourDF1 = spark.sql("SELECT INTERVAL '17' HOUR")
+    assert(hourDF1.schema.head.dataType === DayTimeIntervalType(HOUR))
+    val minuteToSecDF = spark.sql("SELECT INTERVAL '10:03.775808000' MINUTE TO SECOND")
+    assert(minuteToSecDF.schema.head.dataType === DayTimeIntervalType(MINUTE, SECOND))
+    val minuteDF1 = spark.sql("SELECT INTERVAL '03' MINUTE")
+    assert(minuteDF1.schema.head.dataType === DayTimeIntervalType(MINUTE))
+    val secondDF1 = spark.sql("SELECT INTERVAL '11' SECOND")
+    assert(secondDF1.schema.head.dataType === DayTimeIntervalType(SECOND))
+
+    // Seconds greater than 1 minute
+    val secondDF2 = spark.sql("SELECT INTERVAL '75' SECONDS")
+    assert(secondDF2.schema.head.dataType === DayTimeIntervalType(SECOND))
+
+    // Minutes and seconds greater than 1 hour
+    val minuteDF2 = spark.sql("SELECT INTERVAL '68' MINUTES")
+    assert(minuteDF2.schema.head.dataType === DayTimeIntervalType(MINUTE))
+    val secondDF3 = spark.sql("SELECT INTERVAL '11112' SECONDS")
+    assert(secondDF3.schema.head.dataType === DayTimeIntervalType(SECOND))
+
+    // Hours, minutes and seconds greater than 1 day
+    val hourDF2 = spark.sql("SELECT INTERVAL '27' HOURS")
+    assert(hourDF2.schema.head.dataType === DayTimeIntervalType(HOUR))
+    val minuteDF3 = spark.sql("SELECT INTERVAL '2883' MINUTES")
+    assert(minuteDF3.schema.head.dataType === DayTimeIntervalType(MINUTE))
+    val secondDF4 = spark.sql("SELECT INTERVAL '266582' SECONDS")
+    assert(secondDF4.schema.head.dataType === DayTimeIntervalType(SECOND))
+  }
+
+  test("SPARK-35773: Parse year-month interval literals to tightest types") {
+    import YearMonthIntervalType._
+    val yearToMonthDF = spark.sql("SELECT INTERVAL '2021-06' YEAR TO MONTH")
+    assert(yearToMonthDF.schema.head.dataType === YearMonthIntervalType(YEAR, MONTH))
+    val yearDF = spark.sql("SELECT INTERVAL '2022' YEAR")
+    assert(yearDF.schema.head.dataType === YearMonthIntervalType(YEAR))
+    val monthDF1 = spark.sql("SELECT INTERVAL '08' MONTH")
+    assert(monthDF1.schema.head.dataType === YearMonthIntervalType(MONTH))
+    // Months greater than 1 year
+    val monthDF2 = spark.sql("SELECT INTERVAL '25' MONTHS")
+    assert(monthDF2.schema.head.dataType === YearMonthIntervalType(MONTH))
+  }
+
+  test("SPARK-35749: Parse multiple unit fields interval literals as day-time interval types") {
+    def evalAsSecond(query: String): Long = {
+      spark.sql(query).map(_.getAs[Duration](0)).collect.head.getSeconds
+    }
+
+    Seq(
+      ("SELECT INTERVAL '7' DAY", 604800),
+      ("SELECT INTERVAL '5' HOUR", 18000),
+      ("SELECT INTERVAL '2' MINUTE", 120),
+      ("SELECT INTERVAL '30' SECOND", 30),
+      ("SELECT INTERVAL '10' DAY '20' HOUR '30' MINUTE '40' SECOND", 937840),
+      // Units end with 's'
+      ("SELECT INTERVAL '2' DAYS '18' HOURS '34' MINUTES '53' SECONDS", 239693),
+      // A unit occurs more than one time
+      ("SELECT INTERVAL '1' DAY '23' HOURS '3' DAYS '70' MINUTES " +
+        "'5' SECONDS '24' HOURS '10' MINUTES '80' SECONDS", 519685)
+    ).foreach { case (query, expect) =>
+      assert(evalAsSecond(query) === expect)
+      // Units are lower case
+      assert(evalAsSecond(query.toLowerCase(Locale.ROOT)) === expect)
+    }
+  }
+
+  test("SPARK-35749: Parse multiple unit fields interval literals as year-month interval types") {
+    def evalAsYearAndMonth(query: String): (Int, Int) = {
+      val result = spark.sql(query).map(_.getAs[Period](0)).collect.head
+      (result.getYears, result.getMonths)
+    }
+
+    Seq(
+      ("SELECT INTERVAL '10' YEAR", (10, 0)),
+      ("SELECT INTERVAL '7' MONTH", (0, 7)),
+      ("SELECT INTERVAL '8' YEAR '3' MONTH", (8, 3)),
+      // Units end with 's'
+      ("SELECT INTERVAL '5' YEARS '10' MONTHS", (5, 10)),
+      // A unit is appears more than one time
+      ("SELECT INTERVAL '3' YEARS '5' MONTHS '1' YEAR '8' MONTHS", (5, 1))
+    ).foreach { case (query, expect) =>
+      assert(evalAsYearAndMonth(query) === expect)
+      // Units are lower case
+      assert(evalAsYearAndMonth(query.toLowerCase(Locale.ROOT)) === expect)
+    }
+  }
+
+  test("SPARK-35937: Extract date field from timestamp should work in ANSI mode") {
+    withSQLConf(SQLConf.ANSI_ENABLED.key -> "true") {
+      Seq("to_timestamp", "to_timestamp_ntz").foreach { func =>
+        checkAnswer(sql(s"select extract(year from $func('2021-01-02 03:04:05'))"), Row(2021))
+        checkAnswer(sql(s"select extract(month from $func('2021-01-02 03:04:05'))"), Row(1))
+        checkAnswer(sql(s"select extract(day from $func('2021-01-02 03:04:05'))"), Row(2))
+      }
+    }
+  }
+
+  test("SPARK-35545: split SubqueryExpression's children field into outer attributes and " +
+    "join conditions") {
+    withView("t") {
+      Seq((0, 1), (1, 2)).toDF("c1", "c2").createOrReplaceTempView("t")
+      checkAnswer(sql(
+        s"""with
+           |start as (
+           |  select c1, c2 from t A where not exists (
+           |    select * from t B where A.c1 = B.c1 - 2
+           |  )
+           |),
+           |
+           |end as (
+           |  select c1, c2 from t A where not exists (
+           |    select * from t B where A.c1 < B.c1
+           |  )
+           |)
+           |
+           |select * from start S join end E on S.c1 = E.c1
+           |""".stripMargin),
+        Row(1, 2, 1, 2) :: Nil)
+    }
+  }
+
+  test("SPARK-36093: RemoveRedundantAliases should not change expression's name") {
+    withTable("t1", "t2") {
+      withView("t1_v") {
+        sql("CREATE TABLE t1(cal_dt DATE) USING PARQUET")
+        sql(
+          """
+            |INSERT INTO t1 VALUES
+            |(date'2021-06-27'),
+            |(date'2021-06-28'),
+            |(date'2021-06-29'),
+            |(date'2021-06-30')""".stripMargin)
+        sql("CREATE VIEW t1_v AS SELECT * FROM t1")
+        sql(
+          """
+            |CREATE TABLE t2(FLAG INT, CAL_DT DATE)
+            |USING PARQUET
+            |PARTITIONED BY (CAL_DT)""".stripMargin)
+        val insert = sql(
+          """
+            |INSERT INTO t2 SELECT 2 AS FLAG,CAL_DT FROM t1_v
+            |WHERE CAL_DT BETWEEN '2021-06-29' AND '2021-06-30'""".stripMargin)
+        insert.queryExecution.executedPlan.collectFirst {
+          case CommandResultExec(_, DataWritingCommandExec(
+            i: InsertIntoHadoopFsRelationCommand, _), _) => i
+        }.get.partitionColumns.map(_.name).foreach(name => assert(name == "CAL_DT"))
+        checkAnswer(sql("SELECT FLAG, CAST(CAL_DT as STRING) FROM t2 "),
+            Row(2, "2021-06-29") :: Row(2, "2021-06-30") :: Nil)
+        checkAnswer(sql("SHOW PARTITIONS t2"),
+            Row("CAL_DT=2021-06-29") :: Row("CAL_DT=2021-06-30") :: Nil)
+      }
+    }
+  }
+
+  test("SPARK-36979: Add RewriteLateralSubquery rule into nonExcludableRules") {
+    withSQLConf(SQLConf.OPTIMIZER_EXCLUDED_RULES.key ->
+      "org.apache.spark.sql.catalyst.optimizer.RewriteLateralSubquery") {
+      sql("SELECT * FROM testData, LATERAL (SELECT * FROM testData)").collect()
     }
   }
 }

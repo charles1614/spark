@@ -25,6 +25,7 @@ import java.util.UUID;
 
 import scala.Tuple2$;
 
+import org.hamcrest.MatcherAssert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -93,8 +94,8 @@ public class UnsafeExternalSorterSuite {
     (int) conf.get(package$.MODULE$.SHUFFLE_SPILL_NUM_ELEMENTS_FORCE_SPILL_THRESHOLD());
 
   @Before
-  public void setUp() {
-    MockitoAnnotations.initMocks(this);
+  public void setUp() throws Exception {
+    MockitoAnnotations.openMocks(this).close();
     tempDir = Utils.createTempDir(System.getProperty("java.io.tmpdir"), "unsafe-test");
     spillFilesCreated.clear();
     taskContext = mock(TaskContext.class);
@@ -224,7 +225,7 @@ public class UnsafeExternalSorterSuite {
 
     sorter.insertRecord(null, 0, 0, 0, false);
     sorter.spill();
-    assertThat(sorter.getSortTimeNanos(), greaterThan(prevSortTime));
+    MatcherAssert.assertThat(sorter.getSortTimeNanos(), greaterThan(prevSortTime));
     prevSortTime = sorter.getSortTimeNanos();
 
     sorter.spill();  // no sort needed
@@ -232,7 +233,7 @@ public class UnsafeExternalSorterSuite {
 
     sorter.insertRecord(null, 0, 0, 0, false);
     UnsafeSorterIterator iter = sorter.getSortedIterator();
-    assertThat(sorter.getSortTimeNanos(), greaterThan(prevSortTime));
+    MatcherAssert.assertThat(sorter.getSortTimeNanos(), greaterThan(prevSortTime));
 
     sorter.cleanupResources();
     assertSpillFilesWereCleanedUp();
@@ -251,7 +252,7 @@ public class UnsafeExternalSorterSuite {
     // The insertion of this record should trigger a spill:
     insertNumber(sorter, 0);
     // Ensure that spill files were created
-    assertThat(tempDir.listFiles().length, greaterThanOrEqualTo(1));
+    MatcherAssert.assertThat(tempDir.listFiles().length, greaterThanOrEqualTo(1));
     // Read back the sorted data:
     UnsafeSorterIterator iter = sorter.getSortedIterator();
 
@@ -384,6 +385,36 @@ public class UnsafeExternalSorterSuite {
       assertTrue(iter.hasNext());
       iter.loadNext();
     }
+    assertFalse(iter.hasNext());
+
+    sorter.cleanupResources();
+    assertSpillFilesWereCleanedUp();
+  }
+
+  @Test
+  public void forcedSpillingWithFullyReadIterator() throws Exception {
+    final UnsafeExternalSorter sorter = newSorter();
+    long[] record = new long[100];
+    final int recordSize = record.length * 8;
+    final int n = (int) pageSizeBytes / recordSize * 3;
+    for (int i = 0; i < n; i++) {
+      record[0] = i;
+      sorter.insertRecord(record, Platform.LONG_ARRAY_OFFSET, recordSize, 0, false);
+    }
+    assertTrue(sorter.getNumberOfAllocatedPages() >= 2);
+
+    UnsafeExternalSorter.SpillableIterator iter =
+            (UnsafeExternalSorter.SpillableIterator) sorter.getSortedIterator();
+    for (int i = 0; i < n; i++) {
+      assertTrue(iter.hasNext());
+      iter.loadNext();
+      assertEquals(i, Platform.getLong(iter.getBaseObject(), iter.getBaseOffset()));
+    }
+    assertFalse(iter.hasNext());
+
+    assertTrue(iter.spill() > 0);
+    assertEquals(0, iter.spill());
+    assertEquals(n - 1, Platform.getLong(iter.getBaseObject(), iter.getBaseOffset()));
     assertFalse(iter.hasNext());
 
     sorter.cleanupResources();

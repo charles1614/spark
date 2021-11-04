@@ -131,6 +131,34 @@ public class DataTypes {
   }
 
   /**
+   * Creates a DayTimeIntervalType by specifying the start and end fields.
+   */
+  public static DayTimeIntervalType createDayTimeIntervalType(byte startField, byte endField) {
+    return DayTimeIntervalType$.MODULE$.apply(startField, endField);
+  }
+
+  /**
+   * Creates a DayTimeIntervalType with default start and end fields: interval day to second.
+   */
+  public static DayTimeIntervalType createDayTimeIntervalType() {
+    return DayTimeIntervalType$.MODULE$.DEFAULT();
+  }
+
+  /**
+   * Creates a YearMonthIntervalType by specifying the start and end fields.
+   */
+  public static YearMonthIntervalType createYearMonthIntervalType(byte startField, byte endField) {
+    return YearMonthIntervalType$.MODULE$.apply(startField, endField);
+  }
+
+  /**
+   * Creates a YearMonthIntervalType with default start and end fields: interval year to month.
+   */
+  public static YearMonthIntervalType createYearMonthIntervalType() {
+    return YearMonthIntervalType$.MODULE$.DEFAULT();
+  }
+
+  /**
    * Creates a MapType by specifying the data type of keys ({@code keyType}) and values
    * ({@code keyType}). The field of {@code valueContainsNull} is set to {@code true}.
    */

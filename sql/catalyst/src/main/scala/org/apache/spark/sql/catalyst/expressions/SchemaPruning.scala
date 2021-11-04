@@ -17,10 +17,10 @@
 
 package org.apache.spark.sql.catalyst.expressions
 
-import org.apache.spark.sql.internal.SQLConf
+import org.apache.spark.sql.catalyst.SQLConfHelper
 import org.apache.spark.sql.types._
 
-object SchemaPruning {
+object SchemaPruning extends SQLConfHelper {
   /**
    * Prunes the nested schema by the requested fields. For example, if the schema is:
    * `id int, s struct<a:int, b:int>`, and given requested field "s.a", the inner field "b"
@@ -32,7 +32,7 @@ object SchemaPruning {
   def pruneDataSchema(
       dataSchema: StructType,
       requestedRootFields: Seq[RootField]): StructType = {
-    val resolver = SQLConf.get.resolver
+    val resolver = conf.resolver
     // Merge the requested root fields into a single schema. Note the ordering of the fields
     // in the resulting schema may differ from their ordering in the logical relation's
     // original schema
@@ -65,7 +65,7 @@ object SchemaPruning {
           sortLeftFieldsByRight(leftValueType, rightValueType),
           containsNull)
       case (leftStruct: StructType, rightStruct: StructType) =>
-        val resolver = SQLConf.get.resolver
+        val resolver = conf.resolver
         val filteredRightFieldNames = rightStruct.fieldNames
           .filter(name => leftStruct.fieldNames.exists(resolver(_, name)))
         val sortedLeftFields = filteredRightFieldNames.map { fieldName =>
@@ -73,7 +73,8 @@ object SchemaPruning {
           val leftFieldType = resolvedLeftStruct.dataType
           val rightFieldType = rightStruct(fieldName).dataType
           val sortedLeftFieldType = sortLeftFieldsByRight(leftFieldType, rightFieldType)
-          StructField(fieldName, sortedLeftFieldType, nullable = resolvedLeftStruct.nullable)
+          StructField(fieldName, sortedLeftFieldType, nullable = resolvedLeftStruct.nullable,
+            metadata = resolvedLeftStruct.metadata)
         }
         StructType(sortedLeftFields)
       case _ => left
@@ -124,10 +125,11 @@ object SchemaPruning {
    * When expr is an [[Attribute]], construct a field around it and indicate that that
    * field was derived from an attribute.
    */
-  private def getRootFields(expr: Expression): Seq[RootField] = {
+  private[catalyst] def getRootFields(expr: Expression): Seq[RootField] = {
     expr match {
       case att: Attribute =>
-        RootField(StructField(att.name, att.dataType, att.nullable), derivedFromAtt = true) :: Nil
+        RootField(StructField(att.name, att.dataType, att.nullable, att.metadata),
+          derivedFromAtt = true) :: Nil
       case SelectedField(field) => RootField(field, derivedFromAtt = false) :: Nil
       // Root field accesses by `IsNotNull` and `IsNull` are special cases as the expressions
       // don't actually use any nested fields. These root field accesses might be excluded later

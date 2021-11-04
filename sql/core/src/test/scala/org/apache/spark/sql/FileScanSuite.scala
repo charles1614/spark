@@ -364,8 +364,8 @@ class FileScanSuite extends FileScanSuiteBase {
       (s, fi, ds, rds, rps, f, o, pf, df) => CSVScan(s, fi, ds, rds, rps, o, f, pf, df),
       Seq.empty),
     ("JsonScan",
-      (s, fi, ds, rds, rps, f, o, pf, df) => JsonScan(s, fi, ds, rds, rps, o, pf, df),
-      Seq("pushedFilters")),
+      (s, fi, ds, rds, rps, f, o, pf, df) => JsonScan(s, fi, ds, rds, rps, o, f, pf, df),
+      Seq.empty),
     ("TextScan",
       (s, fi, _, rds, rps, _, o, pf, df) => TextScan(s, fi, rds, rps, o, pf, df),
       Seq("dataSchema", "pushedFilters")))

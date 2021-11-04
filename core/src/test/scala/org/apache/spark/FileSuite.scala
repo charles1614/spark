@@ -28,7 +28,7 @@ import com.google.common.io.Files
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.Path
 import org.apache.hadoop.io._
-import org.apache.hadoop.io.compress.DefaultCodec
+import org.apache.hadoop.io.compress.{BZip2Codec, CompressionCodec, DefaultCodec, Lz4Codec}
 import org.apache.hadoop.mapred.{FileAlreadyExistsException, FileSplit, JobConf, TextInputFormat, TextOutputFormat}
 import org.apache.hadoop.mapreduce.Job
 import org.apache.hadoop.mapreduce.lib.input.{FileSplit => NewFileSplit, TextInputFormat => NewTextInputFormat}
@@ -38,7 +38,7 @@ import org.apache.spark.internal.config._
 import org.apache.spark.rdd.{HadoopRDD, NewHadoopRDD}
 import org.apache.spark.serializer.KryoSerializer
 import org.apache.spark.storage.StorageLevel
-import org.apache.spark.util.Utils
+import org.apache.spark.util.{Utils, VersionUtils}
 
 class FileSuite extends SparkFunSuite with LocalSparkContext {
   var tempDir: File = _
@@ -113,25 +113,35 @@ class FileSuite extends SparkFunSuite with LocalSparkContext {
     assert(output.map(_.toString).collect().toList === List("(1,a)", "(2,aa)", "(3,aaa)"))
   }
 
-  test("SequenceFile (compressed)") {
-    sc = new SparkContext("local", "test")
-    val normalDir = new File(tempDir, "output_normal").getAbsolutePath
-    val compressedOutputDir = new File(tempDir, "output_compressed").getAbsolutePath
-    val codec = new DefaultCodec()
+  def runSequenceFileCodecTest(codec: CompressionCodec, codecName: String): Unit = {
+    test(s"SequenceFile (compressed) - $codecName") {
+      sc = new SparkContext("local", "test")
+      val normalDir = new File(tempDir, "output_normal").getAbsolutePath
+      val compressedOutputDir = new File(tempDir, "output_compressed").getAbsolutePath
 
-    val data = sc.parallelize(Seq.fill(100)("abc"), 1).map(x => (x, x))
-    data.saveAsSequenceFile(normalDir)
-    data.saveAsSequenceFile(compressedOutputDir, Some(classOf[DefaultCodec]))
+      val data = sc.parallelize(Seq.fill(100)("abc"), 1).map(x => (x, x))
+      data.saveAsSequenceFile(normalDir)
+      data.saveAsSequenceFile(compressedOutputDir, Some(codec.getClass))
 
-    val normalFile = new File(normalDir, "part-00000")
-    val normalContent = sc.sequenceFile[String, String](normalDir).collect
-    assert(normalContent === Array.fill(100)(("abc", "abc")))
+      val normalFile = new File(normalDir, "part-00000")
+      val normalContent = sc.sequenceFile[String, String](normalDir).collect
+      assert(normalContent === Array.fill(100)(("abc", "abc")))
 
-    val compressedFile = new File(compressedOutputDir, "part-00000" + codec.getDefaultExtension)
-    val compressedContent = sc.sequenceFile[String, String](compressedOutputDir).collect
-    assert(compressedContent === Array.fill(100)(("abc", "abc")))
+      val compressedFile = new File(compressedOutputDir, "part-00000" + codec.getDefaultExtension)
+      val compressedContent = sc.sequenceFile[String, String](compressedOutputDir).collect
+      assert(compressedContent === Array.fill(100)(("abc", "abc")))
 
-    assert(compressedFile.length < normalFile.length)
+      assert(compressedFile.length < normalFile.length)
+    }
+  }
+
+  // Hadoop "gzip" and "zstd" codecs require native library installed for sequence files
+  // "snappy" codec does not work due to SPARK-36681.
+  val codecs = Seq((new DefaultCodec(), "default"), (new BZip2Codec(), "bzip2")) ++ {
+    if (VersionUtils.isHadoop3) Seq((new Lz4Codec(), "lz4")) else Seq()
+  }
+  codecs.foreach { case (codec, codecName) =>
+    runSequenceFileCodecTest(codec, codecName)
   }
 
   test("SequenceFile with writable key") {
@@ -170,7 +180,7 @@ class FileSuite extends SparkFunSuite with LocalSparkContext {
     val nums = sc.makeRDD(1 to 3).map(x => (x, "a" * x)) // (1,a), (2,aa), (3,aaa)
     nums.saveAsSequenceFile(outputDir)
     // Similar to the tests above, we read a SequenceFile, but this time we pass type params
-    // that are convertable to Writable instead of calling sequenceFile[IntWritable, Text]
+    // that are convertible to Writable instead of calling sequenceFile[IntWritable, Text]
     val output1 = sc.sequenceFile[Int, String](outputDir)
     assert(output1.collect().toList === List((1, "a"), (2, "aa"), (3, "aaa")))
     // Also try having one type be a subclass of Writable and one not

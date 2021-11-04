@@ -19,7 +19,7 @@ package org.apache.spark.sql.catalyst.util
 
 import java.time.DateTimeException
 
-import org.scalatest.Matchers
+import org.scalatest.matchers.must.Matchers
 
 import org.apache.spark.{SparkFunSuite, SparkUpgradeException}
 import org.apache.spark.sql.catalyst.plans.SQLHelper
@@ -32,7 +32,7 @@ trait DatetimeFormatterSuite extends SparkFunSuite with SQLHelper with Matchers 
 
   private def dateFormatter(
       pattern: String, ldf: LegacyDateFormat = FAST_DATE_FORMAT): DateFormatter = {
-    DateFormatter(pattern, UTC, DateFormatter.defaultLocale, ldf, isParsing = true)
+    DateFormatter(pattern, DateFormatter.defaultLocale, ldf, isParsing = true)
   }
 
   private def timestampFormatter(
@@ -45,7 +45,7 @@ trait DatetimeFormatterSuite extends SparkFunSuite with SQLHelper with Matchers 
   private def assertEqual(pattern: String, datetimeStr: String, expected: Long): Unit = {
     if (useDateFormatter) {
       assert(dateFormatter(pattern).parse(datetimeStr) ===
-        DateTimeUtils.microsToEpochDays(expected, UTC))
+        DateTimeUtils.microsToDays(expected, UTC))
     } else {
       assert(timestampFormatter(pattern).parse(datetimeStr) === expected)
     }

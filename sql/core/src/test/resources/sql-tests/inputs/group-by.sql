@@ -176,3 +176,16 @@ SELECT * FROM (SELECT COUNT(*) AS cnt FROM test_agg) WHERE cnt > 1L;
 SELECT count(*) FROM test_agg WHERE count(*) > 1L;
 SELECT count(*) FROM test_agg WHERE count(*) + 1L > 1L;
 SELECT count(*) FROM test_agg WHERE k = 1 or k = 2 or count(*) + 1L > 1L or max(k) > 1;
+
+-- Aggregate with multiple distinct decimal columns
+SELECT AVG(DISTINCT decimal_col), SUM(DISTINCT decimal_col) FROM VALUES (CAST(1 AS DECIMAL(9, 0))) t(decimal_col);
+
+-- SPARK-34581: Don't optimize out grouping expressions from aggregate expressions without aggregate function
+SELECT not(a IS NULL), count(*) AS c
+FROM testData
+GROUP BY a IS NULL;
+
+SELECT if(not(a IS NULL), rand(0), 1), count(*) AS c
+FROM testData
+GROUP BY a IS NULL;
+

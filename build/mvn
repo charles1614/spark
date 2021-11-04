@@ -17,12 +17,26 @@
 # limitations under the License.
 #
 
+SELF=$(cd $(dirname $0) && pwd)
+. "$SELF/util.sh"
+
+if [ -z "${JAVA_HOME}" -a "$(command -v javac)" ]; then
+  if [ "$(uname -s)" = "Darwin" ]; then
+    # For some versions of macOS, "/usr/bin/javac" is a real file instead of a symbolic link,
+    # so the JAVA_HOME may be set to path "/usr" improperly.
+    # The following command is an appropriate way of setting JAVA_HOME on macOS.
+    export JAVA_HOME="$(/usr/libexec/java_home)"
+  else
+    export JAVA_HOME="$(dirname $(dirname $(realpath $(command -v javac))))"
+  fi
+fi
+
 # Determine the current working directory
 _DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Preserve the calling directory
 _CALLING_DIR="$(pwd)"
 # Options used during compilation
-_COMPILE_JVM_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=1g"
+_COMPILE_JVM_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=1g -Xss128m"
 
 # Installs any application tarball given a URL, the expected tarball name,
 # and, optionally, a checkable binary path to determine if the binary has
@@ -44,16 +58,8 @@ install_app() {
   local local_checksum="${local_tarball}.${checksum_suffix}"
   local remote_checksum="https://archive.apache.org/dist/${url_path}.${checksum_suffix}"
 
-  # setup `curl` and `wget` silent options if we're running on Jenkins
-  local curl_opts="-L"
-  local wget_opts=""
-  if [ -n "$AMPLAB_JENKINS" ]; then
-    curl_opts="-s ${curl_opts}"
-    wget_opts="--quiet ${wget_opts}"
-  else
-    curl_opts="--progress-bar ${curl_opts}"
-    wget_opts="--progress=bar:force ${wget_opts}"
-  fi
+  local curl_opts="--silent --show-error -L"
+  local wget_opts="--no-verbose"
 
   if [ ! -f "$binary" ]; then
     # check if we already have the tarball
@@ -140,30 +146,6 @@ install_mvn() {
   fi
 }
 
-# Install zinc under the build/ folder
-install_zinc() {
-  local ZINC_VERSION=0.3.15
-  ZINC_BIN="$(command -v zinc)"
-  if [ "$ZINC_BIN" ]; then
-    local ZINC_DETECTED_VERSION="$(zinc -version | head -n1 | awk '{print $5}')"
-  fi
-
-  if [ $(version $ZINC_DETECTED_VERSION) -lt $(version $ZINC_VERSION) ]; then
-    local zinc_path="zinc-${ZINC_VERSION}/bin/zinc"
-    [ ! -f "${_DIR}/${zinc_path}" ] && ZINC_INSTALL_FLAG=1
-    local TYPESAFE_MIRROR=${TYPESAFE_MIRROR:-https://downloads.lightbend.com}
-
-    install_app \
-      "${TYPESAFE_MIRROR}" \
-      "zinc/${ZINC_VERSION}/zinc-${ZINC_VERSION}.tgz" \
-      "" \
-      "" \
-      "zinc-${ZINC_VERSION}.tgz" \
-      "${zinc_path}"
-    ZINC_BIN="${_DIR}/${zinc_path}"
-  fi
-}
-
 # Determine the Scala version from the root pom.xml file, set the Scala URL,
 # and, with that, download the specific version of Scala necessary under
 # the build/ folder
@@ -187,28 +169,11 @@ install_scala() {
   SCALA_LIBRARY="$(cd "$(dirname "${scala_bin}")/../lib" && pwd)/scala-library.jar"
 }
 
-# Setup healthy defaults for the Zinc port if none were provided from
-# the environment
-ZINC_PORT=${ZINC_PORT:-"3030"}
-
-# Install the proper version of Scala, Zinc and Maven for the build
-install_zinc
 install_scala
 install_mvn
 
 # Reset the current working directory
 cd "${_CALLING_DIR}"
-
-# Now that zinc is ensured to be installed, check its status and, if its
-# not running or just installed, start it
-if [ -n "${ZINC_INSTALL_FLAG}" -o -z "`"${ZINC_BIN}" -status -port ${ZINC_PORT}`" ]; then
-  export ZINC_OPTS=${ZINC_OPTS:-"$_COMPILE_JVM_OPTS"}
-  "${ZINC_BIN}" -shutdown -port ${ZINC_PORT}
-  "${ZINC_BIN}" -start -port ${ZINC_PORT} \
-    -server 127.0.0.1 -idle-timeout 3h \
-    -scala-compiler "${SCALA_COMPILER}" \
-    -scala-library "${SCALA_LIBRARY}" &>/dev/null
-fi
 
 # Set any `mvn` options if not already present
 export MAVEN_OPTS=${MAVEN_OPTS:-"$_COMPILE_JVM_OPTS"}
@@ -217,10 +182,7 @@ echo "Using \`mvn\` from path: $MVN_BIN" 1>&2
 
 # call the `mvn` command as usual
 # SPARK-25854
-"${MVN_BIN}" -DzincPort=${ZINC_PORT} "$@"
+"${MVN_BIN}" "$@"
 MVN_RETCODE=$?
-
-# Try to shut down zinc explicitly if the server is still running.
-"${ZINC_BIN}" -shutdown -port ${ZINC_PORT}
 
 exit $MVN_RETCODE

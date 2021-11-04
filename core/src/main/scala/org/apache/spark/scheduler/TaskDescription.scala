@@ -54,11 +54,12 @@ private[spark] class TaskDescription(
                                       val isMPI: Boolean,
                                       val addedFiles: Map[String, Long],
                                       val addedJars: Map[String, Long],
-                                      val properties: Properties,
+                                      val addedArchives: Map[String, Long],
+    val properties: Properties,
                                       val resources: immutable.Map[String, ResourceInformation],
                                       val serializedTask: ByteBuffer) {
 
-  override def toString: String = "TaskDescription(TID=%d, index=%d)".format(taskId, index)
+  override def toString: String = s"TaskDescription($name)"
 }
 
 private[spark] object TaskDescription {
@@ -100,6 +101,9 @@ private[spark] object TaskDescription {
 
     // Write jars.
     serializeStringLongMap(taskDescription.addedJars, dataOut)
+
+    // Write archives.
+    serializeStringLongMap(taskDescription.addedArchives, dataOut)
 
     // Write properties.
     dataOut.writeInt(taskDescription.properties.size())
@@ -175,6 +179,9 @@ private[spark] object TaskDescription {
     // Read jars.
     val taskJars = deserializeStringLongMap(dataIn)
 
+    // Read archives.
+    val taskArchives = deserializeStringLongMap(dataIn)
+
     // Read properties.
     val properties = new Properties()
     val numProperties = dataIn.readInt()
@@ -193,6 +200,6 @@ private[spark] object TaskDescription {
     val serializedTask = byteBuffer.slice()
 
     new TaskDescription(taskId, attemptNumber, executorId, name,
-      index, partitionId, isMPI, taskFiles, taskJars, properties, resources, serializedTask)
+      index, partitionId, isMPI, taskFiles, taskJars, taskArchives, properties, resources, serializedTask)
   }
 }

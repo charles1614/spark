@@ -19,6 +19,7 @@ package org.apache.spark.sql
 
 import org.apache.spark.sql.catalyst.TableIdentifier
 import org.apache.spark.sql.catalyst.catalog.CatalogTable
+import org.apache.spark.sql.sources.SimpleInsertSource
 import org.apache.spark.sql.test.{SharedSparkSession, SQLTestUtils}
 import org.apache.spark.util.Utils
 
@@ -155,16 +156,19 @@ abstract class ShowCreateTableSuite extends QueryTest with SQLTestUtils {
       val ex = intercept[AnalysisException] {
         sql(s"SHOW CREATE TABLE $viewName")
       }
-      assert(ex.getMessage.contains("SHOW CREATE TABLE is not supported on a temporary view"))
+      assert(ex.getMessage.contains(
+        s"$viewName is a temp view. 'SHOW CREATE TABLE' expects a table or permanent view."))
     }
 
     withGlobalTempView(viewName) {
       sql(s"CREATE GLOBAL TEMPORARY VIEW $viewName AS SELECT 1 AS a")
+      val globalTempViewDb = spark.sessionState.catalog.globalTempViewManager.database
       val ex = intercept[AnalysisException] {
-        val globalTempViewDb = spark.sessionState.catalog.globalTempViewManager.database
         sql(s"SHOW CREATE TABLE $globalTempViewDb.$viewName")
       }
-      assert(ex.getMessage.contains("SHOW CREATE TABLE is not supported on a temporary view"))
+      assert(ex.getMessage.contains(
+        s"$globalTempViewDb.$viewName is a temp view. " +
+          "'SHOW CREATE TABLE' expects a table or permanent view."))
     }
   }
 
@@ -173,19 +177,31 @@ abstract class ShowCreateTableSuite extends QueryTest with SQLTestUtils {
       val createTable = "CREATE TABLE `t1` (`a` STRUCT<`b`: STRING>)"
       sql(s"$createTable USING json")
       val shownDDL = getShowDDL("SHOW CREATE TABLE t1")
-      assert(shownDDL == "CREATE TABLE `default`.`t1` (`a` STRUCT<`b`: STRING>)")
+      assert(shownDDL == "CREATE TABLE `default`.`t1` ( `a` STRUCT<`b`: STRING>) USING json")
 
       checkCreateTable("t1")
     }
   }
 
+  test("SPARK-36012: Add NULL flag when SHOW CREATE TABLE") {
+    val t = "SPARK_36012"
+    withTable(t) {
+      sql(
+        s"""
+           |CREATE TABLE $t (
+           |  a bigint NOT NULL,
+           |  b bigint
+           |)
+           |USING ${classOf[SimpleInsertSource].getName}
+        """.stripMargin)
+      val showDDL = getShowDDL(s"SHOW CREATE TABLE $t")
+      assert(showDDL == s"CREATE TABLE `default`.`$t` ( `a` BIGINT NOT NULL," +
+        s" `b` BIGINT) USING ${classOf[SimpleInsertSource].getName}")
+    }
+  }
+
   protected def getShowDDL(showCreateTableSql: String): String = {
-    val result = sql(showCreateTableSql)
-      .head()
-      .getString(0)
-      .split("\n")
-      .map(_.trim)
-    if (result.length > 1) result(0) + result(1) else result.head
+    sql(showCreateTableSql).head().getString(0).split("\n").map(_.trim).mkString(" ")
   }
 
   protected def checkCreateTable(table: String, serde: Boolean = false): Unit = {

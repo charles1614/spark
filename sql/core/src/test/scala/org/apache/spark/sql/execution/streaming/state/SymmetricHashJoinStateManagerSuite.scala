@@ -48,7 +48,7 @@ class SymmetricHashJoinStateManagerSuite extends StreamTest with BeforeAndAfter 
 
   SymmetricHashJoinStateManager.supportedVersions.foreach { version =>
     test(s"SPARK-35689: StreamingJoinStateManager V${version} - " +
-      "printable key of keyWithIndexToValue") {
+        "printable key of keyWithIndexToValue") {
 
       val keyExprs = Seq[Expression](
         Literal(false),
@@ -67,6 +67,7 @@ class SymmetricHashJoinStateManagerSuite extends StreamTest with BeforeAndAfter 
       }
     }
   }
+
 
   private def testAllOperations(stateFormatVersion: Int): Unit = {
     withJoinStateManager(inputValueAttribs, joinKeyExprs, stateFormatVersion) { manager =>
