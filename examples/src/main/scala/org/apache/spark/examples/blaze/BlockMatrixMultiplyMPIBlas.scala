@@ -1,18 +1,16 @@
 
 package org.apache.spark.examples.blaze
 
+import org.apache.log4j.Logger
+import org.apache.spark.BlazeSession
+import org.apache.spark.examples.blaze.MPIOperators.mpiMultiply
+import org.apache.spark.mllib.linalg.distributed.{IndexedRow, IndexedRowMatrix}
+import org.apache.spark.mllib.linalg.{DenseMatrix, Vectors}
+
 import scala.math.sqrt
 import scala.sys.exit
 
-import org.apache.log4j.Logger
-
-import org.apache.spark.BlazeSession
-import org.apache.spark.mllib.linalg.{DenseMatrix, Vectors}
-import org.apache.spark.mllib.linalg.distributed.{IndexedRow, IndexedRowMatrix}
-
-import MPIOperators.mpiMultiply
-
-object BlockMatrixMultiplyMPI {
+object BlockMatrixMultiplyMPIBlas {
   @transient lazy val log = Logger.getLogger(getClass.getName)
 
   def main(args: Array[String]) {

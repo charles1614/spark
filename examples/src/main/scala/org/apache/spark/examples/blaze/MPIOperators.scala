@@ -86,6 +86,8 @@ object MPIOperators {
       waste_time = waste_time + (end_des - start_des + end_ser - start_ser)
 
       BLAS.gemm(1, aa, bb, 1, c)
+      val blas = BLAS.getBLAS(10)
+      print(blas)
     }
 
     cart.barrier()
