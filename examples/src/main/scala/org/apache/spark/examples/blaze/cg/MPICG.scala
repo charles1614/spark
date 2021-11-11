@@ -18,8 +18,6 @@ object MPICG {
     val bc = blaze.blazeContext
     bc.setLogLevel("ERROR")
 
-    val start = System.nanoTime
-
     val m: Int = if (args.length > 0) args(0).toInt else 2
     val n: Int = if (args.length > 1) args(1).toInt else 4
     val partitions: Int = if (args.length > 2) args(2).toInt else 2
@@ -37,16 +35,17 @@ object MPICG {
     val data: RDD[(Vector, DenseVector)] = A.zip(bd)
     //    printVecZipDns(A.zip(bd).asInstanceOf[RDD[(Vector, Vector)]])
 
-    print(data.getNumPartitions)
+    // print(data.getNumPartitions)
 
     val ret = data.mpimapPartitions {
       iter =>
         ConjugateGradients.cg(iter, m, maxIters)
-    }.count()
+    }
 
-    val stop = System.nanoTime
+    blaze.time {
+      ret.count()
+    }
 
-    print(s"elapse time is ${(stop - start)/1E6}ms")
 
 //    for (elem <- ret.slice(0, ret.length / 2)) {
 //      print(elem + "\n")

@@ -2,6 +2,7 @@
 package org.apache.spark
 
 import java.io.Closeable
+import java.util.concurrent.TimeUnit._
 
 import scala.collection.mutable
 
@@ -41,6 +42,16 @@ class BlazeSession private(
   }
 
   override def close(): Unit = stop()
+
+  def time[T](f: => T): T = {
+    val start = System.nanoTime()
+    val ret = f
+    val end = System.nanoTime()
+    // scalastyle:off println
+    println(s"Time taken: ${NANOSECONDS.toMillis(end - start)} ms")
+    // scalastyle:on println
+    ret
+  }
 }
 
 object BlazeSession extends Logging {

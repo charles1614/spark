@@ -21,7 +21,6 @@ object BlockMatrixMultiplyMPI {
 
     val blaze = BlazeSession.builder
       .appName("MPI BlockMatrixMultiply")
-      .master("local[*]")
       .getOrCreate()
 
     val bc = blaze.blazeContext
@@ -44,11 +43,10 @@ object BlockMatrixMultiplyMPI {
         mpiMultiply(mat.asInstanceOf[DenseMatrix], mat.asInstanceOf[DenseMatrix])
     }
 
-    val t0 = System.nanoTime()
-    val ret = blockSeq.count()
-    val t1 = System.nanoTime()
+    blaze.time {
+      val ret = blockSeq.count()
+    }
     //    println(s"ret is ${ret/size/size}, elapse time is ${t1-t0}")
-    println(s"ret is , elapse time is ${(t1 - t0)/1000000}ms")
 //    val sum = blockSeq.map(n => n.values.sum).reduce(_ + _)
 //    println(s"sum is ${sum}")
 

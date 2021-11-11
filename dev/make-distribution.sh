@@ -111,6 +111,8 @@ if [ -z "$JAVA_HOME" ]; then
   exit -1
 fi
 
+echo $JAVA_HOME
+
 if [ $(command -v git) ]; then
     GITREV=$(git rev-parse --short HEAD 2>/dev/null || :)
     if [ ! -z "$GITREV" ]; then
