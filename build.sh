@@ -7,6 +7,12 @@ mvn install:install-file -Dfile=/opt/ompi/lib/mpi.jar \
  -Dversion=5.0.1 \
  -Dpackaging=jar > ~/mvn_mpi
 
+mvn install:install-file -Dfile=/usr/lib/jarhdf5-1.12.1.jar \
+     -DgroupId=org.hdfgroup \
+      -DartifactId=hdf5 \
+       -Dversion=1.12.1 \
+        -Dpackaging=jar
+
 #compile native code
 spark_home=${HOME}/git/spark/
 cd ${spark_home}/blaze/src/main/native

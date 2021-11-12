@@ -2,12 +2,12 @@
 package org.apache.spark
 
 import java.io.Closeable
-
 import scala.collection.mutable
-
 import org.apache.spark.annotation.DeveloperApi
 import org.apache.spark.internal.Logging
 import org.apache.spark.util.{CallSite, Utils}
+
+import java.util.concurrent.TimeUnit.NANOSECONDS
 
 
 /**
@@ -15,7 +15,7 @@ import org.apache.spark.util.{CallSite, Utils}
  */
 @DeveloperApi
 class BlazeSession private(
-                            @transient val blazeContext: BlazeContext)
+  @transient val blazeContext: BlazeContext)
   extends Serializable with Closeable with Logging {
 
   private val creationCallSite: CallSite = Utils.getCallSite()
@@ -41,6 +41,16 @@ class BlazeSession private(
   }
 
   override def close(): Unit = stop()
+
+  def time[T](f: => T): T = {
+    val start = System.nanoTime()
+    val ret = f
+    val end = System.nanoTime()
+    // scalastyle:off println
+    println(s"Time taken: ${NANOSECONDS.toMillis(end - start)} ms")
+    // scalastyle:on println
+    ret
+  }
 }
 
 object BlazeSession extends Logging {
@@ -159,6 +169,16 @@ object BlazeSession extends Logging {
         BlazeContext.getOrCreate(sparkConf)
       }
       new BlazeSession(blazecontext)
+    }
+
+    def time[T](f: => T): T = {
+      val start = System.nanoTime()
+      val ret = f
+      val end = System.nanoTime()
+      // scalastyle:off println
+      println(s"Time taken: ${NANOSECONDS.toMillis(end - start)} ms")
+      // scalastyle:on println
+      ret
     }
   }
 

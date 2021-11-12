@@ -2,7 +2,6 @@
 package org.apache.spark.examples.blaze
 
 import org.apache.log4j.Logger
-
 import org.apache.spark.BlazeSession
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.linalg.distributed.{IndexedRow, IndexedRowMatrix}
@@ -35,7 +34,9 @@ object BlockMatrixMultiply {
     //    )
     val mat = blockMat.multiply(blockMat)
     val stop = System.nanoTime
-    mat.blocks.count()
+      mat.blocks.count()
+
+
     //    mat.blocks.map(_._2.toArray.sum).sum
 
     //    println(s"ret head is ${ret / size / size} while expected is ${size}")
