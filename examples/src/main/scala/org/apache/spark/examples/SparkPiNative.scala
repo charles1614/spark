@@ -18,53 +18,50 @@
 // scalastyle:off println
 package org.apache.spark.examples
 
-import scala.math.random
+//import scala.math.random
 import org.apache.spark.BlazeSession
 
-import java.io.File
-
 /** Computes an approximation to pi */
-object SparkPi2 {
+object SparkPiNative {
 
   def main(args: Array[String]): Unit = {
 
     val blaze = BlazeSession
       .builder
       .appName("blazePi")
-      .master("local[*]")
+      .master("local[1]")
       .getOrCreate()
 
     val start = System.nanoTime()
     val slices = if (args.length > 0) args(0).toInt else 8
-    val n = math.min(100000L * slices, Int.MaxValue).toInt // avoid overflow
-    val count = blaze.blazeContext.parallelize(1 until 8, slices).map { i =>
-          var tempPath = System.getProperty("java.io.tmpdir")
-          val myDir = new File(tempPath.concat(scala.util.Random.nextString(10).toString))
-          print(myDir.toString)
-          myDir.mkdir()
+//    val n = math.min(100000L * slices, Int.MaxValue).toInt // avoid overflow
+//    val count = blaze.blazeContext.parallelize(1 until n, slices).map { i =>
+//      val x = random * 2 - 1
+//      val y = random * 2 - 1
+//      if (x * x + y * y <= 1) 1 else 0
+//    }.reduce(_ + _)
 
-          val tempFile = new File("/tmp/temp.log")
-          tempFile.createNewFile()
-//          print(tempFile.toString)
-      val x = random * 2 - 1
-      val y = random * 2 - 1
-      if (x * x + y * y <= 1) 1 else 0
-    }.reduce(_ + _)
+    val nativeExec = "hostname";
+
+    val n = 8
+    val count = blaze.blazeContext.parallelize(1 until n, slices).map { i =>
+      exec(nativeExec)
+    }.count()
 
     //    blaze.sparkContext.parallelize(1 until 3, slices).map(i => mpiop(args)).collect()
     //    blaze.mpiContext.parallelize(1 until 2, slices).map(i => mpiop(args)).collect()
     //    mpiop(args);
     val end = System.nanoTime()
-
-//    var tempPath = System.getProperty("java.io.tmpdir")
-//    val myDir = new File(tempPath.concat(scala.util.Random.nextString(10).toString))
-//    myDir.mkdir()
-//
-//    val tempFile = new File(myDir.toString + "/temp.log")
-
-    println(s"Pi is roughly ${4.0 * count / (n - 1)}")
-    println(s"elapse time is ${(end - start) / 1000000} ms")
+//    println(s"Pi is roughly ${4.0 * count / (n - 1)}")
+//    println(s"elapse time is ${(end - start) / 1000000} ms")
     blaze.stop()
+  }
+
+  def exec(exe: String): Unit = {
+    val pb = new ProcessBuilder(exe).inheritIO()
+    val p = pb.start()
+    p.waitFor()
+//    pb.wait()
   }
 }
 // scalastyle:on println
