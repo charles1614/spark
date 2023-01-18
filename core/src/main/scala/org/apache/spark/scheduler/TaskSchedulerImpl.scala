@@ -741,7 +741,7 @@ private[spark] class TaskSchedulerImpl(
 
             // TODO start mpi
           if (taskSet.isBarrier) {
-            taskSet.startMPI(shuffledOffers)
+            val mpiStartingThread = taskSet.startMPI(shuffledOffers)
           }
           Thread.sleep(1000)
 

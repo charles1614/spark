@@ -43,7 +43,7 @@ object SparkPi {
 
     val conf = new SparkConf()
       .set("spark.executor.cores", "1")
-//      .set("spark.task.cpus", "1")
+    //      .set("spark.task.cpus", "1")
     //      .set("spark.master", "spark://192.168.32.197:7077")
     //      .setJars(Array[String]("/home/xialb/opt/spark/examples/target/scala-2.12/jars/spark-examples_2.12-3.0.3-SNAPSHOT.jar"))
 
@@ -68,13 +68,13 @@ object SparkPi {
       //    }.reduce(_ + _)
     }.map(i => i).collect()
 
-//    Thread.sleep(100000000)
+    //    Thread.sleep(100000000)
 
     //        blaze.blazeContext.parallelize(1 until 3, slices).map(i => mpiop(args)).collect()
     //        mpiop(args);
 
     val end = System.nanoTime()
-//    println(s"Pi is roughly ${4.0 * count / (n - 1)}")
+    //    println(s"Pi is roughly ${4.0 * count / (n - 1)}")
     println(s"elapse time is ${(end - start) / 1000000} ms")
 
     blaze.stop()

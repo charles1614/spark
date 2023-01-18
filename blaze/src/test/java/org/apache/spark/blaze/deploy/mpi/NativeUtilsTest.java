@@ -67,4 +67,15 @@ public class NativeUtilsTest {
 //        int rc = mpiRun.exec(app);
 //        assert(rc == 0);
 //    }
+
+    public static void main(String[] args) {
+        String[] app = new String[4];
+        app[0] = "prun";
+        app[1] = "-n";
+        app[2] = "2";
+        app[3] = "hostname";
+        MPIRun mpiRun = new MPIRun();
+        int rc = mpiRun.exec(app);
+        assert (rc == 0);
+    }
 }

@@ -17,30 +17,24 @@
 
 package org.apache.spark.rdd
 
-import java.io.BufferedWriter
-import java.io.File
-import java.io.FilenameFilter
-import java.io.IOException
-import java.io.OutputStreamWriter
-import java.io.PrintWriter
+import org.apache.spark.util.Utils
+import org.apache.spark.{Partition, TaskContext}
+
+import java.io._
 import java.util.StringTokenizer
 import java.util.concurrent.atomic.AtomicReference
-
 import scala.collection.JavaConverters._
 import scala.collection.Map
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 import scala.reflect.ClassTag
 
-import org.apache.spark.{Partition, TaskContext}
-import org.apache.spark.util.Utils
-
 
 /**
  * An RDD that pipes the contents of each parent partition through an external command
  * (printing them one per line) and returns the output as a collection of strings.
  */
-private[spark] class PipedRDD[T: ClassTag](
+private[spark] class MPIPipedRDD[T: ClassTag](
     prev: RDD[T],
     command: Seq[String],
     envVars: Map[String, String],
@@ -230,7 +224,7 @@ private[spark] class PipedRDD[T: ClassTag](
   }
 }
 
-private object PipedRDD {
+private object MPIPipedRDD {
   // Split a string into words using a standard StringTokenizer
   def tokenize(command: String): Seq[String] = {
     val buf = new ArrayBuffer[String]

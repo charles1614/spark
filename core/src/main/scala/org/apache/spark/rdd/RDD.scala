@@ -2078,6 +2078,23 @@ abstract class RDD[T: ClassTag](
     mpiStage_
   }
 
+  /** mpi pipe */
+  def mpipipe(
+    command: Seq[String],
+    env: Map[String, String] = Map(),
+    printPipeContext: (String => Unit) => Unit = null,
+    printRDDElement: (T, String => Unit) => Unit = null,
+    separateWorkingDir: Boolean = false,
+    bufferSize: Int = 8192,
+    encoding: String = Codec.defaultCharsetCodec.name): RDD[String] = withScope {
+    new PipedRDD(this, command, env,
+      if (printPipeContext ne null) sc.clean(printPipeContext) else null,
+      if (printRDDElement ne null) sc.clean(printRDDElement) else null,
+      separateWorkingDir,
+      bufferSize,
+      encoding)
+  }
+
   /** mpi map */
   def mpimap[U: ClassTag](f: T => U): RDD[U] = withScope {
     //    logInfo("======== Initialize MPI Namespace ===========")
@@ -2130,6 +2147,7 @@ abstract class RDD[T: ClassTag](
     val np = partitions.length
     logInfo(s"attempt to start ${np} cores for MPIJob")
     val cmd = Array[String]("prun", "--map-by", ":OVERSUBSCRIBE", "-n", np.toString, "hostname")
+    logInfo(s"Running MPI with ${np.toString} partitions")
     val rc = MPIRun.launch(cmd)
     if (0 != rc) {
       logError("setupMPIJobNamespace Failure")
