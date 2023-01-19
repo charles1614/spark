@@ -40,9 +40,20 @@ class MPIPipedRDDSuite extends SparkFunSuite with SharedSparkContext with Eventu
   test("basic pipe") {
     assume(TestUtils.testCommandAvailable("cat"))
     val nums = sc.makeRDD(Array(3), 1)
+    sc.setLogLevel("DEBUG")
     //    val nums = sc.makeRDD(Array(1, 2, 3, 4), 2)
 //    val piped = nums.mpipipe(Seq(System.getenv("HOME") + "/git/ompi/examples/hello_c"))
-    val piped = nums.mpipipe(Seq("hostname"))
+    val base = "/home/xialb/git/lqcdworkflow/tests/01.hmc"
+    val input = base + "/input/hmc.prec_wilson.ini.xml"
+    val output = base + "/output/hmc.prec_wilson.out.xml"
+    val hmclog = base + "/output/hmc.prec_wilson.log.xml"
+
+    val list = (1 to 1).map(_ => s"-geom 1 1 1 1 -i ${input} -o ${output} -hmclog ${hmclog}")
+    val data = sc.parallelize(list, 1)
+    val piped = data.mpipipe(Seq(System.getenv("HOME")
+      + "/git/lqcdworkflow/code/01.chroma_build/install/chroma-double/bin/hmc"))
+
+
     //    val piped = nums.mpimap(x => {
     //      x.toString
     //    })
@@ -51,10 +62,11 @@ class MPIPipedRDDSuite extends SparkFunSuite with SharedSparkContext with Eventu
     //    println(System.getenv("PMIX_RANK")) // this will return "propValue"
 
     val c = piped.collect()
+    c.foreach(println)
 
 
     //    assert(c.size === 4)
-    assert(c(0) === "lenovo")
+//    assert(c(0) === "lenovo")
     //    assert(c(1) === "2")
     //        assert(c(0) === "3")
     //    assert(c(3) === "4")
