@@ -1035,8 +1035,10 @@ private[spark] class Executor(
   def startTaskMPI(taskDescription: TaskDescription): Unit = {
     logInfo(s"task ${taskDescription.partitionId} MPI Environment")
     logInfo(s"start MPI rank ${taskDescription.partitionId} on host $executorHostname")
-    MPIUtil.setPmixEnv()
-    MPIUtil.setRank(taskDescription.partitionId.toString)
+
+//    MPIUtil.setPmixEnv()
+//    MPIUtil.setRank(taskDescription.partitionId.toString)
+    MPIUtil.setMPIEnv(taskDescription.partitionId.toString)
     System.load("/home/xialb/lib/libblaze.so")
   }
 

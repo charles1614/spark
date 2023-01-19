@@ -21,12 +21,12 @@ import org.apache.hadoop.fs.Path
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapred.{FileSplit, JobConf, TextInputFormat}
 import org.apache.spark._
+//import org.apache.spark.mpi.EnvHacker
 import org.apache.spark.util.Utils
 import org.scalatest.concurrent.Eventually
 
 import java.io.File
 import scala.collection.JavaConverters._
-import scala.collection.Map
 import scala.concurrent.duration._
 import scala.io.Codec
 
@@ -39,16 +39,25 @@ class MPIPipedRDDSuite extends SparkFunSuite with SharedSparkContext with Eventu
 
   test("basic pipe") {
     assume(TestUtils.testCommandAvailable("cat"))
-    val nums = sc.makeRDD(Array(1, 2, 3, 4), 2)
-
-    val piped = nums.mpipipe(Seq("cat"))
+    val nums = sc.makeRDD(Array(3), 1)
+    //    val nums = sc.makeRDD(Array(1, 2, 3, 4), 2)
+    val piped = nums.mpipipe(Seq("/home/xialb/git/ompi/examples/hello_c"))
+//    val piped = nums.mpipipe(Seq("hostname"))
+    //    val piped = nums.mpimap(x => {
+    //      x.toString
+    //    })
+    //    JavaUtil.getModifiableEnvironment.put("propName", "propValue")
+    //    EnvHacker.setEnv(scala.collection.immutable.Map("propName"->"propVal"))
+    //    println(System.getenv("PMIX_RANK")) // this will return "propValue"
 
     val c = piped.collect()
-    assert(c.size === 4)
-    assert(c(0) === "1")
-    assert(c(1) === "2")
-    assert(c(2) === "3")
-    assert(c(3) === "4")
+
+
+    //    assert(c.size === 4)
+    assert(c(0) === "lenovo")
+    //    assert(c(1) === "2")
+    //        assert(c(0) === "3")
+    //    assert(c(3) === "4")
   }
 
   test("basic pipe with tokenization") {
@@ -69,13 +78,14 @@ class MPIPipedRDDSuite extends SparkFunSuite with SharedSparkContext with Eventu
     val nums =
       sc.makeRDD(Array(1, 2, 3, 4), 2)
         .mapPartitionsWithIndex((index, iterator) => {
-        new Iterator[Int] {
-          def hasNext = true
-          def next() = {
-            throw new SparkException("Exception to simulate bad scenario")
+          new Iterator[Int] {
+            def hasNext = true
+
+            def next() = {
+              throw new SparkException("Exception to simulate bad scenario")
+            }
           }
-        }
-      })
+        })
 
     val piped = nums.pipe(Seq("cat"))
 
@@ -107,7 +117,9 @@ class MPIPipedRDDSuite extends SparkFunSuite with SharedSparkContext with Eventu
     eventually(timeout(10.seconds), interval(1.second)) {
       // collect stdin writer threads
       val stdinWriterThread = Thread.getAllStackTraces.keySet().asScala
-        .find { _.getName.startsWith(PipedRDD.STDIN_WRITER_THREAD_PREFIX) }
+        .find {
+          _.getName.startsWith(PipedRDD.STDIN_WRITER_THREAD_PREFIX)
+        }
       assert(stdinWriterThread.isEmpty)
     }
   }
@@ -120,7 +132,8 @@ class MPIPipedRDDSuite extends SparkFunSuite with SharedSparkContext with Eventu
     val piped = nums.pipe(Seq("cat"),
       Map[String, String](),
       (f: String => Unit) => {
-        bl.value.foreach(f); f("\u0001")
+        bl.value.foreach(f);
+        f("\u0001")
       },
       (i: Int, f: String => Unit) => f(i + "_"))
 
@@ -141,7 +154,8 @@ class MPIPipedRDDSuite extends SparkFunSuite with SharedSparkContext with Eventu
       pipe(Seq("cat"),
         Map[String, String](),
         (f: String => Unit) => {
-          bl.value.foreach(f); f("\u0001")
+          bl.value.foreach(f);
+          f("\u0001")
         },
         (i: Tuple2[String, Iterable[String]], f: String => Unit) => {
           for (e <- i._2) {

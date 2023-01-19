@@ -46,6 +46,7 @@ abstract class Dependency[T] extends Serializable {
 abstract class NarrowDependency[T](_rdd: RDD[T]) extends Dependency[T] {
   /**
    * Get the parent partitions for a child partition.
+   *
    * @param partitionId a partition of the child RDD
    * @return the partitions of the parent RDD that the child partition depends upon
    */
@@ -60,30 +61,31 @@ abstract class NarrowDependency[T](_rdd: RDD[T]) extends Dependency[T] {
  * Represents a dependency on the output of a shuffle stage. Note that in the case of shuffle,
  * the RDD is transient since we don't need it on the executor side.
  *
- * @param _rdd the parent RDD
- * @param partitioner partitioner used to partition the shuffle output
- * @param serializer [[org.apache.spark.serializer.Serializer Serializer]] to use. If not set
- *                   explicitly then the default serializer, as specified by `spark.serializer`
- *                   config option, will be used.
- * @param keyOrdering key ordering for RDD's shuffles
- * @param aggregator map/reduce-side aggregator for RDD's shuffle
- * @param mapSideCombine whether to perform partial aggregation (also known as map-side combine)
+ * @param _rdd                   the parent RDD
+ * @param partitioner            partitioner used to partition the shuffle output
+ * @param serializer             [[org.apache.spark.serializer.Serializer Serializer]] to use. If not set
+ *                               explicitly then the default serializer, as specified by `spark.serializer`
+ *                               config option, will be used.
+ * @param keyOrdering            key ordering for RDD's shuffles
+ * @param aggregator             map/reduce-side aggregator for RDD's shuffle
+ * @param mapSideCombine         whether to perform partial aggregation (also known as map-side combine)
  * @param shuffleWriterProcessor the processor to control the write behavior in ShuffleMapTask
  */
 @DeveloperApi
 class ShuffleDependency[K: ClassTag, V: ClassTag, C: ClassTag](
-    @transient private val _rdd: RDD[_ <: Product2[K, V]],
-    val partitioner: Partitioner,
-    val serializer: Serializer = SparkEnv.get.serializer,
-    val keyOrdering: Option[Ordering[K]] = None,
-    val aggregator: Option[Aggregator[K, V, C]] = None,
-    val mapSideCombine: Boolean = false,
-    val shuffleWriterProcessor: ShuffleWriteProcessor = new ShuffleWriteProcessor)
+  @transient private val _rdd: RDD[_ <: Product2[K, V]],
+  val partitioner: Partitioner,
+  val serializer: Serializer = SparkEnv.get.serializer,
+  val keyOrdering: Option[Ordering[K]] = None,
+  val aggregator: Option[Aggregator[K, V, C]] = None,
+  val mapSideCombine: Boolean = false,
+  val shuffleWriterProcessor: ShuffleWriteProcessor = new ShuffleWriteProcessor)
   extends Dependency[Product2[K, V]] with Logging {
 
   if (mapSideCombine) {
     require(aggregator.isDefined, "Map-side combine without Aggregator specified!")
   }
+
   override def rdd: RDD[Product2[K, V]] = _rdd.asInstanceOf[RDD[Product2[K, V]]]
 
   private[spark] val keyClassName: String = reflect.classTag[K].runtimeClass.getName
@@ -91,7 +93,7 @@ class ShuffleDependency[K: ClassTag, V: ClassTag, C: ClassTag](
   // Note: It's possible that the combiner class tag is null, if the combineByKey
   // methods in PairRDDFunctions are used instead of combineByKeyWithClassTag.
   private[spark] val combinerClassName: Option[String] =
-    Option(reflect.classTag[C]).map(_.runtimeClass.getName)
+  Option(reflect.classTag[C]).map(_.runtimeClass.getName)
 
   val shuffleId: Int = _rdd.context.newShuffleId()
 
@@ -108,7 +110,7 @@ class ShuffleDependency[K: ClassTag, V: ClassTag, C: ClassTag](
     _shuffleMergeEnabled = shuffleMergeEnabled
   }
 
-  def shuffleMergeEnabled : Boolean = _shuffleMergeEnabled
+  def shuffleMergeEnabled: Boolean = _shuffleMergeEnabled
 
   /**
    * Stores the location of the list of chosen external shuffle services for handling the
@@ -192,10 +194,11 @@ class OneToOneDependency[T](rdd: RDD[T]) extends NarrowDependency[T](rdd) {
 /**
  * :: DeveloperApi ::
  * Represents a one-to-one dependency between ranges of partitions in the parent and child RDDs.
- * @param rdd the parent RDD
- * @param inStart the start of the range in the parent RDD
+ *
+ * @param rdd      the parent RDD
+ * @param inStart  the start of the range in the parent RDD
  * @param outStart the start of the range in the child RDD
- * @param length the length of the range
+ * @param length   the length of the range
  */
 @DeveloperApi
 class RangeDependency[T](rdd: RDD[T], inStart: Int, outStart: Int, length: Int)
@@ -213,24 +216,28 @@ class RangeDependency[T](rdd: RDD[T], inStart: Int, outStart: Int, length: Int)
 
 @DeveloperApi
 class MPIDependency[V: ClassTag](
-//                        @transient private val _rdd: RDD[_ <: Product2[K, V]],
-// implicit convert to KeyValue RDD
-                        rdd: RDD[V],
-                        partitioner: Partitioner,
-                        serializer: Serializer = SparkEnv.get.serializer,
-                        keyOrdering: Option[Ordering[Int]] = None,
-                        aggregator: Option[Aggregator[Int, V, V]] = None,
-                        mapSideCombine: Boolean = false,
-                        shuffleWriterProcessor: ShuffleWriteProcessor = new ShuffleWriteProcessor)
-      extends ShuffleDependency[Int, V, V](rdd, partitioner, serializer, keyOrdering,
-        aggregator, mapSideCombine, shuffleWriterProcessor) {
+  //                        @transient private val _rdd: RDD[_ <: Product2[K, V]],
+  // implicit convert to KeyValue RDD
+  val _rdd: RDD[V],
+  partitioner: Partitioner,
+  serializer: Serializer = SparkEnv.get.serializer,
+  keyOrdering: Option[Ordering[Int]] = None,
+  aggregator: Option[Aggregator[Int, V, V]] = None,
+  mapSideCombine: Boolean = false,
+  shuffleWriterProcessor: ShuffleWriteProcessor = new ShuffleWriteProcessor)
+  extends ShuffleDependency[Int, V, V](_rdd, partitioner, serializer, keyOrdering,
+    aggregator, mapSideCombine, shuffleWriterProcessor) {
   /**
    * Get the parent partitions for a child partition.
    *
    * @param partitionId a partition of the child RDD
    * @return the partitions of the parent RDD that the child partition depends upon
    */
-   def getParents(partitionId: Int): Seq[Int] = {
+  def getParents(partitionId: Int): Seq[Int] = {
     List(partitionId)
   }
+
+  // override must be Product2
+  def prev_rdd: RDD[V] = _rdd
+
 }

@@ -76,7 +76,7 @@ object MPIP1 {
     val blaze = BlazeSession
       .builder
       .appName("blazePi")
-      //      .master("local[3]")
+//      .master("local[*]")
       //      .config(conf)
       .getOrCreate()
 
@@ -98,7 +98,7 @@ object MPIP1 {
 
     //    pi.map(i => println(s"pi array ${i}"))
 
-//    Thread.sleep(100000)
+    //    Thread.sleep(100000)
     blaze.stop()
     println("MPIPI has exited")
     System.exit(0)

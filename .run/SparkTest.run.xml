@@ -1,0 +1,88 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SparkTest" type="SparkSubmitConfigurationType" factoryName="SshSparkJobConfigurationType" show_console_on_std_err="false" show_console_on_std_out="false">
+    <option name="allowRunningInParallel" value="false" />
+    <option name="archives">
+      <list />
+    </option>
+    <option name="artifactArgs" value="" />
+    <option name="artifactPath">
+      <FilePath>
+        <option name="path" value="$PROJECT_DIR$/examples/target/scala-2.12/jars/spark-examples_2.12-3.2.1-SNAPSHOT.jar" />
+        <option name="type" value="CUSTOM" />
+      </FilePath>
+    </option>
+    <option name="beforeShellScript" value="" />
+    <option name="className" value="org.apache.spark.examples.blaze.MPIPipeTest" />
+    <option name="clusterManager" value="STANDALONE" />
+    <option name="conf" value="" />
+    <option name="deployMode" value="CLIENT" />
+    <option name="driverClassPath">
+      <list />
+    </option>
+    <option name="driverCores" value="1" />
+    <option name="driverJavaOptions" value="" />
+    <option name="driverLibraryPath">
+      <list />
+    </option>
+    <option name="driverMemory" value="5G" />
+    <option name="envParams" value="" />
+    <option name="excludePackages" value="" />
+    <option name="executorCores" value="1" />
+    <option name="executorMemory" value="5G" />
+    <option name="files">
+      <list />
+    </option>
+    <option name="interactive" value="false" />
+    <option name="jars">
+      <list />
+    </option>
+    <option name="keytab">
+      <FilePath>
+        <option name="path" value="" />
+        <option name="type" value="CUSTOM" />
+      </FilePath>
+    </option>
+    <option name="master" value="spark://lenovo:7077" />
+    <option name="numExecutors" value="4" />
+    <option name="packages" value="" />
+    <option name="principal" value="" />
+    <option name="projectPathOnTarget" />
+    <option name="propertiesFile">
+      <FilePath>
+        <option name="path" value="" />
+        <option name="type" value="CUSTOM" />
+      </FilePath>
+    </option>
+    <option name="proxyUser" value="" />
+    <option name="pyFiles">
+      <list />
+    </option>
+    <option name="queue" value="" />
+    <option name="repositories" value="" />
+    <option name="selectedOptions">
+      <list />
+    </option>
+    <option name="shellExecutor" value="/bin/bash" />
+    <option name="sparkHome" value="$PROJECT_DIR$" />
+    <option name="sparkMonitoringDriverId" value="Spark monitoring connection@SparkMonitoringConnections@3813721135445125893" />
+    <option name="sshConfigId" value="8fd0ac03-c31c-4961-92d7-2c7523d6ac99" />
+    <option name="supervise" value="false" />
+    <option name="targetDirectory">
+      <FilePath>
+        <option name="path" value="" />
+        <option name="type" value="SERVER" />
+      </FilePath>
+    </option>
+    <option name="totalExecutorCores" value="4" />
+    <option name="verbose" value="false" />
+    <option name="workDirectoryPath">
+      <FilePath>
+        <option name="path" value="" />
+        <option name="type" value="SERVER" />
+      </FilePath>
+    </option>
+    <method v="2">
+      <option name="SftpSparkFileUpload" enabled="true" />
+    </method>
+  </configuration>
+</component>
