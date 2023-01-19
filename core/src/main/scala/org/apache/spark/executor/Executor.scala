@@ -1039,11 +1039,11 @@ private[spark] class Executor(
 //    MPIUtil.setPmixEnv()
 //    MPIUtil.setRank(taskDescription.partitionId.toString)
     MPIUtil.setMPIEnv(taskDescription.partitionId.toString)
-    System.load("/home/xialb/lib/libblaze.so")
+    System.load(System.getenv("HOME") + "/lib/libblaze.so")
   }
 
   def stopTaskMPI(): Unit = {
-    System.load("/home/xialb/lib/libblaze.so")
+    System.load(System.getenv("HOME") + "/lib/libblaze.so")
     val ns: String = NativeUtil.namespaceQuery()
     if (!ns.isEmpty) {
       logInfo(ns)

@@ -83,9 +83,12 @@ private[spark] class MPIPipedRDD[T: ClassTag](
     val currentEnvVars = pb.environment()
     // add mpi env
     val envVars = System.getenv().asScala
-    logInfo("envVars" + envVars)
     envVars.foreach {
-      case (variable, value) => currentEnvVars.put(variable, value)
+      case (variable, value) =>
+        currentEnvVars.put(variable, value)
+        if (variable.startsWith("PMIX")) {
+          logInfo("Env " + variable + " -> " + value)
+        }
     }
 
     // for compatibility with Hadoop which sets these env variables

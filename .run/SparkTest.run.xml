@@ -42,7 +42,7 @@
         <option name="type" value="CUSTOM" />
       </FilePath>
     </option>
-    <option name="master" value="spark://lenovo:7077" />
+    <option name="master" value="spark://yoga:7077" />
     <option name="numExecutors" value="4" />
     <option name="packages" value="" />
     <option name="principal" value="" />
@@ -64,8 +64,8 @@
     </option>
     <option name="shellExecutor" value="/bin/bash" />
     <option name="sparkHome" value="$PROJECT_DIR$" />
-    <option name="sparkMonitoringDriverId" value="Spark monitoring connection@SparkMonitoringConnections@3813721135445125893" />
-    <option name="sshConfigId" value="8fd0ac03-c31c-4961-92d7-2c7523d6ac99" />
+    <option name="sparkMonitoringDriverId" value="" />
+    <option name="sshConfigId" value="3bfd2b49-c0af-45f3-89ed-055d4223af7b" />
     <option name="supervise" value="false" />
     <option name="targetDirectory">
       <FilePath>

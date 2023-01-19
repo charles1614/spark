@@ -4,8 +4,7 @@ import java.util.Map;
 
 public class NativeUtils {
     static {
-        System.load("/home/xialb/lib/libblaze.so");
-
+        System.load(System.getenv("SPARK_HOME") + "/lib/libblaze.so");
     }
 
     public static native int rte(int argc, String[] argv);

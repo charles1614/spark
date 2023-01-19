@@ -1233,7 +1233,7 @@ private[spark] class TaskSetManager(
     }
     out.close()
     logInfo("======== Initialize MPI Namespace ===========")
-    System.load("/home/xialb/lib/libblaze.so")
+    System.load(System.getenv("SPARK_HOME") + "/lib/libblaze.so")
     launchMPIJobNamespace()
   }
 
@@ -1269,7 +1269,7 @@ private[spark] class TaskSetManager(
 
   // TODO: stop specify namespace in task
   def stopMPIJobNamespace(): Unit = {
-    System.load("/home/xialb/lib/libblaze.so")
+    System.load(System.getenv("SPARK_HOME") + "/lib/libblaze.so")
     val ns: String = NativeUtil.namespaceQuery()
     logInfo(s"Existed MPI ns ${ns}")
     val split = ns.split(",")

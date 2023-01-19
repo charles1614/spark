@@ -19,7 +19,7 @@ class MPIMapPartitionsRDDSuite extends SparkFunSuite with SharedSparkContext {
   }
 
   test("mpirun") {
-    System.load("/home/xialb/lib/libblaze.so")
+    System.load(System.getenv("SPARK_HOME") + "/lib/libblaze.so")
     val s = NativeUtil.namespaceQuery()
     val split = s.split(",")
     if (!split(0).isEmpty) {
@@ -41,7 +41,7 @@ class MPIMapPartitionsRDDSuite extends SparkFunSuite with SharedSparkContext {
   }
 
   test("finalize namespace") {
-    System.load("/home/xialb/lib/libblaze.so")
+    System.load(System.getenv("SPARK_HOME") + "/lib/libblaze.so")
     val s = NativeUtil.namespaceQuery()
     val split = s.split(",")
     print(s)

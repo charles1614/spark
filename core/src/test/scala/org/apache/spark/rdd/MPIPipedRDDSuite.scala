@@ -41,8 +41,8 @@ class MPIPipedRDDSuite extends SparkFunSuite with SharedSparkContext with Eventu
     assume(TestUtils.testCommandAvailable("cat"))
     val nums = sc.makeRDD(Array(3), 1)
     //    val nums = sc.makeRDD(Array(1, 2, 3, 4), 2)
-    val piped = nums.mpipipe(Seq("/home/xialb/git/ompi/examples/hello_c"))
-//    val piped = nums.mpipipe(Seq("hostname"))
+//    val piped = nums.mpipipe(Seq(System.getenv("HOME") + "/git/ompi/examples/hello_c"))
+    val piped = nums.mpipipe(Seq("hostname"))
     //    val piped = nums.mpimap(x => {
     //      x.toString
     //    })

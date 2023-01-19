@@ -12,7 +12,7 @@ class JavaLoggingWrapper extends Logging
 
 object MPIUtil extends Logging {
 
-  System.load("/home/xialb/lib/libblaze.so")
+  System.load(System.getenv("SPARK_HOME") + "/lib/libblaze.so")
 
   def setPmixEnv(): Unit = {
     for (line <- Source.fromFile("/tmp/pmixsrv.env").getLines()) {
@@ -22,7 +22,6 @@ object MPIUtil extends Logging {
       //      print(s"key: ${key}, value: ${value}\n")
       map.put(key, value)
       NativeUtil.setEnv(map)
-      //      EnvHacker.setEnv(scala.collection.immutable.Map(key->value))
     }
   }
 
@@ -36,8 +35,6 @@ object MPIUtil extends Logging {
     map.put("PMIX_RANK", rank)
     logDebug(s"Executor start rank ${rank}")
     NativeUtil.setEnv(map)
-    // for JVM env
-    EnvHacker.setEnv(scala.collection.immutable.Map("PMIX_RANK" -> rank))
   }
 
   def setMPIEnv(rank: String): Unit = {

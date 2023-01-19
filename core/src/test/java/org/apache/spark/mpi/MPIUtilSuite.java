@@ -15,7 +15,7 @@ public class MPIUtilSuite {
         app[3] = "--map-by";
         app[4] = ":OVERSUBSCRIBE";
         app[5] = "hostname";
-        System.load("/home/xialb/lib/libblaze.so");
+        System.load(System.getenv("SPARK_HOME") + "/lib/libblaze.so");
 //        Thread t = new Thread(() -> {
         MPIRun mpiRun = new MPIRun();
         mpiRun.exec(app);

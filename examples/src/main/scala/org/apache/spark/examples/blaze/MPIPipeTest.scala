@@ -27,7 +27,8 @@ object MPIPipeTest {
     val size = if (args.size > 0) args(0).toInt else 4
     val data = bc.parallelize(0 until size, size)
 
-    val res = data.mpipipe(Seq("/home/xialb/git/ompi/examples/hello_c"))
+    val res = data.mpipipe(Seq(System.getenv("HOME") + "/git/ompi/examples/hello_c"))
+//    val res = data.mpipipe(Seq("hostname"))
     // scalastyle:off println
     res.collect().foreach(println)
 

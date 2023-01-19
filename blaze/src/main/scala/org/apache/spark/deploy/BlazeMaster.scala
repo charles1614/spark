@@ -60,7 +60,7 @@ private[deploy] object BlazeMaster extends Logging {
 
     /* load native lib avoid undefined symbol in odls */
     val strings: Array[String] = new Array[String](1)
-    strings(0) = "/home/xialb/lib/libblaze.so"
+    strings(0) = System.getenv("SPARK_HOME") + "/lib/libblaze.so"
     NativeUtils.loadLibrary(strings)
 
     val hosts = getWorkersHost()
@@ -73,12 +73,12 @@ private[deploy] object BlazeMaster extends Logging {
   }
 
   def getWorkersHost(): Array[String] = {
-    val slave = "/home/xialb/opt/spark/conf/slaves"
+    val workers = System.getenv("SPARK_HOME") + "/conf/workers"
     val cmd = ArrayBuffer[String]("prte")
     cmd += "-H"
     var hosts: String = ""
     val cores = getCores()
-    for (host <- Source.fromFile(slave).getLines()) {
+    for (host <- Source.fromFile(workers).getLines()) {
       breakable {
         if (host.matches("^[a-zA-Z].*$")) {
           hosts += (host + ":" + cores + ",")
