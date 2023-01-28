@@ -1,6 +1,0 @@
-# ninja log v5
-2	111	1674925266724756579	CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.o	938cfc834152d1e0
-1	196	1674925266809754073	CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.o	2cdd6fe0f27e096d
-2	374	1674925266988748797	CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.o	bc0e636c8d663956
-1	854	1674925267467734687	CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.o	56df66b102e2bcd7
-855	940	1674925267552732183	libblaze.so	629aa8e96deb74be
