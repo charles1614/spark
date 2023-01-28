@@ -12,7 +12,7 @@
       </FilePath>
     </option>
     <option name="beforeShellScript" value="" />
-    <option name="className" value="org.apache.spark.examples.blaze.lqcd.HMC" />
+    <option name="className" value="org.apache.spark.examples.blaze.MPIP1" />
     <option name="clusterManager" value="STANDALONE" />
     <option name="conf" value="" />
     <option name="deployMode" value="CLIENT" />
