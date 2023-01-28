@@ -750,9 +750,13 @@ private[spark] class TaskSchedulerImpl(
             val lastModified = file.lastModified()
 
             var loop = 1
-            if (lastModified - System.currentTimeMillis() > 10000 && loop <= 100) {
-              Thread.sleep(100)
-              loop+=1
+
+            for (i <- 0 until 100
+                 if System.currentTimeMillis() - lastModified > 10000) {
+              Thread.sleep(1000)
+              if (i == 99) {
+                logError("MPI server not started")
+              }
             }
 
             logInfo(s"Successfully scheduled all the ${addressesWithDescs.size} tasks for " +
