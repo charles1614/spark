@@ -1,0 +1,5 @@
+/home/xialb/git/spark/blaze/src/main/native/src/pmix/build/CMakeFiles/rebuild_cache.dir
+/home/xialb/git/spark/blaze/src/main/native/src/pmix/build/CMakeFiles/mca_rmaps_blaze.dir
+/home/xialb/git/spark/blaze/src/main/native/src/pmix/build/CMakeFiles/mca_odls_blaze.dir
+/home/xialb/git/spark/blaze/src/main/native/src/pmix/build/CMakeFiles/mca_rmaps_rankfile.dir
+/home/xialb/git/spark/blaze/src/main/native/src/pmix/build/CMakeFiles/edit_cache.dir

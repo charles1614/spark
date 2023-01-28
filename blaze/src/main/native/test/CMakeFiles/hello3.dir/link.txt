@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/hello3.dir/hello3.c.o -o hello3  /opt/deps/openpmix/lib/libpmix.so /opt/deps/prrte/lib/libprrte.so /usr/lib64/libevent_core.so /opt/ompi/lib/libmpi.so /opt/deps/openpmix/lib/libpmix.so /opt/deps/prrte/lib/libprrte.so /usr/lib64/libevent_core.so /opt/ompi/lib/libmpi.so 

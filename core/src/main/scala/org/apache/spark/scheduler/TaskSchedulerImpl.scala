@@ -747,13 +747,13 @@ private[spark] class TaskSchedulerImpl(
               val mpiStartingThread = taskSet.startMPI(shuffledOffers)
             }
             val file = new File("/tmp/pmixsrv.env")
-            val lastModified = file.lastModified()
 
             var loop = 1
 
             for (i <- 0 until 100
-                 if System.currentTimeMillis() - lastModified > 10000) {
-              Thread.sleep(1000)
+                 if System.currentTimeMillis() - file.lastModified() > 10000) {
+              Thread.sleep(100)
+              logInfo(s"Waiting for pmixsrv.env to be created, loop ${i}")
               if (i == 99) {
                 logError("MPI server not started")
               }

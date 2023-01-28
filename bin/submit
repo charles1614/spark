@@ -1,6 +1,6 @@
 #!/bin/zsh
 ${SPARK_HOME}/bin/spark-submit \
---verbose --master spark://lenovo:7077 \
+--verbose --master spark://besh01:7077 \
 --class org.apache.spark.examples.blaze.$1 \
 --name "$1" \
 --driver-memory 2G \

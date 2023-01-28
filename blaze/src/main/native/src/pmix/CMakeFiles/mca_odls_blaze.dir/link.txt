@@ -1,1 +1,0 @@
-/usr/bin/cc -fPIC -shared -Wl,-soname,libmca_odls_blaze.so -o libmca_odls_blaze.so CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_module.c.o CMakeFiles/mca_odls_blaze.dir/prte/mca/odls/blaze/odls_blaze_component.c.o  /opt/deps/openpmix/lib/libpmix.so /opt/deps/prrte/lib/libprrte.so -lpmix -lprrte 

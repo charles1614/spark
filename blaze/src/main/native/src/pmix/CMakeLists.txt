@@ -11,11 +11,12 @@ set(OMPI_SRC "$ENV{MPI_SRC}")
 # ODLS: 
 
 include_directories("${PROJECT_SOURCE_DIR}/include")
-include_directories("/docker/git/ompi/3rd-party/prrte")
-include_directories("/docker/git/ompi/3rd-party/prrte/src")
-include_directories("/docker/git/ompi/3rd-party/prrte/src/include")
-include_directories("/docker/git/ompi")
-include_directories("/docker/git/ompi/opal/include")
+include_directories("/home/xialb/git/ompi/3rd-party/prrte")
+include_directories("/home/xialb/git/ompi/3rd-party/prrte/src")
+include_directories("/home/xialb/git/ompi/3rd-party/prrte/src/include")
+include_directories("/home/xialb/git/ompi")
+include_directories("/home/xialb/git/ompi/opal/include")
+include_directories("/opt/deps/openpmix/include")
 
 # Spark-MPI plugin
 
