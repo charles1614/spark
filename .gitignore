@@ -6,6 +6,7 @@
 *.pyc
 *.pyo
 *.swp
+*.log
 *~
 .DS_Store
 .bsp/ .cache .classpath

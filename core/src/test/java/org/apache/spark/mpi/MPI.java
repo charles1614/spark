@@ -1,16 +1,28 @@
-import org.apache.spark.blaze.deploy.mpi.MPIRun;
-// import org.apache.spark.blaze.deploy.mpi.NativeUtils;
+
+
+import org.apache.spark.mpi.MPIRun;
+import org.apache.spark.blaze.deploy.mpi.NativeUtils;
+import org.apache.spark.blaze.deploy.mpi.MPILauncher;
 import static java.lang.Thread.sleep;
 
 public class MPI {
 
   public static void main(String[] args) {
 
-    // System.out.println("Hello World!");
+    // String[] argv = new String[3];
+    // argv[0] = "prte";
+    // argv[1] = "-H";
+    // argv[2] = "besh02:8";
+    //
+    // String[] strings = new String[1];
+    // strings[0] = "/home/xialb/git/spark/lib/libblaze.so";
+    // NativeUtils.loadLibrary(strings);
+    // MPILauncher mpiLauncher = new MPILauncher();
+    // mpiLauncher.mpiRTE(argv);
+
     // String ns = NativeUtils.namespaceQuery();
     // System.out.println(ns);
     // String[] ns_arr = ns.split(",");
-    // System.out.println("Hello World!");
     // System.out.println(ns);
     // int ret = 2;
     // for (String n : ns_arr) {
@@ -20,15 +32,15 @@ public class MPI {
     //   }
     //   ret = NativeUtils.namespaceFinalize(n);
     //   System.out.println("Finalize Namespace " + n);
-    // }
-    //
-            String[] app = new String[4];
-            app[0] = "/opt/deps/prrte/bin/prun";
+
+
+            String[] app = new String[6];
+            app[0] = "prun";
             app[1] = "-n";
             app[2] = "3";
-            // app[3] = "--map-by";
-            // app[4] = ":OVERSUBSCRIBE";
-            app[3] = "hostname";
+            app[3] = "--map-by";
+            app[4] = ":OVERSUBSCRIBE";
+            app[5] = "hostname";
             System.load(System.getenv("SPARK_HOME") + "/lib/libblaze.so");
     //        Thread t = new Thread(() -> {
             MPIRun mpiRun = new MPIRun();
@@ -41,6 +53,6 @@ public class MPI {
                 e.printStackTrace();
             }
             System.exit(0);
-           // assert (t.getState() == Thread.State.RUNNABLE);
+    //        assert (t.getState() == Thread.State.RUNNABLE);
   }
 }
