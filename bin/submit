@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/local/bin/zsh
 ${SPARK_HOME}/bin/spark-submit \
 --verbose --master spark://${HOST}:7077 \
 --class org.apache.spark.examples.blaze.$1 \
