@@ -16,4 +16,9 @@
 #
 
 # A Spark Worker will be started on each of the machines listed below.
+# localhost
 besh01
+besh02
+# besh03
+# besh04
+# besh05

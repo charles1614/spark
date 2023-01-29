@@ -5,13 +5,13 @@
 # compile CXX with /opt/rh/devtoolset-10/root/usr/bin/c++
 C_DEFINES = -Dblaze_EXPORTS
 
-C_INCLUDES = -I/opt/deps/prrte -I/opt/deps/prrte/include -I/home/xialb/git/ompi/3rd-party/prrte -I/home/xialb/git/ompi/3rd-party/prrte/src/include -I/opt/deps/openpmix/include -I/home/xialb/git/spark/blaze/src/main/native/src/blaze/include
+C_INCLUDES = -I/home/xialb/git/ompi/3rd-party/prrte/src/mca -I/home/xialb/git/ompi/3rd-party/openpmix/src/class -I/include -I/src/include
 
 C_FLAGS = -fPIC
 
 CXX_DEFINES = -Dblaze_EXPORTS
 
-CXX_INCLUDES = -I/opt/deps/prrte -I/opt/deps/prrte/include -I/home/xialb/git/ompi/3rd-party/prrte -I/home/xialb/git/ompi/3rd-party/prrte/src/include -I/opt/deps/openpmix/include -I/home/xialb/git/spark/blaze/src/main/native/src/blaze/include
+CXX_INCLUDES = -I/home/xialb/git/ompi/3rd-party/prrte/src/mca -I/home/xialb/git/ompi/3rd-party/openpmix/src/class -I/include -I/src/include
 
 CXX_FLAGS = -fPIC
 

@@ -69,79 +69,95 @@ include CMakeFiles/blaze.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/blaze.dir/flags.make
 
-CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.o: CMakeFiles/blaze.dir/flags.make
-CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.o: /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c
-CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.o: CMakeFiles/blaze.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.o"
-	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.o -MF CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.o.d -o CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.o -c /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c
+CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.o: CMakeFiles/blaze.dir/flags.make
+CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.o: /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c
+CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.o: CMakeFiles/blaze.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.o"
+	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.o -MF CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.o.d -o CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.o -c /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c
 
-CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.i"
-	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c > CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.i
+CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.i"
+	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c > CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.i
 
-CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.s"
-	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c -o CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.s
+CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.s"
+	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c -o CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.s
 
-CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.o: CMakeFiles/blaze.dir/flags.make
-CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.o: /home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.c
-CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.o: CMakeFiles/blaze.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.o"
-	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.o -MF CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.o.d -o CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.o -c /home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.c
+CMakeFiles/blaze.dir/prte_environ.c.o: CMakeFiles/blaze.dir/flags.make
+CMakeFiles/blaze.dir/prte_environ.c.o: ../prte_environ.c
+CMakeFiles/blaze.dir/prte_environ.c.o: CMakeFiles/blaze.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/blaze.dir/prte_environ.c.o"
+	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/blaze.dir/prte_environ.c.o -MF CMakeFiles/blaze.dir/prte_environ.c.o.d -o CMakeFiles/blaze.dir/prte_environ.c.o -c /home/xialb/git/spark/blaze/src/main/native/src/blaze/prte_environ.c
 
-CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.i"
-	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.c > CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.i
+CMakeFiles/blaze.dir/prte_environ.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blaze.dir/prte_environ.c.i"
+	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/git/spark/blaze/src/main/native/src/blaze/prte_environ.c > CMakeFiles/blaze.dir/prte_environ.c.i
 
-CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.s"
-	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.c -o CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.s
+CMakeFiles/blaze.dir/prte_environ.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blaze.dir/prte_environ.c.s"
+	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/git/spark/blaze/src/main/native/src/blaze/prte_environ.c -o CMakeFiles/blaze.dir/prte_environ.c.s
 
-CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.o: CMakeFiles/blaze.dir/flags.make
-CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.o: ../org_apache_spark_blaze_deploy_mpi_NativeUtils.c
-CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.o: CMakeFiles/blaze.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.o"
-	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.o -MF CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.o.d -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.o -c /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c
+CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o: CMakeFiles/blaze.dir/flags.make
+CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o: ../org_apache_spark_blaze_deploy_mpi_NativeUtils.c
+CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o: CMakeFiles/blaze.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o"
+	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o -MF CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o.d -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o -c /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c
 
-CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.i"
-	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c > CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.i
+CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.i"
+	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c > CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.i
 
-CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.s"
-	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.s
+CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.s"
+	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.c -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.s
 
-CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.o: CMakeFiles/blaze.dir/flags.make
-CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.o: ../org_apache_spark_mpi_NativeUtil.c
-CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.o: CMakeFiles/blaze.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.o"
-	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.o -MF CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.o.d -o CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.o -c /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c
+CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o: CMakeFiles/blaze.dir/flags.make
+CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o: ../org_apache_spark_blaze_deploy_mpi_NativeUtils.cc
+CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o: CMakeFiles/blaze.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o"
+	/opt/rh/devtoolset-10/root/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o -MF CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o.d -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o -c /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc
 
-CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.i"
-	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c > CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.i
+CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.i"
+	/opt/rh/devtoolset-10/root/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc > CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.i
 
-CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.s"
-	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c -o CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.s
+CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.s"
+	/opt/rh/devtoolset-10/root/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc -o CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.s
+
+CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o: CMakeFiles/blaze.dir/flags.make
+CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o: ../org_apache_spark_mpi_NativeUtil.c
+CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o: CMakeFiles/blaze.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o"
+	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o -MF CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o.d -o CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o -c /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c
+
+CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.i"
+	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c > CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.i
+
+CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.s"
+	/opt/rh/devtoolset-10/root/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/xialb/git/spark/blaze/src/main/native/src/blaze/org_apache_spark_mpi_NativeUtil.c -o CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.s
 
 # Object files for target blaze
 blaze_OBJECTS = \
-"CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.o" \
-"CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.o" \
-"CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.o" \
-"CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.o"
+"CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.o" \
+"CMakeFiles/blaze.dir/prte_environ.c.o" \
+"CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o" \
+"CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o" \
+"CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o"
 
 # External object files for target blaze
 blaze_EXTERNAL_OBJECTS =
 
-libblaze.so: CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.o
-libblaze.so: CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.o
-libblaze.so: CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.o
-libblaze.so: CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.o
+libblaze.so: CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.o
+libblaze.so: CMakeFiles/blaze.dir/prte_environ.c.o
+libblaze.so: CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o
+libblaze.so: CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o
+libblaze.so: CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o
 libblaze.so: CMakeFiles/blaze.dir/build.make
 libblaze.so: CMakeFiles/blaze.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX shared library libblaze.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX shared library libblaze.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/blaze.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

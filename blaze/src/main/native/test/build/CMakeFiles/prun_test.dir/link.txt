@@ -1,0 +1,1 @@
+/opt/rh/devtoolset-10/root/usr/bin/cc CMakeFiles/prun_test.dir/prun_test.c.o CMakeFiles/prun_test.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.o CMakeFiles/prun_test.dir/prte_environ.c.o -o prun_test  -lprrte -lpmix -lpthread -levent 

@@ -129,68 +129,125 @@ blaze/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/build
 .PHONY : blaze/fast
 
-# target to build an object file
-home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.o
+home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.o: home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.o
 .PHONY : home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.o
 
-# target to preprocess a source file
-home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.i
+# target to build an object file
+home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.o
+.PHONY : home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.o
+
+home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.i: home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.i
 .PHONY : home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.i
 
-# target to generate assembly for a file
-home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.s
+# target to preprocess a source file
+home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.i
+.PHONY : home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.i
+
+home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.s: home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.s
 .PHONY : home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.s
 
-# target to build an object file
-home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.o
-.PHONY : home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.o
-
-# target to preprocess a source file
-home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.i
-.PHONY : home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.i
-
 # target to generate assembly for a file
-home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.s
-.PHONY : home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.s
+home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.s
+.PHONY : home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c.s
 
-# target to build an object file
-org_apache_spark_blaze_deploy_mpi_NativeUtils.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.o
+org_apache_spark_blaze_deploy_mpi_NativeUtils.o: org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o
 .PHONY : org_apache_spark_blaze_deploy_mpi_NativeUtils.o
 
-# target to preprocess a source file
-org_apache_spark_blaze_deploy_mpi_NativeUtils.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.i
+# target to build an object file
+org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o
+.PHONY : org_apache_spark_blaze_deploy_mpi_NativeUtils.c.o
+
+org_apache_spark_blaze_deploy_mpi_NativeUtils.i: org_apache_spark_blaze_deploy_mpi_NativeUtils.c.i
 .PHONY : org_apache_spark_blaze_deploy_mpi_NativeUtils.i
 
-# target to generate assembly for a file
-org_apache_spark_blaze_deploy_mpi_NativeUtils.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.s
+# target to preprocess a source file
+org_apache_spark_blaze_deploy_mpi_NativeUtils.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.i
+.PHONY : org_apache_spark_blaze_deploy_mpi_NativeUtils.c.i
+
+org_apache_spark_blaze_deploy_mpi_NativeUtils.s: org_apache_spark_blaze_deploy_mpi_NativeUtils.c.s
 .PHONY : org_apache_spark_blaze_deploy_mpi_NativeUtils.s
 
+# target to generate assembly for a file
+org_apache_spark_blaze_deploy_mpi_NativeUtils.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.c.s
+.PHONY : org_apache_spark_blaze_deploy_mpi_NativeUtils.c.s
+
+org_apache_spark_blaze_deploy_mpi_NativeUtils.o: org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o
+.PHONY : org_apache_spark_blaze_deploy_mpi_NativeUtils.o
+
 # target to build an object file
-org_apache_spark_mpi_NativeUtil.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.o
-.PHONY : org_apache_spark_mpi_NativeUtil.o
+org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o
+.PHONY : org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.o
+
+org_apache_spark_blaze_deploy_mpi_NativeUtils.i: org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.i
+.PHONY : org_apache_spark_blaze_deploy_mpi_NativeUtils.i
 
 # target to preprocess a source file
-org_apache_spark_mpi_NativeUtil.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.i
-.PHONY : org_apache_spark_mpi_NativeUtil.i
+org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.i
+.PHONY : org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.i
+
+org_apache_spark_blaze_deploy_mpi_NativeUtils.s: org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.s
+.PHONY : org_apache_spark_blaze_deploy_mpi_NativeUtils.s
 
 # target to generate assembly for a file
-org_apache_spark_mpi_NativeUtil.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.s
+org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.s
+.PHONY : org_apache_spark_blaze_deploy_mpi_NativeUtils.cc.s
+
+org_apache_spark_mpi_NativeUtil.o: org_apache_spark_mpi_NativeUtil.c.o
+.PHONY : org_apache_spark_mpi_NativeUtil.o
+
+# target to build an object file
+org_apache_spark_mpi_NativeUtil.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.o
+.PHONY : org_apache_spark_mpi_NativeUtil.c.o
+
+org_apache_spark_mpi_NativeUtil.i: org_apache_spark_mpi_NativeUtil.c.i
+.PHONY : org_apache_spark_mpi_NativeUtil.i
+
+# target to preprocess a source file
+org_apache_spark_mpi_NativeUtil.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.i
+.PHONY : org_apache_spark_mpi_NativeUtil.c.i
+
+org_apache_spark_mpi_NativeUtil.s: org_apache_spark_mpi_NativeUtil.c.s
 .PHONY : org_apache_spark_mpi_NativeUtil.s
+
+# target to generate assembly for a file
+org_apache_spark_mpi_NativeUtil.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/org_apache_spark_mpi_NativeUtil.c.s
+.PHONY : org_apache_spark_mpi_NativeUtil.c.s
+
+prte_environ.o: prte_environ.c.o
+.PHONY : prte_environ.o
+
+# target to build an object file
+prte_environ.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/prte_environ.c.o
+.PHONY : prte_environ.c.o
+
+prte_environ.i: prte_environ.c.i
+.PHONY : prte_environ.i
+
+# target to preprocess a source file
+prte_environ.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/prte_environ.c.i
+.PHONY : prte_environ.c.i
+
+prte_environ.s: prte_environ.c.s
+.PHONY : prte_environ.s
+
+# target to generate assembly for a file
+prte_environ.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/blaze.dir/build.make CMakeFiles/blaze.dir/prte_environ.c.s
+.PHONY : prte_environ.c.s
 
 # Help Target
 help:
@@ -204,15 +261,18 @@ help:
 	@echo "... home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.o"
 	@echo "... home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.i"
 	@echo "... home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.s"
-	@echo "... home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.o"
-	@echo "... home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.i"
-	@echo "... home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.s"
+	@echo "... org_apache_spark_blaze_deploy_mpi_NativeUtils.o"
+	@echo "... org_apache_spark_blaze_deploy_mpi_NativeUtils.i"
+	@echo "... org_apache_spark_blaze_deploy_mpi_NativeUtils.s"
 	@echo "... org_apache_spark_blaze_deploy_mpi_NativeUtils.o"
 	@echo "... org_apache_spark_blaze_deploy_mpi_NativeUtils.i"
 	@echo "... org_apache_spark_blaze_deploy_mpi_NativeUtils.s"
 	@echo "... org_apache_spark_mpi_NativeUtil.o"
 	@echo "... org_apache_spark_mpi_NativeUtil.i"
 	@echo "... org_apache_spark_mpi_NativeUtil.s"
+	@echo "... prte_environ.o"
+	@echo "... prte_environ.i"
+	@echo "... prte_environ.s"
 .PHONY : help
 
 

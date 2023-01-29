@@ -9,9 +9,6 @@
 /home/xialb/git/spark/blaze/src/main/native/build/src/pmix/CMakeFiles/mca_rmaps_rankfile.dir
 /home/xialb/git/spark/blaze/src/main/native/build/src/pmix/CMakeFiles/edit_cache.dir
 /home/xialb/git/spark/blaze/src/main/native/build/test/CMakeFiles/rebuild_cache.dir
-/home/xialb/git/spark/blaze/src/main/native/build/test/CMakeFiles/prun_test.dir
-/home/xialb/git/spark/blaze/src/main/native/build/test/CMakeFiles/hello0.dir
-/home/xialb/git/spark/blaze/src/main/native/build/test/CMakeFiles/hello1.dir
 /home/xialb/git/spark/blaze/src/main/native/build/test/CMakeFiles/edit_cache.dir
-/home/xialb/git/spark/blaze/src/main/native/build/test/CMakeFiles/hello2.dir
-/home/xialb/git/spark/blaze/src/main/native/build/test/CMakeFiles/hello3.dir
+/home/xialb/git/spark/blaze/src/main/native/build/test/CMakeFiles/prte_test.dir
+/home/xialb/git/spark/blaze/src/main/native/build/test/CMakeFiles/prun_test.dir

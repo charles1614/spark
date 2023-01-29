@@ -6,6 +6,7 @@ Id flags:
 
 The output was:
 0
+cc1: warning: /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.h: not a directory
 
 
 Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
@@ -19,6 +20,7 @@ Id flags:
 
 The output was:
 0
+cc1plus: warning: /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.h: not a directory
 
 
 Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
@@ -28,10 +30,10 @@ The CXX compiler identification is GNU, found in "/home/xialb/git/spark/blaze/sr
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: /home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/opt/rh/devtoolset-10/root/usr/bin/gmake -f Makefile cmTC_b46de/fast && /opt/rh/devtoolset-10/root/usr/bin/gmake  -f CMakeFiles/cmTC_b46de.dir/build.make CMakeFiles/cmTC_b46de.dir/build
+Run Build Command(s):/opt/rh/devtoolset-10/root/usr/bin/gmake -f Makefile cmTC_59837/fast && /opt/rh/devtoolset-10/root/usr/bin/gmake  -f CMakeFiles/cmTC_59837.dir/build.make CMakeFiles/cmTC_59837.dir/build
 gmake[1]: Entering directory '/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o
-/opt/rh/devtoolset-10/root/usr/bin/cc   -v -o CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o -c /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCCompilerABI.c
+Building C object CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o
+/opt/rh/devtoolset-10/root/usr/bin/cc   -v -o CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o -c /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCCompilerABI.c
 Using built-in specs.
 COLLECT_GCC=/opt/rh/devtoolset-10/root/usr/bin/cc
 Target: x86_64-redhat-linux
@@ -39,12 +41,35 @@ Configured with: ../configure --enable-bootstrap --enable-languages=c,c++,fortra
 Thread model: posix
 Supported LTO compression algorithms: zlib
 gcc version 10.2.1 20210130 (Red Hat 10.2.1-11) (GCC) 
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
- /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/cc1 -quiet -v /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o -version -o /tmp/ccJIpDGF.s
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/cc1 -quiet -v /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o -version -o /tmp/cc7SlahW.s
 GNU C17 (GCC) version 10.2.1 20210130 (Red Hat 10.2.1-11) (x86_64-redhat-linux)
 	compiled by GNU C version 10.2.1 20210130 (Red Hat 10.2.1-11), GMP version 6.0.0, MPFR version 3.1.1, MPC version 1.0.1, isl version isl-0.16.1-GMP
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"
+ignoring duplicate directory "/opt/deps/flex/include"
+ignoring duplicate directory "/opt/arrow/include"
+ignoring duplicate directory "/opt/OpenBLAS/include"
+ignoring duplicate directory "/opt/deps/protobuf/2.5.0/include"
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"
+ignoring duplicate directory "/opt/deps/openpmix/include"
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"
+ignoring duplicate directory "/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/"
+ignoring duplicate directory "/home/xialb/git/spark/blaze/src/main/native/src/blaze/include"
+cc1: warning: /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.h: not a directory
+ignoring duplicate directory "/opt/deps/flex/include"
+ignoring duplicate directory "/opt/arrow/include"
+ignoring duplicate directory "/opt/OpenBLAS/include"
+ignoring duplicate directory "/opt/deps/protobuf/2.5.0/include"
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"
+ignoring duplicate directory "/opt/ompi/include"
+ignoring duplicate directory "/opt/deps/openpmix/include"
+ignoring duplicate directory "/opt/deps/prrte/include"
 ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"
 ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"
 ignoring nonexistent directory "/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include-fixed"
@@ -57,9 +82,15 @@ ignoring nonexistent directory "/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-re
  /opt/deps/protobuf/2.5.0/include
  /home/xialb/.sdkman/candidates/java/current/include/linux
  /home/xialb/.sdkman/candidates/java/current/include
- /opt/ompi/include
- /opt/deps/openpmix_debug/include
+ /opt/ompi_debug/include
+ /opt/deps/openpmix/include
  /opt/deps/prrte_debug/include
+ /opt/ompi/include
+ /opt/deps/prrte/include
+ /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/
+ /home/xialb/git/spark/blaze/src/main/native/src/blaze/include
+ /home/xialb/git/ompi/3rd-party/prrte/src/include
+ /home/xialb/git/ompi/3rd-party/prrte/
  .
  /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include
  /usr/local/include
@@ -71,15 +102,15 @@ GNU C17 (GCC) version 10.2.1 20210130 (Red Hat 10.2.1-11) (x86_64-redhat-linux)
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 Compiler executable checksum: ac9843bbb6b5ca3499ef18b3de6cce08
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
- /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/as -v --64 -o CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o /tmp/ccJIpDGF.s
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/as -v --64 -o CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o /tmp/cc7SlahW.s
 GNU assembler version 2.35 (x86_64-redhat-linux) using BFD version version 2.35-5.el7.2
 COMPILER_PATH=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/
-LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix_debug/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
-Linking C executable cmTC_b46de
-/opt/cmake/v3.21/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b46de.dir/link.txt --verbose=1
-/opt/rh/devtoolset-10/root/usr/bin/cc  -v -rdynamic CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o -o cmTC_b46de 
+LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi_debug/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+Linking C executable cmTC_59837
+/opt/cmake/v3.21/bin/cmake -E cmake_link_script CMakeFiles/cmTC_59837.dir/link.txt --verbose=1
+/opt/rh/devtoolset-10/root/usr/bin/cc  -v CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o -o cmTC_59837 
 Using built-in specs.
 COLLECT_GCC=/opt/rh/devtoolset-10/root/usr/bin/cc
 COLLECT_LTO_WRAPPER=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/lto-wrapper
@@ -89,10 +120,10 @@ Thread model: posix
 Supported LTO compression algorithms: zlib
 gcc version 10.2.1 20210130 (Red Hat 10.2.1-11) (GCC) 
 COMPILER_PATH=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/
-LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix_debug/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_b46de' '-mtune=generic' '-march=x86-64'
- /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/collect2 -plugin /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/liblto_plugin.so -plugin-opt=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/lto-wrapper -plugin-opt=-fresolution=/tmp/cc8YdGSH.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_b46de /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtbegin.o -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi/lib -L/opt/deps/openpmix_debug/lib -L/opt/deps/prrte_debug/lib -L/opt/ompi/lib -L. -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../.. CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtend.o /lib/../lib64/crtn.o
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_b46de' '-mtune=generic' '-march=x86-64'
+LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi_debug/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_59837' '-mtune=generic' '-march=x86-64'
+ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/collect2 -plugin /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/liblto_plugin.so -plugin-opt=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/lto-wrapper -plugin-opt=-fresolution=/tmp/ccQzx7r2.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_59837 /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtbegin.o -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi_debug/lib -L/opt/deps/openpmix/lib -L/opt/deps/prrte_debug/lib -L/opt/ompi/lib -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi/lib -L/opt/deps/openpmix/lib -L/opt/deps/prrte/lib -L/opt/ompi/lib -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi/lib -L/opt/deps/openpmix/lib -L/opt/deps/prrte/lib -L/opt/ompi/lib -L. -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../.. CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtend.o /lib/../lib64/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_59837' '-mtune=generic' '-march=x86-64'
 gmake[1]: Leaving directory '/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles/CMakeTmp'
 
 
@@ -106,9 +137,15 @@ Parsed C implicit include dir info from above output: rv=done
     add: [/opt/deps/protobuf/2.5.0/include]
     add: [/home/xialb/.sdkman/candidates/java/current/include/linux]
     add: [/home/xialb/.sdkman/candidates/java/current/include]
-    add: [/opt/ompi/include]
-    add: [/opt/deps/openpmix_debug/include]
+    add: [/opt/ompi_debug/include]
+    add: [/opt/deps/openpmix/include]
     add: [/opt/deps/prrte_debug/include]
+    add: [/opt/ompi/include]
+    add: [/opt/deps/prrte/include]
+    add: [/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/]
+    add: [/home/xialb/git/spark/blaze/src/main/native/src/blaze/include]
+    add: [/home/xialb/git/ompi/3rd-party/prrte/src/include]
+    add: [/home/xialb/git/ompi/3rd-party/prrte/]
     add: [.]
     add: [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include]
     add: [/usr/local/include]
@@ -121,25 +158,31 @@ Parsed C implicit include dir info from above output: rv=done
   collapse include dir [/opt/deps/protobuf/2.5.0/include] ==> [/opt/deps/protobuf/2.5.0/include]
   collapse include dir [/home/xialb/.sdkman/candidates/java/current/include/linux] ==> [/home/xialb/.sdkman/candidates/java/current/include/linux]
   collapse include dir [/home/xialb/.sdkman/candidates/java/current/include] ==> [/home/xialb/.sdkman/candidates/java/current/include]
-  collapse include dir [/opt/ompi/include] ==> [/opt/ompi/include]
-  collapse include dir [/opt/deps/openpmix_debug/include] ==> [/opt/deps/openpmix_debug/include]
+  collapse include dir [/opt/ompi_debug/include] ==> [/opt/ompi_debug/include]
+  collapse include dir [/opt/deps/openpmix/include] ==> [/opt/deps/openpmix/include]
   collapse include dir [/opt/deps/prrte_debug/include] ==> [/opt/deps/prrte_debug/include]
+  collapse include dir [/opt/ompi/include] ==> [/opt/ompi/include]
+  collapse include dir [/opt/deps/prrte/include] ==> [/opt/deps/prrte/include]
+  collapse include dir [/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/] ==> [/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun]
+  collapse include dir [/home/xialb/git/spark/blaze/src/main/native/src/blaze/include] ==> [/home/xialb/git/spark/blaze/src/main/native/src/blaze/include]
+  collapse include dir [/home/xialb/git/ompi/3rd-party/prrte/src/include] ==> [/home/xialb/git/ompi/3rd-party/prrte/src/include]
+  collapse include dir [/home/xialb/git/ompi/3rd-party/prrte/] ==> [/home/xialb/git/ompi/3rd-party/prrte]
   skipping relative include dir [.]
   collapse include dir [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include] ==> [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include]
   collapse include dir [/usr/local/include] ==> [/usr/local/include]
   collapse include dir [/opt/rh/devtoolset-10/root/usr/include] ==> [/opt/rh/devtoolset-10/root/usr/include]
   collapse include dir [/usr/include] ==> [/usr/include]
-  implicit include dirs: [/opt/deps/flex/include;/opt/arrow/include;/opt/OpenBLAS/include;/opt/deps/protobuf/2.5.0/include;/home/xialb/.sdkman/candidates/java/current/include/linux;/home/xialb/.sdkman/candidates/java/current/include;/opt/ompi/include;/opt/deps/openpmix_debug/include;/opt/deps/prrte_debug/include;/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include;/usr/local/include;/opt/rh/devtoolset-10/root/usr/include;/usr/include]
+  implicit include dirs: [/opt/deps/flex/include;/opt/arrow/include;/opt/OpenBLAS/include;/opt/deps/protobuf/2.5.0/include;/home/xialb/.sdkman/candidates/java/current/include/linux;/home/xialb/.sdkman/candidates/java/current/include;/opt/ompi_debug/include;/opt/deps/openpmix/include;/opt/deps/prrte_debug/include;/opt/ompi/include;/opt/deps/prrte/include;/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun;/home/xialb/git/spark/blaze/src/main/native/src/blaze/include;/home/xialb/git/ompi/3rd-party/prrte/src/include;/home/xialb/git/ompi/3rd-party/prrte;/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include;/usr/local/include;/opt/rh/devtoolset-10/root/usr/include;/usr/include]
 
 
 Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command(s):/opt/rh/devtoolset-10/root/usr/bin/gmake -f Makefile cmTC_b46de/fast && /opt/rh/devtoolset-10/root/usr/bin/gmake  -f CMakeFiles/cmTC_b46de.dir/build.make CMakeFiles/cmTC_b46de.dir/build]
+  ignore line: [Run Build Command(s):/opt/rh/devtoolset-10/root/usr/bin/gmake -f Makefile cmTC_59837/fast && /opt/rh/devtoolset-10/root/usr/bin/gmake  -f CMakeFiles/cmTC_59837.dir/build.make CMakeFiles/cmTC_59837.dir/build]
   ignore line: [gmake[1]: Entering directory '/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/opt/rh/devtoolset-10/root/usr/bin/cc   -v -o CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o -c /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCCompilerABI.c]
+  ignore line: [Building C object CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/opt/rh/devtoolset-10/root/usr/bin/cc   -v -o CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o -c /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCCompilerABI.c]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/opt/rh/devtoolset-10/root/usr/bin/cc]
   ignore line: [Target: x86_64-redhat-linux]
@@ -147,12 +190,35 @@ Parsed C implicit link information from above output:
   ignore line: [Thread model: posix]
   ignore line: [Supported LTO compression algorithms: zlib]
   ignore line: [gcc version 10.2.1 20210130 (Red Hat 10.2.1-11) (GCC) ]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
-  ignore line: [ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/cc1 -quiet -v /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o -version -o /tmp/ccJIpDGF.s]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/cc1 -quiet -v /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o -version -o /tmp/cc7SlahW.s]
   ignore line: [GNU C17 (GCC) version 10.2.1 20210130 (Red Hat 10.2.1-11) (x86_64-redhat-linux)]
   ignore line: [	compiled by GNU C version 10.2.1 20210130 (Red Hat 10.2.1-11)  GMP version 6.0.0  MPFR version 3.1.1  MPC version 1.0.1  isl version isl-0.16.1-GMP]
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"]
+  ignore line: [ignoring duplicate directory "/opt/deps/flex/include"]
+  ignore line: [ignoring duplicate directory "/opt/arrow/include"]
+  ignore line: [ignoring duplicate directory "/opt/OpenBLAS/include"]
+  ignore line: [ignoring duplicate directory "/opt/deps/protobuf/2.5.0/include"]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"]
+  ignore line: [ignoring duplicate directory "/opt/deps/openpmix/include"]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"]
+  ignore line: [ignoring duplicate directory "/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/"]
+  ignore line: [ignoring duplicate directory "/home/xialb/git/spark/blaze/src/main/native/src/blaze/include"]
+  ignore line: [cc1: warning: /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.h: not a directory]
+  ignore line: [ignoring duplicate directory "/opt/deps/flex/include"]
+  ignore line: [ignoring duplicate directory "/opt/arrow/include"]
+  ignore line: [ignoring duplicate directory "/opt/OpenBLAS/include"]
+  ignore line: [ignoring duplicate directory "/opt/deps/protobuf/2.5.0/include"]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"]
+  ignore line: [ignoring duplicate directory "/opt/ompi/include"]
+  ignore line: [ignoring duplicate directory "/opt/deps/openpmix/include"]
+  ignore line: [ignoring duplicate directory "/opt/deps/prrte/include"]
   ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"]
   ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"]
   ignore line: [ignoring nonexistent directory "/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include-fixed"]
@@ -165,9 +231,15 @@ Parsed C implicit link information from above output:
   ignore line: [ /opt/deps/protobuf/2.5.0/include]
   ignore line: [ /home/xialb/.sdkman/candidates/java/current/include/linux]
   ignore line: [ /home/xialb/.sdkman/candidates/java/current/include]
-  ignore line: [ /opt/ompi/include]
-  ignore line: [ /opt/deps/openpmix_debug/include]
+  ignore line: [ /opt/ompi_debug/include]
+  ignore line: [ /opt/deps/openpmix/include]
   ignore line: [ /opt/deps/prrte_debug/include]
+  ignore line: [ /opt/ompi/include]
+  ignore line: [ /opt/deps/prrte/include]
+  ignore line: [ /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/]
+  ignore line: [ /home/xialb/git/spark/blaze/src/main/native/src/blaze/include]
+  ignore line: [ /home/xialb/git/ompi/3rd-party/prrte/src/include]
+  ignore line: [ /home/xialb/git/ompi/3rd-party/prrte/]
   ignore line: [ .]
   ignore line: [ /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include]
   ignore line: [ /usr/local/include]
@@ -179,15 +251,15 @@ Parsed C implicit link information from above output:
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
   ignore line: [Compiler executable checksum: ac9843bbb6b5ca3499ef18b3de6cce08]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
-  ignore line: [ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/as -v --64 -o CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o /tmp/ccJIpDGF.s]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/as -v --64 -o CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o /tmp/cc7SlahW.s]
   ignore line: [GNU assembler version 2.35 (x86_64-redhat-linux) using BFD version version 2.35-5.el7.2]
   ignore line: [COMPILER_PATH=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/]
-  ignore line: [LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix_debug/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
-  ignore line: [Linking C executable cmTC_b46de]
-  ignore line: [/opt/cmake/v3.21/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b46de.dir/link.txt --verbose=1]
-  ignore line: [/opt/rh/devtoolset-10/root/usr/bin/cc  -v -rdynamic CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o -o cmTC_b46de ]
+  ignore line: [LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi_debug/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+  ignore line: [Linking C executable cmTC_59837]
+  ignore line: [/opt/cmake/v3.21/bin/cmake -E cmake_link_script CMakeFiles/cmTC_59837.dir/link.txt --verbose=1]
+  ignore line: [/opt/rh/devtoolset-10/root/usr/bin/cc  -v CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o -o cmTC_59837 ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/opt/rh/devtoolset-10/root/usr/bin/cc]
   ignore line: [COLLECT_LTO_WRAPPER=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/lto-wrapper]
@@ -197,14 +269,14 @@ Parsed C implicit link information from above output:
   ignore line: [Supported LTO compression algorithms: zlib]
   ignore line: [gcc version 10.2.1 20210130 (Red Hat 10.2.1-11) (GCC) ]
   ignore line: [COMPILER_PATH=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/]
-  ignore line: [LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix_debug/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_b46de' '-mtune=generic' '-march=x86-64']
-  link line: [ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/collect2 -plugin /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/liblto_plugin.so -plugin-opt=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/lto-wrapper -plugin-opt=-fresolution=/tmp/cc8YdGSH.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_b46de /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtbegin.o -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi/lib -L/opt/deps/openpmix_debug/lib -L/opt/deps/prrte_debug/lib -L/opt/ompi/lib -L. -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../.. CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtend.o /lib/../lib64/crtn.o]
+  ignore line: [LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi_debug/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_59837' '-mtune=generic' '-march=x86-64']
+  link line: [ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/collect2 -plugin /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/liblto_plugin.so -plugin-opt=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/lto-wrapper -plugin-opt=-fresolution=/tmp/ccQzx7r2.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_59837 /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtbegin.o -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi_debug/lib -L/opt/deps/openpmix/lib -L/opt/deps/prrte_debug/lib -L/opt/ompi/lib -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi/lib -L/opt/deps/openpmix/lib -L/opt/deps/prrte/lib -L/opt/ompi/lib -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi/lib -L/opt/deps/openpmix/lib -L/opt/deps/prrte/lib -L/opt/ompi/lib -L. -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../.. CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtend.o /lib/../lib64/crtn.o]
     arg [/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/cc8YdGSH.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccQzx7r2.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -216,14 +288,17 @@ Parsed C implicit link information from above output:
     arg [--hash-style=gnu] ==> ignore
     arg [-m] ==> ignore
     arg [elf_x86_64] ==> ignore
-    arg [-export-dynamic] ==> ignore
     arg [-dynamic-linker] ==> ignore
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_b46de] ==> ignore
+    arg [cmTC_59837] ==> ignore
     arg [/lib/../lib64/crt1.o] ==> obj [/lib/../lib64/crt1.o]
     arg [/lib/../lib64/crti.o] ==> obj [/lib/../lib64/crti.o]
     arg [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtbegin.o] ==> obj [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtbegin.o]
+    arg [-L/opt/arrow/lib64/../lib64] ==> dir [/opt/arrow/lib64/../lib64]
+    arg [-L/usr/local/lib/../lib64] ==> dir [/usr/local/lib/../lib64]
+    arg [-L/opt/arrow/lib64/../lib64] ==> dir [/opt/arrow/lib64/../lib64]
+    arg [-L/usr/local/lib/../lib64] ==> dir [/usr/local/lib/../lib64]
     arg [-L/opt/arrow/lib64/../lib64] ==> dir [/opt/arrow/lib64/../lib64]
     arg [-L/usr/local/lib/../lib64] ==> dir [/usr/local/lib/../lib64]
     arg [-L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10] ==> dir [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10]
@@ -236,13 +311,33 @@ Parsed C implicit link information from above output:
     arg [-L/usr/local/lib] ==> dir [/usr/local/lib]
     arg [-L/opt/OpenBLAS/lib] ==> dir [/opt/OpenBLAS/lib]
     arg [-L/opt/deps/protobuf/2.5.0/lib] ==> dir [/opt/deps/protobuf/2.5.0/lib]
-    arg [-L/opt/ompi/lib] ==> dir [/opt/ompi/lib]
-    arg [-L/opt/deps/openpmix_debug/lib] ==> dir [/opt/deps/openpmix_debug/lib]
+    arg [-L/opt/ompi_debug/lib] ==> dir [/opt/ompi_debug/lib]
+    arg [-L/opt/deps/openpmix/lib] ==> dir [/opt/deps/openpmix/lib]
     arg [-L/opt/deps/prrte_debug/lib] ==> dir [/opt/deps/prrte_debug/lib]
+    arg [-L/opt/ompi/lib] ==> dir [/opt/ompi/lib]
+    arg [-L/opt/deps/flex/lib] ==> dir [/opt/deps/flex/lib]
+    arg [-L/home/xialb/lib] ==> dir [/home/xialb/lib]
+    arg [-L/opt/arrow/lib64] ==> dir [/opt/arrow/lib64]
+    arg [-L/usr/local/lib] ==> dir [/usr/local/lib]
+    arg [-L/opt/OpenBLAS/lib] ==> dir [/opt/OpenBLAS/lib]
+    arg [-L/opt/deps/protobuf/2.5.0/lib] ==> dir [/opt/deps/protobuf/2.5.0/lib]
+    arg [-L/opt/ompi/lib] ==> dir [/opt/ompi/lib]
+    arg [-L/opt/deps/openpmix/lib] ==> dir [/opt/deps/openpmix/lib]
+    arg [-L/opt/deps/prrte/lib] ==> dir [/opt/deps/prrte/lib]
+    arg [-L/opt/ompi/lib] ==> dir [/opt/ompi/lib]
+    arg [-L/opt/deps/flex/lib] ==> dir [/opt/deps/flex/lib]
+    arg [-L/home/xialb/lib] ==> dir [/home/xialb/lib]
+    arg [-L/opt/arrow/lib64] ==> dir [/opt/arrow/lib64]
+    arg [-L/usr/local/lib] ==> dir [/usr/local/lib]
+    arg [-L/opt/OpenBLAS/lib] ==> dir [/opt/OpenBLAS/lib]
+    arg [-L/opt/deps/protobuf/2.5.0/lib] ==> dir [/opt/deps/protobuf/2.5.0/lib]
+    arg [-L/opt/ompi/lib] ==> dir [/opt/ompi/lib]
+    arg [-L/opt/deps/openpmix/lib] ==> dir [/opt/deps/openpmix/lib]
+    arg [-L/opt/deps/prrte/lib] ==> dir [/opt/deps/prrte/lib]
     arg [-L/opt/ompi/lib] ==> dir [/opt/ompi/lib]
     arg [-L.] ==> ignore
     arg [-L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../..] ==> dir [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../..]
-    arg [CMakeFiles/cmTC_b46de.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [CMakeFiles/cmTC_59837.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--push-state] ==> ignore
     arg [--as-needed] ==> ignore
@@ -261,6 +356,10 @@ Parsed C implicit link information from above output:
   collapse obj [/lib/../lib64/crtn.o] ==> [/lib64/crtn.o]
   collapse library dir [/opt/arrow/lib64/../lib64] ==> [/opt/arrow/lib64]
   collapse library dir [/usr/local/lib/../lib64] ==> [/usr/local/lib64]
+  collapse library dir [/opt/arrow/lib64/../lib64] ==> [/opt/arrow/lib64]
+  collapse library dir [/usr/local/lib/../lib64] ==> [/usr/local/lib64]
+  collapse library dir [/opt/arrow/lib64/../lib64] ==> [/opt/arrow/lib64]
+  collapse library dir [/usr/local/lib/../lib64] ==> [/usr/local/lib64]
   collapse library dir [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10] ==> [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10]
   collapse library dir [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64] ==> [/opt/rh/devtoolset-10/root/usr/lib64]
   collapse library dir [/lib/../lib64] ==> [/lib64]
@@ -271,24 +370,44 @@ Parsed C implicit link information from above output:
   collapse library dir [/usr/local/lib] ==> [/usr/local/lib]
   collapse library dir [/opt/OpenBLAS/lib] ==> [/opt/OpenBLAS/lib]
   collapse library dir [/opt/deps/protobuf/2.5.0/lib] ==> [/opt/deps/protobuf/2.5.0/lib]
-  collapse library dir [/opt/ompi/lib] ==> [/opt/ompi/lib]
-  collapse library dir [/opt/deps/openpmix_debug/lib] ==> [/opt/deps/openpmix_debug/lib]
+  collapse library dir [/opt/ompi_debug/lib] ==> [/opt/ompi_debug/lib]
+  collapse library dir [/opt/deps/openpmix/lib] ==> [/opt/deps/openpmix/lib]
   collapse library dir [/opt/deps/prrte_debug/lib] ==> [/opt/deps/prrte_debug/lib]
+  collapse library dir [/opt/ompi/lib] ==> [/opt/ompi/lib]
+  collapse library dir [/opt/deps/flex/lib] ==> [/opt/deps/flex/lib]
+  collapse library dir [/home/xialb/lib] ==> [/home/xialb/lib]
+  collapse library dir [/opt/arrow/lib64] ==> [/opt/arrow/lib64]
+  collapse library dir [/usr/local/lib] ==> [/usr/local/lib]
+  collapse library dir [/opt/OpenBLAS/lib] ==> [/opt/OpenBLAS/lib]
+  collapse library dir [/opt/deps/protobuf/2.5.0/lib] ==> [/opt/deps/protobuf/2.5.0/lib]
+  collapse library dir [/opt/ompi/lib] ==> [/opt/ompi/lib]
+  collapse library dir [/opt/deps/openpmix/lib] ==> [/opt/deps/openpmix/lib]
+  collapse library dir [/opt/deps/prrte/lib] ==> [/opt/deps/prrte/lib]
+  collapse library dir [/opt/ompi/lib] ==> [/opt/ompi/lib]
+  collapse library dir [/opt/deps/flex/lib] ==> [/opt/deps/flex/lib]
+  collapse library dir [/home/xialb/lib] ==> [/home/xialb/lib]
+  collapse library dir [/opt/arrow/lib64] ==> [/opt/arrow/lib64]
+  collapse library dir [/usr/local/lib] ==> [/usr/local/lib]
+  collapse library dir [/opt/OpenBLAS/lib] ==> [/opt/OpenBLAS/lib]
+  collapse library dir [/opt/deps/protobuf/2.5.0/lib] ==> [/opt/deps/protobuf/2.5.0/lib]
+  collapse library dir [/opt/ompi/lib] ==> [/opt/ompi/lib]
+  collapse library dir [/opt/deps/openpmix/lib] ==> [/opt/deps/openpmix/lib]
+  collapse library dir [/opt/deps/prrte/lib] ==> [/opt/deps/prrte/lib]
   collapse library dir [/opt/ompi/lib] ==> [/opt/ompi/lib]
   collapse library dir [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../..] ==> [/opt/rh/devtoolset-10/root/usr/lib]
   implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
   implicit objs: [/lib64/crt1.o;/lib64/crti.o;/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtbegin.o;/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtend.o;/lib64/crtn.o]
-  implicit dirs: [/opt/arrow/lib64;/usr/local/lib64;/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10;/opt/rh/devtoolset-10/root/usr/lib64;/lib64;/usr/lib64;/opt/deps/flex/lib;/home/xialb/lib;/usr/local/lib;/opt/OpenBLAS/lib;/opt/deps/protobuf/2.5.0/lib;/opt/ompi/lib;/opt/deps/openpmix_debug/lib;/opt/deps/prrte_debug/lib;/opt/rh/devtoolset-10/root/usr/lib]
+  implicit dirs: [/opt/arrow/lib64;/usr/local/lib64;/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10;/opt/rh/devtoolset-10/root/usr/lib64;/lib64;/usr/lib64;/opt/deps/flex/lib;/home/xialb/lib;/usr/local/lib;/opt/OpenBLAS/lib;/opt/deps/protobuf/2.5.0/lib;/opt/ompi_debug/lib;/opt/deps/openpmix/lib;/opt/deps/prrte_debug/lib;/opt/ompi/lib;/opt/deps/prrte/lib;/opt/rh/devtoolset-10/root/usr/lib]
   implicit fwks: []
 
 
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: /home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/opt/rh/devtoolset-10/root/usr/bin/gmake -f Makefile cmTC_0fedf/fast && /opt/rh/devtoolset-10/root/usr/bin/gmake  -f CMakeFiles/cmTC_0fedf.dir/build.make CMakeFiles/cmTC_0fedf.dir/build
+Run Build Command(s):/opt/rh/devtoolset-10/root/usr/bin/gmake -f Makefile cmTC_d707c/fast && /opt/rh/devtoolset-10/root/usr/bin/gmake  -f CMakeFiles/cmTC_d707c.dir/build.make CMakeFiles/cmTC_d707c.dir/build
 gmake[1]: Entering directory '/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o
-/opt/rh/devtoolset-10/root/usr/bin/c++   -v -o CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o -c /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp
+Building CXX object CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o
+/opt/rh/devtoolset-10/root/usr/bin/c++   -v -o CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o -c /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp
 Using built-in specs.
 COLLECT_GCC=/opt/rh/devtoolset-10/root/usr/bin/c++
 Target: x86_64-redhat-linux
@@ -296,8 +415,8 @@ Configured with: ../configure --enable-bootstrap --enable-languages=c,c++,fortra
 Thread model: posix
 Supported LTO compression algorithms: zlib
 gcc version 10.2.1 20210130 (Red Hat 10.2.1-11) (GCC) 
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/cc1plus -quiet -v -D_GNU_SOURCE /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o -version -o /tmp/cccsEcCQ.s
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/cc1plus -quiet -v -D_GNU_SOURCE /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o -version -o /tmp/ccGTXH1b.s
 GNU C++14 (GCC) version 10.2.1 20210130 (Red Hat 10.2.1-11) (x86_64-redhat-linux)
 	compiled by GNU C version 10.2.1 20210130 (Red Hat 10.2.1-11), GMP version 6.0.0, MPFR version 3.1.1, MPC version 1.0.1, isl version isl-0.16.1-GMP
 
@@ -309,9 +428,32 @@ ignoring duplicate directory "/opt/OpenBLAS/include"
 ignoring duplicate directory "/opt/deps/protobuf/2.5.0/include"
 ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"
 ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"
-ignoring duplicate directory "/opt/ompi/include"
-ignoring duplicate directory "/opt/deps/openpmix_debug/include"
+ignoring duplicate directory "/opt/ompi_debug/include"
+ignoring duplicate directory "/opt/deps/openpmix/include"
 ignoring duplicate directory "/opt/deps/prrte_debug/include"
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"
+ignoring duplicate directory "/opt/deps/flex/include"
+ignoring duplicate directory "/opt/arrow/include"
+ignoring duplicate directory "/opt/OpenBLAS/include"
+ignoring duplicate directory "/opt/deps/protobuf/2.5.0/include"
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"
+ignoring duplicate directory "/opt/deps/openpmix/include"
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"
+ignoring duplicate directory "/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/"
+ignoring duplicate directory "/home/xialb/git/spark/blaze/src/main/native/src/blaze/include"
+cc1plus: warning: /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.h: not a directory
+ignoring duplicate directory "/opt/deps/flex/include"
+ignoring duplicate directory "/opt/arrow/include"
+ignoring duplicate directory "/opt/OpenBLAS/include"
+ignoring duplicate directory "/opt/deps/protobuf/2.5.0/include"
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"
+ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"
+ignoring duplicate directory "/opt/ompi/include"
+ignoring duplicate directory "/opt/deps/openpmix/include"
+ignoring duplicate directory "/opt/deps/prrte/include"
 ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"
 ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"
 ignoring nonexistent directory "/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include-fixed"
@@ -323,10 +465,16 @@ ignoring nonexistent directory "/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-re
  /opt/deps/protobuf/2.5.0/include
  /home/xialb/.sdkman/candidates/java/current/include/linux
  /home/xialb/.sdkman/candidates/java/current/include
- /opt/ompi/include
- /opt/deps/openpmix_debug/include
+ /opt/ompi_debug/include
+ /opt/deps/openpmix/include
  /opt/deps/prrte_debug/include
  /opt/deps/flex/include
+ /opt/ompi/include
+ /opt/deps/prrte/include
+ /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/
+ /home/xialb/git/spark/blaze/src/main/native/src/blaze/include
+ /home/xialb/git/ompi/3rd-party/prrte/src/include
+ /home/xialb/git/ompi/3rd-party/prrte/
  .
  /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../include/c++/10
  /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../include/c++/10/x86_64-redhat-linux
@@ -341,15 +489,15 @@ GNU C++14 (GCC) version 10.2.1 20210130 (Red Hat 10.2.1-11) (x86_64-redhat-linux
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 Compiler executable checksum: 90aa9bafbbfcf857e3893d71aade2a62
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/as -v --64 -o CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o /tmp/cccsEcCQ.s
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/as -v --64 -o CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccGTXH1b.s
 GNU assembler version 2.35 (x86_64-redhat-linux) using BFD version version 2.35-5.el7.2
 COMPILER_PATH=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/
-LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix_debug/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
-Linking CXX executable cmTC_0fedf
-/opt/cmake/v3.21/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0fedf.dir/link.txt --verbose=1
-/opt/rh/devtoolset-10/root/usr/bin/c++  -v -rdynamic CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_0fedf 
+LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi_debug/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+Linking CXX executable cmTC_d707c
+/opt/cmake/v3.21/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d707c.dir/link.txt --verbose=1
+/opt/rh/devtoolset-10/root/usr/bin/c++  -v CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_d707c 
 Using built-in specs.
 COLLECT_GCC=/opt/rh/devtoolset-10/root/usr/bin/c++
 COLLECT_LTO_WRAPPER=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/lto-wrapper
@@ -359,10 +507,10 @@ Thread model: posix
 Supported LTO compression algorithms: zlib
 gcc version 10.2.1 20210130 (Red Hat 10.2.1-11) (GCC) 
 COMPILER_PATH=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/
-LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix_debug/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_0fedf' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/collect2 -plugin /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/liblto_plugin.so -plugin-opt=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/lto-wrapper -plugin-opt=-fresolution=/tmp/ccLRx9uX.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_0fedf /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtbegin.o -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi/lib -L/opt/deps/openpmix_debug/lib -L/opt/deps/prrte_debug/lib -L/opt/ompi/lib -L. -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../.. CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtend.o /lib/../lib64/crtn.o
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_0fedf' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi_debug/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_d707c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/collect2 -plugin /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/liblto_plugin.so -plugin-opt=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/lto-wrapper -plugin-opt=-fresolution=/tmp/ccBmygdg.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_d707c /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtbegin.o -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi_debug/lib -L/opt/deps/openpmix/lib -L/opt/deps/prrte_debug/lib -L/opt/ompi/lib -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi/lib -L/opt/deps/openpmix/lib -L/opt/deps/prrte/lib -L/opt/ompi/lib -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi/lib -L/opt/deps/openpmix/lib -L/opt/deps/prrte/lib -L/opt/ompi/lib -L. -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../.. CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtend.o /lib/../lib64/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_d707c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
 gmake[1]: Leaving directory '/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles/CMakeTmp'
 
 
@@ -375,10 +523,16 @@ Parsed CXX implicit include dir info from above output: rv=done
     add: [/opt/deps/protobuf/2.5.0/include]
     add: [/home/xialb/.sdkman/candidates/java/current/include/linux]
     add: [/home/xialb/.sdkman/candidates/java/current/include]
-    add: [/opt/ompi/include]
-    add: [/opt/deps/openpmix_debug/include]
+    add: [/opt/ompi_debug/include]
+    add: [/opt/deps/openpmix/include]
     add: [/opt/deps/prrte_debug/include]
     add: [/opt/deps/flex/include]
+    add: [/opt/ompi/include]
+    add: [/opt/deps/prrte/include]
+    add: [/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/]
+    add: [/home/xialb/git/spark/blaze/src/main/native/src/blaze/include]
+    add: [/home/xialb/git/ompi/3rd-party/prrte/src/include]
+    add: [/home/xialb/git/ompi/3rd-party/prrte/]
     add: [.]
     add: [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../include/c++/10]
     add: [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../include/c++/10/x86_64-redhat-linux]
@@ -393,10 +547,16 @@ Parsed CXX implicit include dir info from above output: rv=done
   collapse include dir [/opt/deps/protobuf/2.5.0/include] ==> [/opt/deps/protobuf/2.5.0/include]
   collapse include dir [/home/xialb/.sdkman/candidates/java/current/include/linux] ==> [/home/xialb/.sdkman/candidates/java/current/include/linux]
   collapse include dir [/home/xialb/.sdkman/candidates/java/current/include] ==> [/home/xialb/.sdkman/candidates/java/current/include]
-  collapse include dir [/opt/ompi/include] ==> [/opt/ompi/include]
-  collapse include dir [/opt/deps/openpmix_debug/include] ==> [/opt/deps/openpmix_debug/include]
+  collapse include dir [/opt/ompi_debug/include] ==> [/opt/ompi_debug/include]
+  collapse include dir [/opt/deps/openpmix/include] ==> [/opt/deps/openpmix/include]
   collapse include dir [/opt/deps/prrte_debug/include] ==> [/opt/deps/prrte_debug/include]
   collapse include dir [/opt/deps/flex/include] ==> [/opt/deps/flex/include]
+  collapse include dir [/opt/ompi/include] ==> [/opt/ompi/include]
+  collapse include dir [/opt/deps/prrte/include] ==> [/opt/deps/prrte/include]
+  collapse include dir [/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/] ==> [/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun]
+  collapse include dir [/home/xialb/git/spark/blaze/src/main/native/src/blaze/include] ==> [/home/xialb/git/spark/blaze/src/main/native/src/blaze/include]
+  collapse include dir [/home/xialb/git/ompi/3rd-party/prrte/src/include] ==> [/home/xialb/git/ompi/3rd-party/prrte/src/include]
+  collapse include dir [/home/xialb/git/ompi/3rd-party/prrte/] ==> [/home/xialb/git/ompi/3rd-party/prrte]
   skipping relative include dir [.]
   collapse include dir [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../include/c++/10] ==> [/opt/rh/devtoolset-10/root/usr/include/c++/10]
   collapse include dir [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../include/c++/10/x86_64-redhat-linux] ==> [/opt/rh/devtoolset-10/root/usr/include/c++/10/x86_64-redhat-linux]
@@ -405,17 +565,17 @@ Parsed CXX implicit include dir info from above output: rv=done
   collapse include dir [/usr/local/include] ==> [/usr/local/include]
   collapse include dir [/opt/rh/devtoolset-10/root/usr/include] ==> [/opt/rh/devtoolset-10/root/usr/include]
   collapse include dir [/usr/include] ==> [/usr/include]
-  implicit include dirs: [/opt/arrow/include;/opt/OpenBLAS/include;/opt/deps/protobuf/2.5.0/include;/home/xialb/.sdkman/candidates/java/current/include/linux;/home/xialb/.sdkman/candidates/java/current/include;/opt/ompi/include;/opt/deps/openpmix_debug/include;/opt/deps/prrte_debug/include;/opt/deps/flex/include;/opt/rh/devtoolset-10/root/usr/include/c++/10;/opt/rh/devtoolset-10/root/usr/include/c++/10/x86_64-redhat-linux;/opt/rh/devtoolset-10/root/usr/include/c++/10/backward;/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include;/usr/local/include;/opt/rh/devtoolset-10/root/usr/include;/usr/include]
+  implicit include dirs: [/opt/arrow/include;/opt/OpenBLAS/include;/opt/deps/protobuf/2.5.0/include;/home/xialb/.sdkman/candidates/java/current/include/linux;/home/xialb/.sdkman/candidates/java/current/include;/opt/ompi_debug/include;/opt/deps/openpmix/include;/opt/deps/prrte_debug/include;/opt/deps/flex/include;/opt/ompi/include;/opt/deps/prrte/include;/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun;/home/xialb/git/spark/blaze/src/main/native/src/blaze/include;/home/xialb/git/ompi/3rd-party/prrte/src/include;/home/xialb/git/ompi/3rd-party/prrte;/opt/rh/devtoolset-10/root/usr/include/c++/10;/opt/rh/devtoolset-10/root/usr/include/c++/10/x86_64-redhat-linux;/opt/rh/devtoolset-10/root/usr/include/c++/10/backward;/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include;/usr/local/include;/opt/rh/devtoolset-10/root/usr/include;/usr/include]
 
 
 Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command(s):/opt/rh/devtoolset-10/root/usr/bin/gmake -f Makefile cmTC_0fedf/fast && /opt/rh/devtoolset-10/root/usr/bin/gmake  -f CMakeFiles/cmTC_0fedf.dir/build.make CMakeFiles/cmTC_0fedf.dir/build]
+  ignore line: [Run Build Command(s):/opt/rh/devtoolset-10/root/usr/bin/gmake -f Makefile cmTC_d707c/fast && /opt/rh/devtoolset-10/root/usr/bin/gmake  -f CMakeFiles/cmTC_d707c.dir/build.make CMakeFiles/cmTC_d707c.dir/build]
   ignore line: [gmake[1]: Entering directory '/home/xialb/git/spark/blaze/src/main/native/src/blaze/build/CMakeFiles/CMakeTmp']
-  ignore line: [Building CXX object CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/opt/rh/devtoolset-10/root/usr/bin/c++   -v -o CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o -c /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Building CXX object CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/opt/rh/devtoolset-10/root/usr/bin/c++   -v -o CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o -c /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/opt/rh/devtoolset-10/root/usr/bin/c++]
   ignore line: [Target: x86_64-redhat-linux]
@@ -423,8 +583,8 @@ Parsed CXX implicit link information from above output:
   ignore line: [Thread model: posix]
   ignore line: [Supported LTO compression algorithms: zlib]
   ignore line: [gcc version 10.2.1 20210130 (Red Hat 10.2.1-11) (GCC) ]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  ignore line: [ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/cc1plus -quiet -v -D_GNU_SOURCE /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o -version -o /tmp/cccsEcCQ.s]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  ignore line: [ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/cc1plus -quiet -v -D_GNU_SOURCE /opt/cmake/v3.21/share/cmake-3.21/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o -version -o /tmp/ccGTXH1b.s]
   ignore line: [GNU C++14 (GCC) version 10.2.1 20210130 (Red Hat 10.2.1-11) (x86_64-redhat-linux)]
   ignore line: [	compiled by GNU C version 10.2.1 20210130 (Red Hat 10.2.1-11)  GMP version 6.0.0  MPFR version 3.1.1  MPC version 1.0.1  isl version isl-0.16.1-GMP]
   ignore line: []
@@ -436,9 +596,32 @@ Parsed CXX implicit link information from above output:
   ignore line: [ignoring duplicate directory "/opt/deps/protobuf/2.5.0/include"]
   ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"]
   ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"]
-  ignore line: [ignoring duplicate directory "/opt/ompi/include"]
-  ignore line: [ignoring duplicate directory "/opt/deps/openpmix_debug/include"]
+  ignore line: [ignoring duplicate directory "/opt/ompi_debug/include"]
+  ignore line: [ignoring duplicate directory "/opt/deps/openpmix/include"]
   ignore line: [ignoring duplicate directory "/opt/deps/prrte_debug/include"]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"]
+  ignore line: [ignoring duplicate directory "/opt/deps/flex/include"]
+  ignore line: [ignoring duplicate directory "/opt/arrow/include"]
+  ignore line: [ignoring duplicate directory "/opt/OpenBLAS/include"]
+  ignore line: [ignoring duplicate directory "/opt/deps/protobuf/2.5.0/include"]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"]
+  ignore line: [ignoring duplicate directory "/opt/deps/openpmix/include"]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"]
+  ignore line: [ignoring duplicate directory "/home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/"]
+  ignore line: [ignoring duplicate directory "/home/xialb/git/spark/blaze/src/main/native/src/blaze/include"]
+  ignore line: [cc1plus: warning: /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.h: not a directory]
+  ignore line: [ignoring duplicate directory "/opt/deps/flex/include"]
+  ignore line: [ignoring duplicate directory "/opt/arrow/include"]
+  ignore line: [ignoring duplicate directory "/opt/OpenBLAS/include"]
+  ignore line: [ignoring duplicate directory "/opt/deps/protobuf/2.5.0/include"]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"]
+  ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"]
+  ignore line: [ignoring duplicate directory "/opt/ompi/include"]
+  ignore line: [ignoring duplicate directory "/opt/deps/openpmix/include"]
+  ignore line: [ignoring duplicate directory "/opt/deps/prrte/include"]
   ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include"]
   ignore line: [ignoring duplicate directory "/home/xialb/.sdkman/candidates/java/current/include/linux"]
   ignore line: [ignoring nonexistent directory "/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include-fixed"]
@@ -450,10 +633,16 @@ Parsed CXX implicit link information from above output:
   ignore line: [ /opt/deps/protobuf/2.5.0/include]
   ignore line: [ /home/xialb/.sdkman/candidates/java/current/include/linux]
   ignore line: [ /home/xialb/.sdkman/candidates/java/current/include]
-  ignore line: [ /opt/ompi/include]
-  ignore line: [ /opt/deps/openpmix_debug/include]
+  ignore line: [ /opt/ompi_debug/include]
+  ignore line: [ /opt/deps/openpmix/include]
   ignore line: [ /opt/deps/prrte_debug/include]
   ignore line: [ /opt/deps/flex/include]
+  ignore line: [ /opt/ompi/include]
+  ignore line: [ /opt/deps/prrte/include]
+  ignore line: [ /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/]
+  ignore line: [ /home/xialb/git/spark/blaze/src/main/native/src/blaze/include]
+  ignore line: [ /home/xialb/git/ompi/3rd-party/prrte/src/include]
+  ignore line: [ /home/xialb/git/ompi/3rd-party/prrte/]
   ignore line: [ .]
   ignore line: [ /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../include/c++/10]
   ignore line: [ /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../include/c++/10/x86_64-redhat-linux]
@@ -468,15 +657,15 @@ Parsed CXX implicit link information from above output:
   ignore line: []
   ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
   ignore line: [Compiler executable checksum: 90aa9bafbbfcf857e3893d71aade2a62]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  ignore line: [ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/as -v --64 -o CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o /tmp/cccsEcCQ.s]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  ignore line: [ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/as -v --64 -o CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccGTXH1b.s]
   ignore line: [GNU assembler version 2.35 (x86_64-redhat-linux) using BFD version version 2.35-5.el7.2]
   ignore line: [COMPILER_PATH=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/]
-  ignore line: [LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix_debug/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  ignore line: [Linking CXX executable cmTC_0fedf]
-  ignore line: [/opt/cmake/v3.21/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0fedf.dir/link.txt --verbose=1]
-  ignore line: [/opt/rh/devtoolset-10/root/usr/bin/c++  -v -rdynamic CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_0fedf ]
+  ignore line: [LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi_debug/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  ignore line: [Linking CXX executable cmTC_d707c]
+  ignore line: [/opt/cmake/v3.21/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d707c.dir/link.txt --verbose=1]
+  ignore line: [/opt/rh/devtoolset-10/root/usr/bin/c++  -v CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_d707c ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/opt/rh/devtoolset-10/root/usr/bin/c++]
   ignore line: [COLLECT_LTO_WRAPPER=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/lto-wrapper]
@@ -486,14 +675,14 @@ Parsed CXX implicit link information from above output:
   ignore line: [Supported LTO compression algorithms: zlib]
   ignore line: [gcc version 10.2.1 20210130 (Red Hat 10.2.1-11) (GCC) ]
   ignore line: [COMPILER_PATH=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/]
-  ignore line: [LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix_debug/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_0fedf' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  link line: [ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/collect2 -plugin /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/liblto_plugin.so -plugin-opt=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/lto-wrapper -plugin-opt=-fresolution=/tmp/ccLRx9uX.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_0fedf /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtbegin.o -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi/lib -L/opt/deps/openpmix_debug/lib -L/opt/deps/prrte_debug/lib -L/opt/ompi/lib -L. -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../.. CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtend.o /lib/../lib64/crtn.o]
+  ignore line: [LIBRARY_PATH=/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/arrow/lib64/../lib64/:/usr/local/lib/../lib64/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi_debug/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte_debug/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:/opt/deps/flex/lib/:/home/xialb/lib/:/opt/arrow/lib64/:/usr/local/lib/:/opt/OpenBLAS/lib/:/opt/deps/protobuf/2.5.0/lib/:/opt/ompi/lib/:/opt/deps/openpmix/lib/:/opt/deps/prrte/lib/:/opt/ompi/lib/:./:/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_d707c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  link line: [ /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/collect2 -plugin /opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/liblto_plugin.so -plugin-opt=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/lto-wrapper -plugin-opt=-fresolution=/tmp/ccBmygdg.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_d707c /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtbegin.o -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/arrow/lib64/../lib64 -L/usr/local/lib/../lib64 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10 -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi_debug/lib -L/opt/deps/openpmix/lib -L/opt/deps/prrte_debug/lib -L/opt/ompi/lib -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi/lib -L/opt/deps/openpmix/lib -L/opt/deps/prrte/lib -L/opt/ompi/lib -L/opt/deps/flex/lib -L/home/xialb/lib -L/opt/arrow/lib64 -L/usr/local/lib -L/opt/OpenBLAS/lib -L/opt/deps/protobuf/2.5.0/lib -L/opt/ompi/lib -L/opt/deps/openpmix/lib -L/opt/deps/prrte/lib -L/opt/ompi/lib -L. -L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../.. CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtend.o /lib/../lib64/crtn.o]
     arg [/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/opt/rh/devtoolset-10/root/usr/libexec/gcc/x86_64-redhat-linux/10/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccLRx9uX.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccBmygdg.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -505,14 +694,17 @@ Parsed CXX implicit link information from above output:
     arg [--hash-style=gnu] ==> ignore
     arg [-m] ==> ignore
     arg [elf_x86_64] ==> ignore
-    arg [-export-dynamic] ==> ignore
     arg [-dynamic-linker] ==> ignore
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_0fedf] ==> ignore
+    arg [cmTC_d707c] ==> ignore
     arg [/lib/../lib64/crt1.o] ==> obj [/lib/../lib64/crt1.o]
     arg [/lib/../lib64/crti.o] ==> obj [/lib/../lib64/crti.o]
     arg [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtbegin.o] ==> obj [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtbegin.o]
+    arg [-L/opt/arrow/lib64/../lib64] ==> dir [/opt/arrow/lib64/../lib64]
+    arg [-L/usr/local/lib/../lib64] ==> dir [/usr/local/lib/../lib64]
+    arg [-L/opt/arrow/lib64/../lib64] ==> dir [/opt/arrow/lib64/../lib64]
+    arg [-L/usr/local/lib/../lib64] ==> dir [/usr/local/lib/../lib64]
     arg [-L/opt/arrow/lib64/../lib64] ==> dir [/opt/arrow/lib64/../lib64]
     arg [-L/usr/local/lib/../lib64] ==> dir [/usr/local/lib/../lib64]
     arg [-L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10] ==> dir [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10]
@@ -525,13 +717,33 @@ Parsed CXX implicit link information from above output:
     arg [-L/usr/local/lib] ==> dir [/usr/local/lib]
     arg [-L/opt/OpenBLAS/lib] ==> dir [/opt/OpenBLAS/lib]
     arg [-L/opt/deps/protobuf/2.5.0/lib] ==> dir [/opt/deps/protobuf/2.5.0/lib]
-    arg [-L/opt/ompi/lib] ==> dir [/opt/ompi/lib]
-    arg [-L/opt/deps/openpmix_debug/lib] ==> dir [/opt/deps/openpmix_debug/lib]
+    arg [-L/opt/ompi_debug/lib] ==> dir [/opt/ompi_debug/lib]
+    arg [-L/opt/deps/openpmix/lib] ==> dir [/opt/deps/openpmix/lib]
     arg [-L/opt/deps/prrte_debug/lib] ==> dir [/opt/deps/prrte_debug/lib]
+    arg [-L/opt/ompi/lib] ==> dir [/opt/ompi/lib]
+    arg [-L/opt/deps/flex/lib] ==> dir [/opt/deps/flex/lib]
+    arg [-L/home/xialb/lib] ==> dir [/home/xialb/lib]
+    arg [-L/opt/arrow/lib64] ==> dir [/opt/arrow/lib64]
+    arg [-L/usr/local/lib] ==> dir [/usr/local/lib]
+    arg [-L/opt/OpenBLAS/lib] ==> dir [/opt/OpenBLAS/lib]
+    arg [-L/opt/deps/protobuf/2.5.0/lib] ==> dir [/opt/deps/protobuf/2.5.0/lib]
+    arg [-L/opt/ompi/lib] ==> dir [/opt/ompi/lib]
+    arg [-L/opt/deps/openpmix/lib] ==> dir [/opt/deps/openpmix/lib]
+    arg [-L/opt/deps/prrte/lib] ==> dir [/opt/deps/prrte/lib]
+    arg [-L/opt/ompi/lib] ==> dir [/opt/ompi/lib]
+    arg [-L/opt/deps/flex/lib] ==> dir [/opt/deps/flex/lib]
+    arg [-L/home/xialb/lib] ==> dir [/home/xialb/lib]
+    arg [-L/opt/arrow/lib64] ==> dir [/opt/arrow/lib64]
+    arg [-L/usr/local/lib] ==> dir [/usr/local/lib]
+    arg [-L/opt/OpenBLAS/lib] ==> dir [/opt/OpenBLAS/lib]
+    arg [-L/opt/deps/protobuf/2.5.0/lib] ==> dir [/opt/deps/protobuf/2.5.0/lib]
+    arg [-L/opt/ompi/lib] ==> dir [/opt/ompi/lib]
+    arg [-L/opt/deps/openpmix/lib] ==> dir [/opt/deps/openpmix/lib]
+    arg [-L/opt/deps/prrte/lib] ==> dir [/opt/deps/prrte/lib]
     arg [-L/opt/ompi/lib] ==> dir [/opt/ompi/lib]
     arg [-L.] ==> ignore
     arg [-L/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../..] ==> dir [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../..]
-    arg [CMakeFiles/cmTC_0fedf.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [CMakeFiles/cmTC_d707c.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -546,6 +758,10 @@ Parsed CXX implicit link information from above output:
   collapse obj [/lib/../lib64/crtn.o] ==> [/lib64/crtn.o]
   collapse library dir [/opt/arrow/lib64/../lib64] ==> [/opt/arrow/lib64]
   collapse library dir [/usr/local/lib/../lib64] ==> [/usr/local/lib64]
+  collapse library dir [/opt/arrow/lib64/../lib64] ==> [/opt/arrow/lib64]
+  collapse library dir [/usr/local/lib/../lib64] ==> [/usr/local/lib64]
+  collapse library dir [/opt/arrow/lib64/../lib64] ==> [/opt/arrow/lib64]
+  collapse library dir [/usr/local/lib/../lib64] ==> [/usr/local/lib64]
   collapse library dir [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10] ==> [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10]
   collapse library dir [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../../../lib64] ==> [/opt/rh/devtoolset-10/root/usr/lib64]
   collapse library dir [/lib/../lib64] ==> [/lib64]
@@ -556,14 +772,34 @@ Parsed CXX implicit link information from above output:
   collapse library dir [/usr/local/lib] ==> [/usr/local/lib]
   collapse library dir [/opt/OpenBLAS/lib] ==> [/opt/OpenBLAS/lib]
   collapse library dir [/opt/deps/protobuf/2.5.0/lib] ==> [/opt/deps/protobuf/2.5.0/lib]
-  collapse library dir [/opt/ompi/lib] ==> [/opt/ompi/lib]
-  collapse library dir [/opt/deps/openpmix_debug/lib] ==> [/opt/deps/openpmix_debug/lib]
+  collapse library dir [/opt/ompi_debug/lib] ==> [/opt/ompi_debug/lib]
+  collapse library dir [/opt/deps/openpmix/lib] ==> [/opt/deps/openpmix/lib]
   collapse library dir [/opt/deps/prrte_debug/lib] ==> [/opt/deps/prrte_debug/lib]
+  collapse library dir [/opt/ompi/lib] ==> [/opt/ompi/lib]
+  collapse library dir [/opt/deps/flex/lib] ==> [/opt/deps/flex/lib]
+  collapse library dir [/home/xialb/lib] ==> [/home/xialb/lib]
+  collapse library dir [/opt/arrow/lib64] ==> [/opt/arrow/lib64]
+  collapse library dir [/usr/local/lib] ==> [/usr/local/lib]
+  collapse library dir [/opt/OpenBLAS/lib] ==> [/opt/OpenBLAS/lib]
+  collapse library dir [/opt/deps/protobuf/2.5.0/lib] ==> [/opt/deps/protobuf/2.5.0/lib]
+  collapse library dir [/opt/ompi/lib] ==> [/opt/ompi/lib]
+  collapse library dir [/opt/deps/openpmix/lib] ==> [/opt/deps/openpmix/lib]
+  collapse library dir [/opt/deps/prrte/lib] ==> [/opt/deps/prrte/lib]
+  collapse library dir [/opt/ompi/lib] ==> [/opt/ompi/lib]
+  collapse library dir [/opt/deps/flex/lib] ==> [/opt/deps/flex/lib]
+  collapse library dir [/home/xialb/lib] ==> [/home/xialb/lib]
+  collapse library dir [/opt/arrow/lib64] ==> [/opt/arrow/lib64]
+  collapse library dir [/usr/local/lib] ==> [/usr/local/lib]
+  collapse library dir [/opt/OpenBLAS/lib] ==> [/opt/OpenBLAS/lib]
+  collapse library dir [/opt/deps/protobuf/2.5.0/lib] ==> [/opt/deps/protobuf/2.5.0/lib]
+  collapse library dir [/opt/ompi/lib] ==> [/opt/ompi/lib]
+  collapse library dir [/opt/deps/openpmix/lib] ==> [/opt/deps/openpmix/lib]
+  collapse library dir [/opt/deps/prrte/lib] ==> [/opt/deps/prrte/lib]
   collapse library dir [/opt/ompi/lib] ==> [/opt/ompi/lib]
   collapse library dir [/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/../../..] ==> [/opt/rh/devtoolset-10/root/usr/lib]
   implicit libs: [stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
   implicit objs: [/lib64/crt1.o;/lib64/crti.o;/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtbegin.o;/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/crtend.o;/lib64/crtn.o]
-  implicit dirs: [/opt/arrow/lib64;/usr/local/lib64;/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10;/opt/rh/devtoolset-10/root/usr/lib64;/lib64;/usr/lib64;/opt/deps/flex/lib;/home/xialb/lib;/usr/local/lib;/opt/OpenBLAS/lib;/opt/deps/protobuf/2.5.0/lib;/opt/ompi/lib;/opt/deps/openpmix_debug/lib;/opt/deps/prrte_debug/lib;/opt/rh/devtoolset-10/root/usr/lib]
+  implicit dirs: [/opt/arrow/lib64;/usr/local/lib64;/opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10;/opt/rh/devtoolset-10/root/usr/lib64;/lib64;/usr/lib64;/opt/deps/flex/lib;/home/xialb/lib;/usr/local/lib;/opt/OpenBLAS/lib;/opt/deps/protobuf/2.5.0/lib;/opt/ompi_debug/lib;/opt/deps/openpmix/lib;/opt/deps/prrte_debug/lib;/opt/ompi/lib;/opt/deps/prrte/lib;/opt/rh/devtoolset-10/root/usr/lib]
   implicit fwks: []
 
 

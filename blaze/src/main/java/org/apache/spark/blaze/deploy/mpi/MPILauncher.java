@@ -10,6 +10,8 @@ public class MPILauncher extends JavaLoggingWrapper {
 
     public static int launch(String[] hosts) {
         MPILauncher mpiLauncher = new MPILauncher();
+        for(int a:hosts)
+          System.out.println(a);
         int rc = mpiLauncher.mpiRTE(hosts);
         return rc;
     }

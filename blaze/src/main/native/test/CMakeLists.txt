@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 3.21)
 project(tool)
 set(CMAKE_CXX_STANDARD 14)
 
@@ -6,23 +7,28 @@ include_directories(/home/xialb/git/ompi/3rd-party/openpmix/src/class /home/xial
 
 include_directories(${PRRTE} ${PRRTE}/include ${PRRTE_SRC} ${PRRTE_SRC}/src/include)
 include_directories(${PMIX}/include)
-include_directories(/home/xialb/git/spark/blaze/src/main/native/src/blaze/include)
+# include_directories(/home/xialb/git/spark/blaze/src/main/native/src/blaze/include)
+# include_directories(/opt/deps/prrte/include/)
+
 #include_directories(/docker/git/ompi/3rd-party/openpmix/ /docker/git/ompi/3rd-party/openpmix/src/include/)
 
-link_directories("/opt/deps/openpmix/lib" "/opt/deps/prrte/lib" "/opt/deps/flex/lib" "/usr/lib")
-link_libraries("/opt/deps/openpmix/lib/libpmix.so")
-link_libraries("/opt/deps/prrte/lib/libprrte.so")
-link_libraries("/usr/lib64/libevent_core.so")
-link_libraries("/opt/ompi/lib/libmpi.so")
+# link_directories("/opt/deps/openpmix/lib" "/opt/deps/prrte/lib" "/opt/deps/flex/lib" "/usr/lib")
+# link_libraries("/opt/deps/openpmix/lib/libpmix.so")
+# link_libraries("/opt/deps/prrte/lib/libprrte.so")
+# link_libraries("/usr/lib64/libevent_core.so")
+# link_libraries("/opt/ompi/lib/libmpi.so")
 
-link_libraries("/opt/deps/openpmix/lib/libpmix.so")
-link_libraries("/opt/deps/prrte/lib/libprrte.so")
+# link_libraries("/opt/deps/openpmix/lib/libpmix.so")
+# link_libraries("/opt/deps/prrte/lib/libprrte.so")
 
 #add_executable(tool tool.c )
-add_executable(hello0 hello0.c)
-add_executable(hello1 hello1.c)
-add_executable(hello2 hello2.c)
-add_executable(hello3 hello3.c)
-add_executable(prun_test prun_test.c /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c)
-target_link_libraries(prun_test pmix prrte pthread)
+# add_executable(hello0 hello0.c)
+# add_executable(hello1 hello1.c)
+# add_executable(hello2 hello2.c)
+# add_executable(hello3 hello3.c)
+
+add_executable(prun_test prun_test.c /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.c  prte_environ.c)
+add_executable(prte_test prte_test.c prte_environ.c)
+target_link_libraries(prun_test prrte pmix pthread event)
+target_link_libraries(prte_test pmix prrte pthread event) 
 #add_executable(client client.c )

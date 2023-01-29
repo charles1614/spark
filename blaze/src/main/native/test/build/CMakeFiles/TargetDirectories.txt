@@ -1,7 +1,3 @@
 /home/xialb/git/spark/blaze/src/main/native/test/build/CMakeFiles/rebuild_cache.dir
-/home/xialb/git/spark/blaze/src/main/native/test/build/CMakeFiles/prun_test.dir
-/home/xialb/git/spark/blaze/src/main/native/test/build/CMakeFiles/hello0.dir
-/home/xialb/git/spark/blaze/src/main/native/test/build/CMakeFiles/hello1.dir
 /home/xialb/git/spark/blaze/src/main/native/test/build/CMakeFiles/edit_cache.dir
-/home/xialb/git/spark/blaze/src/main/native/test/build/CMakeFiles/hello2.dir
-/home/xialb/git/spark/blaze/src/main/native/test/build/CMakeFiles/hello3.dir
+/home/xialb/git/spark/blaze/src/main/native/test/build/CMakeFiles/prun_test.dir
