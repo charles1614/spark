@@ -1,0 +1,1 @@
+/usr/bin/cc -rdynamic CMakeFiles/prun_test.dir/prun_test.o CMakeFiles/prun_test.dir/prte_environ.o "CMakeFiles/prun_test.dir/home/libin/git/ompi/3rd-party/prrte/src/tools/prun/prun.o" -o prun_test  -lpmix -lprrte -levent_core -lmpi -lpmix -lprrte -lpmix -lprrte -lpthread -levent_core -lmpi -lpmix -lprrte -lpthread 
