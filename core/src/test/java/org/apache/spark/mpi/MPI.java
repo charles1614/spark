@@ -1,6 +1,6 @@
 
 
-import org.apache.spark.mpi.MPIRun;
+import org.apache.spark.blaze.deploy.mpi.MPIRun;
 import org.apache.spark.blaze.deploy.mpi.NativeUtils;
 import org.apache.spark.blaze.deploy.mpi.MPILauncher;
 import static java.lang.Thread.sleep;
@@ -34,13 +34,13 @@ public class MPI {
     //   System.out.println("Finalize Namespace " + n);
 
 
-            String[] app = new String[6];
+            String[] app = new String[4];
             app[0] = "prun";
             app[1] = "-n";
             app[2] = "3";
-            app[3] = "--map-by";
-            app[4] = ":OVERSUBSCRIBE";
-            app[5] = "hostname";
+            // app[3] = "--map-by";
+            // app[4] = ":OVERSUBSCRIBE";
+            app[3] = "hostname";
             System.load(System.getenv("SPARK_HOME") + "/lib/libblaze.so");
     //        Thread t = new Thread(() -> {
             MPIRun mpiRun = new MPIRun();

@@ -1,1 +1,0 @@
-/opt/rh/devtoolset-10/root/usr/bin/cc CMakeFiles/prte_test.dir/prte_test.c.o CMakeFiles/prte_test.dir/prte_environ.c.o -o prte_test  -lpmix -lprrte -lpthread -levent 

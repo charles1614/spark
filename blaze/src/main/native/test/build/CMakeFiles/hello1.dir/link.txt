@@ -1,1 +1,0 @@
-/usr/bin/cc -rdynamic CMakeFiles/hello1.dir/hello1.o -o hello1  -lpmix -lprrte -levent_core -lmpi -lpmix -lprrte -levent_core -lmpi 
