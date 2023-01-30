@@ -8,7 +8,6 @@ include_directories(/$ENV{HOME}/git/ompi/3rd-party/openpmix/src/class /$ENV{HOME
 set(PRRTE /opt/deps/prrte)
 set(PMIX /opt/deps/openpmix)
 set(PRRTE_SRC /home/xialb/git/ompi/3rd-party/prrte)
-==== BASE ====
 
 set(PRTE_SRC ${PRRTE_SRC}/src/tools/prun/prun.c ${PRRTE_SRC}/src/util/prte_environ.c)
 # set(SRC org_apache_spark_blaze_deploy_mpi_NativeUtils.c org_apache_spark_blaze_deploy_mpi_NativeUtils.cc include/pmix_internal.h)
