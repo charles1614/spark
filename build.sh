@@ -19,7 +19,7 @@ cd ${spark_home}/blaze/src/main/native
 rm -rf build
 cmake -S . -B build
 cmake --build build
-cp ./src/blaze/libblaze.so ${spark_home}/lib
+cp ./src/blaze/libblaze.so ${spark_home}/lib/
 sudo mkdir /opt/deps/prrte/lib/prte
 sudo cp ./build/src/pmix/libmca_odls_blaze.so /opt/deps/prrte/lib/prte/mca_odls_blaze.so
 

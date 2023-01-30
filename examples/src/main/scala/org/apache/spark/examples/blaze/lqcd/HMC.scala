@@ -9,10 +9,10 @@ object HMC {
     val blaze = BlazeSession
       .builder
       .appName("MPIPipe")
-      .master("spark://lenovo:7077")
-      .config("spark.executor.memory", "2g")
-      .config("spark.executor.cores", "1")
-      .config("spark.cores.max", "8")
+      //      .master("spark://lenovo:7077")
+      //      .config("spark.executor.memory", "2g")
+      //      .config("spark.executor.cores", "1")
+      //      .config("spark.cores.max", "8")
       //      .master("local[*]")
       .getOrCreate()
 
