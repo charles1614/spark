@@ -8,8 +8,11 @@
 *.swp
 *.log
 *~
+.gdb_history
 .DS_Store
-.bsp/ .cache .classpath
+.bsp/
+.cache
+.classpath
 .ensime
 .ensime_cache/
 .ensime_lucene
