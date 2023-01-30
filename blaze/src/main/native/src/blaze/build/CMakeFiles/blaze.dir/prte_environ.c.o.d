@@ -1,12 +1,11 @@
-CMakeFiles/prun_test.dir/prun_test.c.o: \
- /home/xialb/git/spark/blaze/src/main/native/test/prun_test.c \
+CMakeFiles/blaze.dir/prte_environ.c.o: \
+ /home/xialb/git/spark/blaze/src/main/native/src/blaze/prte_environ.c \
  /usr/include/stdc-predef.h \
- /home/xialb/git/ompi/3rd-party/prrte/src/tools/prun/prun.h \
- /home/xialb/git/ompi/3rd-party/prrte/src/include/prte_config.h \
- /home/xialb/git/ompi/3rd-party/prrte/src/include/prte_config_top.h \
- /home/xialb/git/ompi/3rd-party/prrte/src/include/prte_config_bottom.h \
- /home/xialb/git/ompi/3rd-party/prrte/src/include/prte_config.h \
- /home/xialb/git/ompi/3rd-party/prrte/src/include/prte_stdint.h \
+ /home/xialb/git/spark/blaze/src/main/native/src/blaze/include/prte_config.h \
+ /home/xialb/git/spark/blaze/src/main/native/src/blaze/include/prte_config_top.h \
+ /home/xialb/git/spark/blaze/src/main/native/src/blaze/include/prte_config_bottom.h \
+ /home/xialb/git/spark/blaze/src/main/native/src/blaze/include/prte_config.h \
+ /home/xialb/git/spark/blaze/src/main/native/src/blaze/include/prte_stdint.h \
  /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include/limits.h \
  /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include/syslimits.h \
  /usr/include/limits.h /usr/include/features.h /usr/include/sys/cdefs.h \
@@ -32,4 +31,17 @@ CMakeFiles/prun_test.dir/prun_test.c.o: \
  /usr/include/bits/sigthread.h /usr/include/bits/param.h \
  /usr/include/linux/param.h /usr/include/asm/param.h \
  /usr/include/asm-generic/param.h \
- /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include/stdbool.h
+ /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include/stdbool.h \
+ /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h \
+ /usr/include/wchar.h \
+ /opt/rh/devtoolset-10/root/usr/lib/gcc/x86_64-redhat-linux/10/include/stdarg.h \
+ /usr/include/bits/sys_errlist.h /usr/include/stdlib.h \
+ /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h \
+ /usr/include/xlocale.h /usr/include/alloca.h \
+ /usr/include/bits/stdlib-float.h /usr/include/string.h \
+ /home/xialb/git/ompi/3rd-party/prrte/src/include/constants.h \
+ /home/xialb/git/ompi/3rd-party/prrte/src/include/prte_config.h \
+ /home/xialb/git/ompi/3rd-party/prrte/src/include/constants.h \
+ /home/xialb/git/ompi/3rd-party/prrte/src/util/argv.h \
+ /home/xialb/git/ompi/3rd-party/prrte/src/util/printf.h \
+ /home/xialb/git/ompi/3rd-party/prrte/src/util/prte_environ.h
