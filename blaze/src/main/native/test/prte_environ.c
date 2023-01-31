@@ -41,52 +41,52 @@
  */
 char **prte_environ_merge(char **minor, char **major)
 {
-    int i;
-    char **ret = NULL;
-    char *name, *value;
+  int i;
+  char **ret = NULL;
+  char *name, *value;
 
-    /* Check for bozo cases */
+  /* Check for bozo cases */
 
-    if (NULL == major) {
-        if (NULL == minor) {
-            return NULL;
-        } else {
-            return prte_argv_copy(minor);
-        }
-    }
-
-    /* First, copy major */
-
-    ret = prte_argv_copy(major);
-
-    /* Do we have something in minor? */
-
+  if (NULL == major) {
     if (NULL == minor) {
-        return ret;
+      return NULL;
+    } else {
+      return prte_argv_copy(minor);
     }
+  }
 
-    /* Now go through minor and call prte_setenv(), but with overwrite
+  /* First, copy major */
+
+  ret = prte_argv_copy(major);
+
+  /* Do we have something in minor? */
+
+  if (NULL == minor) {
+    return ret;
+  }
+
+  /* Now go through minor and call prte_setenv(), but with overwrite
        as false */
 
-    for (i = 0; NULL != minor[i]; ++i) {
-        value = strchr(minor[i], '=');
-        if (NULL == value) {
-            prte_setenv(minor[i], NULL, false, &ret);
-        } else {
+  for (i = 0; NULL != minor[i]; ++i) {
+    value = strchr(minor[i], '=');
+    if (NULL == value) {
+      prte_setenv(minor[i], NULL, false, &ret);
+    } else {
 
-            /* strdup minor[i] in case it's a constat string */
+      /* strdup minor[i] in case it's a constat string */
 
-            name = strdup(minor[i]);
-            value = name + (value - minor[i]);
-            *value = '\0';
-            prte_setenv(name, value + 1, false, &ret);
-            free(name);
-        }
+      name = strdup(minor[i]);
+      value = name + (value - minor[i]);
+      *value = '\0';
+      prte_setenv(name, value + 1, false, &ret);
+      free(name);
     }
+  }
 
-    /* All done */
+  /* All done */
 
-    return ret;
+  return ret;
 }
 
 /*
@@ -95,108 +95,108 @@ char **prte_environ_merge(char **minor, char **major)
  */
 int prte_setenv(const char *name, const char *value, bool overwrite, char ***env)
 {
-    int i;
-    char *newvalue, *compare;
-    size_t len;
+  int i;
+  char *newvalue, *compare;
+  size_t len;
 
-    /* Make the new value */
+  /* Make the new value */
 
-    if (NULL == value) {
-        value = "";
-        prte_asprintf(&newvalue, "%s=", name);
-    } else {
-        prte_asprintf(&newvalue, "%s=%s", name, value);
-    }
-    if (NULL == newvalue) {
-        return PRTE_ERR_OUT_OF_RESOURCE;
-    }
+  if (NULL == value) {
+    value = "";
+    prte_asprintf(&newvalue, "%s=", name);
+  } else {
+    prte_asprintf(&newvalue, "%s=%s", name, value);
+  }
+  if (NULL == newvalue) {
+    return PRTE_ERR_OUT_OF_RESOURCE;
+  }
 
-    /* Check the bozo case */
+  /* Check the bozo case */
 
-    if (NULL == env) {
-        return PRTE_ERR_BAD_PARAM;
-    } else if (NULL == *env) {
-        i = 0;
-        prte_argv_append(&i, env, newvalue);
-        free(newvalue);
-        return PRTE_SUCCESS;
-    }
+  if (NULL == env) {
+    return PRTE_ERR_BAD_PARAM;
+  } else if (NULL == *env) {
+    i = 0;
+    prte_argv_append(&i, env, newvalue);
+    free(newvalue);
+    return PRTE_SUCCESS;
+  }
 
-    /* If this is the "environ" array, use putenv */
-    if (*env == environ) {
-        /* THIS IS POTENTIALLY A MEMORY LEAK!  But I am doing it
+  /* If this is the "environ" array, use putenv */
+  if (*env == environ) {
+    /* THIS IS POTENTIALLY A MEMORY LEAK!  But I am doing it
            so that we don't violate the law of least
            astonishment for PRTE developers (i.e., those that don't
            check the return code of prte_setenv() and notice that we
            returned an error if you passed in the real environ) */
 #if defined(HAVE_SETENV)
-        setenv(name, value, overwrite);
-        /* setenv copies the value, so we can free it here */
-        free(newvalue);
+    setenv(name, value, overwrite);
+    /* setenv copies the value, so we can free it here */
+    free(newvalue);
 #else
-        len = strlen(name);
-        for (i = 0; (*env)[i] != NULL; ++i) {
-            if (0 == strncmp((*env)[i], name, len)) {
-                /* if we find the value in the environ, then
+    len = strlen(name);
+    for (i = 0; (*env)[i] != NULL; ++i) {
+      if (0 == strncmp((*env)[i], name, len)) {
+        /* if we find the value in the environ, then
                  * we need to check the overwrite flag to determine
                  * the correct response */
-                if (overwrite) {
-                    /* since it was okay to overwrite, do so */
-                    putenv(newvalue);
-                    /* putenv does NOT copy the value, so we
+        if (overwrite) {
+          /* since it was okay to overwrite, do so */
+          putenv(newvalue);
+          /* putenv does NOT copy the value, so we
                      * cannot free it here */
-                    return PRTE_SUCCESS;
-                }
-                /* since overwrite was not allowed, we return
-                 * an error as we cannot perform the requested action */
-                free(newvalue);
-                return PRTE_EXISTS;
-            }
+          return PRTE_SUCCESS;
         }
-        /* since the value wasn't found, we can add it */
-        putenv(newvalue);
-        /* putenv does NOT copy the value, so we
+        /* since overwrite was not allowed, we return
+                 * an error as we cannot perform the requested action */
+        free(newvalue);
+        return PRTE_EXISTS;
+      }
+    }
+    /* since the value wasn't found, we can add it */
+    putenv(newvalue);
+    /* putenv does NOT copy the value, so we
          * cannot free it here */
 #endif
-        return PRTE_SUCCESS;
-    }
-
-    /* Make something easy to compare to */
-
-    prte_asprintf(&compare, "%s=", name);
-    if (NULL == compare) {
-        free(newvalue);
-        return PRTE_ERR_OUT_OF_RESOURCE;
-    }
-    len = strlen(compare);
-
-    /* Look for a duplicate that's already set in the env */
-
-    for (i = 0; (*env)[i] != NULL; ++i) {
-        if (0 == strncmp((*env)[i], compare, len)) {
-            if (overwrite) {
-                free((*env)[i]);
-                (*env)[i] = newvalue;
-                free(compare);
-                return PRTE_SUCCESS;
-            } else {
-                free(compare);
-                free(newvalue);
-                return PRTE_EXISTS;
-            }
-        }
-    }
-
-    /* If we found no match, append this value */
-
-    i = prte_argv_count(*env);
-    prte_argv_append(&i, env, newvalue);
-
-    /* All done */
-
-    free(compare);
-    free(newvalue);
     return PRTE_SUCCESS;
+  }
+
+  /* Make something easy to compare to */
+
+  prte_asprintf(&compare, "%s=", name);
+  if (NULL == compare) {
+    free(newvalue);
+    return PRTE_ERR_OUT_OF_RESOURCE;
+  }
+  len = strlen(compare);
+
+  /* Look for a duplicate that's already set in the env */
+
+  for (i = 0; (*env)[i] != NULL; ++i) {
+    if (0 == strncmp((*env)[i], compare, len)) {
+      if (overwrite) {
+        free((*env)[i]);
+        (*env)[i] = newvalue;
+        free(compare);
+        return PRTE_SUCCESS;
+      } else {
+        free(compare);
+        free(newvalue);
+        return PRTE_EXISTS;
+      }
+    }
+  }
+
+  /* If we found no match, append this value */
+
+  i = prte_argv_count(*env);
+  prte_argv_append(&i, env, newvalue);
+
+  /* All done */
+
+  free(compare);
+  free(newvalue);
+  return PRTE_SUCCESS;
 }
 
 /*
@@ -205,62 +205,63 @@ int prte_setenv(const char *name, const char *value, bool overwrite, char ***env
  */
 int prte_unsetenv(const char *name, char ***env)
 {
-    int i;
-    char *compare;
-    size_t len;
-    bool found;
+  int i;
+  char *compare;
+  size_t len;
+  bool found;
 
-    /* Check for bozo case */
+  /* Check for bozo case */
 
-    if (NULL == *env) {
-        return PRTE_SUCCESS;
-    }
+  if (NULL == *env) {
+    return PRTE_SUCCESS;
+  }
 
-    /* Make something easy to compare to */
+  /* Make something easy to compare to */
 
-    prte_asprintf(&compare, "%s=", name);
-    if (NULL == compare) {
-        return PRTE_ERR_OUT_OF_RESOURCE;
-    }
-    len = strlen(compare);
+  prte_asprintf(&compare, "%s=", name);
+  if (NULL == compare) {
+    return PRTE_ERR_OUT_OF_RESOURCE;
+  }
+  len = strlen(compare);
 
-    /* Look for a duplicate that's already set in the env.  If we find
+  /* Look for a duplicate that's already set in the env.  If we find
        it, free it, and then start shifting all elements down one in
        the array. */
 
-    found = false;
-    for (i = 0; (*env)[i] != NULL; ++i) {
-        if (0 != strncmp((*env)[i], compare, len))
-            continue;
-        if (environ != *env) {
-            free((*env)[i]);
-        }
-        for (; (*env)[i] != NULL; ++i)
-            (*env)[i] = (*env)[i + 1];
-        found = true;
-        break;
+  found = false;
+  for (i = 0; (*env)[i] != NULL; ++i) {
+    if (0 != strncmp((*env)[i], compare, len))
+      continue;
+    if (environ != *env) {
+      free((*env)[i]);
     }
-    free(compare);
+    for (; (*env)[i] != NULL; ++i)
+      (*env)[i] = (*env)[i + 1];
+    found = true;
+    break;
+  }
+  free(compare);
 
-    /* All done */
+  /* All done */
 
-    return (found) ? PRTE_SUCCESS : PRTE_ERR_NOT_FOUND;
+  return (found) ? PRTE_SUCCESS : PRTE_ERR_NOT_FOUND;
 }
 
 const char *prte_tmp_directory(void)
 {
-    const char *str;
+  const char *str;
 
-    if (NULL == (str = getenv("TMPDIR")))
-        if (NULL == (str = getenv("TEMP")))
-            if (NULL == (str = getenv("TMP")))
-                str = PRTE_DEFAULT_TMPDIR;
-    return str;
+  if (NULL == (str = getenv("TMPDIR")))
+    if (NULL == (str = getenv("TEMP")))
+      if (NULL == (str = getenv("TMP")))
+        str = PRTE_DEFAULT_TMPDIR;
+  return str;
 }
 
 const char *prte_home_directory(void)
 {
-    char *home = "/home/libin";
+  // char *home = getenv("HOME");
+  char *home = "/home/xialb";
 
-    return home;
+  return home;
 }

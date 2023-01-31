@@ -9,6 +9,7 @@
 *.log
 *.so
 *.class
+*.out
 *~
 .gdb_history
 .DS_Store
@@ -121,3 +122,4 @@ blaze/src/main/native/build/
 ./blaze/src/main/native/build
 /blaze/src/main/native/build
 ./blaze/src/main/native/build/
+blaze/src/main/native/test/build
