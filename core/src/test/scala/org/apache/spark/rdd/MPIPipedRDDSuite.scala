@@ -48,11 +48,13 @@ class MPIPipedRDDSuite extends SparkFunSuite with SharedSparkContext with Eventu
     val output = base + "/output/hmc.prec_wilson.out.xml"
     val hmclog = base + "/output/hmc.prec_wilson.log.xml"
 
-    val list = (1 to 1).map(_ => s"-geom 1 1 1 1 -i ${input} -o ${output} -hmclog ${hmclog}")
+//    val list = (1 to 1).map(_ => s"-geom 1 1 1 1 -i ${input} -o ${output} -hmclog ${hmclog}")
+    val list = (1 to 1 ).map( _ => "10m")
     val data = sc.parallelize(list, 1)
-    val piped = data.mpipipe(Seq(System.getenv("HOME")
-      + "/git/lqcdworkflow/code/01.chroma_build/install/chroma-double/bin/hmc"))
+//    val piped = data.mpipipe(Seq(System.getenv("HOME")
+//      + "/git/lqcdworkflow/code/01.chroma_build/install/chroma-double/bin/hmc"))
 
+    val piped = data.mpipipe(Seq("sleep"))
 
     //    val piped = nums.mpimap(x => {
     //      x.toString

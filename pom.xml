@@ -2627,6 +2627,7 @@
             <scalaVersion>${scala.version}</scalaVersion>
             <checkMultipleScalaVersions>true</checkMultipleScalaVersions>
             <failOnMultipleScalaVersions>true</failOnMultipleScalaVersions>
+            <scalaCompatVersion>2.12</scalaCompatVersion>
             <recompileMode>incremental</recompileMode>
             <args>
               <arg>-unchecked</arg>

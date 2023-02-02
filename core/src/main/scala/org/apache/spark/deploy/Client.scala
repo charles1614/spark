@@ -80,7 +80,7 @@ private class ClientEndpoint(
         // TODO: We could add an env variable here and intercept it in `sc.addJar` that would
         //       truncate filesystem paths similar to what YARN does. For now, we just require
         //       people call `addJar` assuming the jar is in the same directory.
-        val mainClass = "org.apache.spark.org.apache.spark.blaze.deploy.worker.DriverWrapper"
+        val mainClass = "org.apache.spark.deploy.worker.DriverWrapper"
 
         val classPathConf = config.DRIVER_CLASS_PATH.key
         val classPathEntries = getProperty(classPathConf, conf).toSeq.flatMap { cp =>

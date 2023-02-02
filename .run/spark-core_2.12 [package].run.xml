@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="spark-examples_2.12 [install]" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="spark-core_2.12 [package]" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -10,11 +10,12 @@
           </option>
           <option name="goals">
             <list>
-              <option value="-Dcheckstyle.skip" />
               <option value="-DskipTests" />
               <option value="-Dmaven.test.skip=true" />
+              <option value="-Dmaven.compile.fork=true" />
               <option value="-Dscalastyle.skip=true" />
-              <option value="install" />
+              <option value="-Dcheckstyle.skip" />
+              <option value="package" />
             </list>
           </option>
           <option name="pomFileName" value="pom.xml" />
@@ -22,7 +23,7 @@
             <map />
           </option>
           <option name="resolveToWorkspace" value="false" />
-          <option name="workingDirPath" value="$PROJECT_DIR$/examples" />
+          <option name="workingDirPath" value="$PROJECT_DIR$/core" />
         </MavenRunnerParameters>
       </option>
     </MavenSettings>

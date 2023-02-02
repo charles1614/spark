@@ -12,10 +12,10 @@
       </FilePath>
     </option>
     <option name="beforeShellScript" value="" />
-    <option name="className" value="org.apache.spark.examples.blaze.MPIP1" />
+    <option name="className" value="org.apache.spark.examples.blaze.lqcd.Test" />
     <option name="clusterManager" value="STANDALONE" />
     <option name="conf" value="" />
-    <option name="deployMode" value="CLIENT" />
+    <option name="deployMode" value="CLUSTER" />
     <option name="driverClassPath">
       <list />
     </option>
@@ -42,8 +42,8 @@
         <option name="type" value="CUSTOM" />
       </FilePath>
     </option>
-    <option name="master" value="spark://lenovo:7077" />
-    <option name="numExecutors" value="4" />
+    <option name="master" value="spark://besh01:7077" />
+    <option name="numExecutors" value="" />
     <option name="packages" value="" />
     <option name="principal" value="" />
     <option name="projectPathOnTarget" />
@@ -65,15 +65,15 @@
     <option name="shellExecutor" value="/bin/bash" />
     <option name="sparkHome" value="$PROJECT_DIR$" />
     <option name="sparkMonitoringDriverId" value="Spark monitoring connection@SparkMonitoringConnections@3813721135445125893" />
-    <option name="sshConfigId" value="8fd0ac03-c31c-4961-92d7-2c7523d6ac99" />
+    <option name="sshConfigId" value="b58e291b-5719-4847-97d3-be7b2786f4f4" />
     <option name="supervise" value="false" />
     <option name="targetDirectory">
       <FilePath>
-        <option name="path" value="" />
+        <option name="path" value="$PROJECT_DIR$/examples/target/scala-2.12/jars" />
         <option name="type" value="SERVER" />
       </FilePath>
     </option>
-    <option name="totalExecutorCores" value="4" />
+    <option name="totalExecutorCores" value="8" />
     <option name="verbose" value="false" />
     <option name="workDirectoryPath">
       <FilePath>
@@ -82,6 +82,8 @@
       </FilePath>
     </option>
     <method v="2">
+      <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_External Tools_mvnd-example" />
+      <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_External Tools_rsync-besh" />
       <option name="SftpSparkFileUpload" enabled="true" />
     </method>
   </configuration>

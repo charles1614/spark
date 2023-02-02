@@ -46,6 +46,7 @@ object SparkPi {
     val spark = SparkSession
       .builder
       //      .config(conf)
+      .master("spark://besh01:7077")
       .master("local[*]")
       .appName("Spark Pi")
       .getOrCreate()

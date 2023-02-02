@@ -33,7 +33,8 @@ from typing import (
 )
 from typing_extensions import Literal
 
-from numpy import int32, int64, float32, float64, ndarray  # type: ignore[import]
+# type: ignore[import]
+from numpy import int32, int64, float32, float64, ndarray
 
 from pyspark._typing import SupportsOrdering
 from pyspark.sql.pandas._typing import (
@@ -71,7 +72,9 @@ NumberOrArray = TypeVar(
     "NumberOrArray", float, int, complex, int32, int64, float32, float64, ndarray
 )
 
+
 def portable_hash(x: Hashable) -> int: ...
+
 
 class PythonEvalType:
     NON_UDF: Literal[0]
@@ -84,25 +87,30 @@ class PythonEvalType:
     SQL_MAP_PANDAS_ITER_UDF: PandasMapIterUDFType
     SQL_COGROUPED_MAP_PANDAS_UDF: PandasCogroupedMapUDFType
 
+
 class BoundedFloat(float):
     def __new__(
         cls, mean: float, confidence: float, low: float, high: float
     ) -> BoundedFloat: ...
 
+
 class Partitioner:
     numPartitions: int
     partitionFunc: Callable[[Any], int]
+
     def __init__(
         self, numPartitions: int, partitionFunc: Callable[[Any], int]
     ) -> None: ...
     def __eq__(self, other: Any) -> bool: ...
     def __call__(self, k: Any) -> int: ...
 
+
 class RDD(Generic[T]):
     is_cached: bool
     is_checkpointed: bool
     ctx: pyspark.context.SparkContext
     partitioner: Optional[Partitioner]
+
     def __init__(
         self,
         jrdd: JavaObject,
@@ -121,18 +129,34 @@ class RDD(Generic[T]):
     def localCheckpoint(self) -> None: ...
     def isLocallyCheckpointed(self) -> bool: ...
     def getCheckpointFile(self) -> Optional[str]: ...
-    def map(self, f: Callable[[T], U], preservesPartitioning: bool = ...) -> RDD[U]: ...
+
+    def map(self, f: Callable[[T], U],
+            preservesPartitioning: bool = ...) -> RDD[U]: ...
+
     def flatMap(
         self, f: Callable[[T], Iterable[U]], preservesPartitioning: bool = ...
     ) -> RDD[U]: ...
+
+    def mpimapPartitions(
+        self, f: Callable[[Iterable[T]], Iterable[U]], preservesPartitioning: bool = ...
+    ) -> RDD[U]: ...
+
+    def mpimapPartitionsWithIndex(
+        self,
+        f: Callable[[int, Iterable[T]], Iterable[U]],
+        preservesPartitioning: bool = ...,
+    ) -> RDD[U]: ...
+
     def mapPartitions(
         self, f: Callable[[Iterable[T]], Iterable[U]], preservesPartitioning: bool = ...
     ) -> RDD[U]: ...
+
     def mapPartitionsWithIndex(
         self,
         f: Callable[[int, Iterable[T]], Iterable[U]],
         preservesPartitioning: bool = ...,
     ) -> RDD[U]: ...
+
     def mapPartitionsWithSplit(
         self,
         f: Callable[[int, Iterable[T]], Iterable[U]],
@@ -141,18 +165,22 @@ class RDD(Generic[T]):
     def getNumPartitions(self) -> int: ...
     def filter(self, f: Callable[[T], bool]) -> RDD[T]: ...
     def distinct(self, numPartitions: Optional[int] = ...) -> RDD[T]: ...
+
     def sample(
         self, withReplacement: bool, fraction: float, seed: Optional[int] = ...
     ) -> RDD[T]: ...
+
     def randomSplit(
         self, weights: List[Union[int, float]], seed: Optional[int] = ...
     ) -> List[RDD[T]]: ...
+
     def takeSample(
         self, withReplacement: bool, num: int, seed: Optional[int] = ...
     ) -> List[T]: ...
     def union(self, other: RDD[U]) -> RDD[Union[T, U]]: ...
     def intersection(self, other: RDD[T]) -> RDD[T]: ...
     def __add__(self, other: RDD[T]) -> RDD[T]: ...
+
     @overload
     def repartitionAndSortWithinPartitions(
         self: RDD[Tuple[O, V]],
@@ -160,6 +188,7 @@ class RDD(Generic[T]):
         partitionFunc: Callable[[O], int] = ...,
         ascending: bool = ...,
     ) -> RDD[Tuple[O, V]]: ...
+
     @overload
     def repartitionAndSortWithinPartitions(
         self: RDD[Tuple[K, V]],
@@ -168,6 +197,7 @@ class RDD(Generic[T]):
         ascending: bool,
         keyfunc: Callable[[K], O],
     ) -> RDD[Tuple[K, V]]: ...
+
     @overload
     def repartitionAndSortWithinPartitions(
         self: RDD[Tuple[K, V]],
@@ -177,12 +207,14 @@ class RDD(Generic[T]):
         *,
         keyfunc: Callable[[K], O]
     ) -> RDD[Tuple[K, V]]: ...
+
     @overload
     def sortByKey(
         self: RDD[Tuple[O, V]],
         ascending: bool = ...,
         numPartitions: Optional[int] = ...,
     ) -> RDD[Tuple[K, V]]: ...
+
     @overload
     def sortByKey(
         self: RDD[Tuple[K, V]],
@@ -190,6 +222,7 @@ class RDD(Generic[T]):
         numPartitions: int,
         keyfunc: Callable[[K], O],
     ) -> RDD[Tuple[K, V]]: ...
+
     @overload
     def sortByKey(
         self: RDD[Tuple[K, V]],
@@ -198,6 +231,7 @@ class RDD(Generic[T]):
         *,
         keyfunc: Callable[[K], O]
     ) -> RDD[Tuple[K, V]]: ...
+
     def sortBy(
         self: RDD[T],
         keyfunc: Callable[[T], O],
@@ -206,27 +240,36 @@ class RDD(Generic[T]):
     ) -> RDD[T]: ...
     def glom(self) -> RDD[List[T]]: ...
     def cartesian(self, other: RDD[U]) -> RDD[Tuple[T, U]]: ...
+
     def groupBy(
         self,
         f: Callable[[T], K],
         numPartitions: Optional[int] = ...,
         partitionFunc: Callable[[K], int] = ...,
     ) -> RDD[Tuple[K, Iterable[T]]]: ...
+
+    def mpipipe(
+        self, command: str, env: Optional[Dict[str, str]] = ..., checkCode: bool = ...
+    ) -> RDD[str]: ...
+
     def pipe(
         self, command: str, env: Optional[Dict[str, str]] = ..., checkCode: bool = ...
     ) -> RDD[str]: ...
     def foreach(self, f: Callable[[T], None]) -> None: ...
     def foreachPartition(self, f: Callable[[Iterable[T]], None]) -> None: ...
     def collect(self) -> List[T]: ...
+
     def collectWithJobGroup(
         self, groupId: str, description: str, interruptOnCancel: bool = ...
     ) -> List[T]: ...
     def reduce(self, f: Callable[[T, T], T]) -> T: ...
     def treeReduce(self, f: Callable[[T, T], T], depth: int = ...) -> T: ...
     def fold(self, zeroValue: T, op: Callable[[T, T], T]) -> T: ...
+
     def aggregate(
         self, zeroValue: U, seqOp: Callable[[U, T], U], combOp: Callable[[U, U], U]
     ) -> U: ...
+
     def treeAggregate(
         self,
         zeroValue: U,
@@ -245,7 +288,9 @@ class RDD(Generic[T]):
     def sum(self: RDD[NumberOrArray]) -> NumberOrArray: ...
     def count(self) -> int: ...
     def stats(self: RDD[NumberOrArray]) -> StatCounter: ...
-    def histogram(self, buckets: Union[int, List[T], Tuple[T, ...]]) -> Tuple[List[T], List[int]]: ...
+    def histogram(self, buckets: Union[int, List[T],
+                  Tuple[T, ...]]) -> Tuple[List[T], List[int]]: ...
+
     def mean(self: RDD[NumberOrArray]) -> NumberOrArray: ...
     def variance(self: RDD[NumberOrArray]) -> NumberOrArray: ...
     def stdev(self: RDD[NumberOrArray]) -> NumberOrArray: ...
@@ -258,17 +303,22 @@ class RDD(Generic[T]):
     def top(self: RDD[T], num: int, key: Callable[[T], O]) -> List[T]: ...
     @overload
     def takeOrdered(self: RDD[O], num: int) -> List[O]: ...
+
     @overload
-    def takeOrdered(self: RDD[T], num: int, key: Callable[[T], O]) -> List[T]: ...
+    def takeOrdered(self: RDD[T], num: int,
+                    key: Callable[[T], O]) -> List[T]: ...
+
     def take(self, num: int) -> List[T]: ...
     def first(self) -> T: ...
     def isEmpty(self) -> bool: ...
+
     def saveAsNewAPIHadoopDataset(
         self: RDD[Tuple[K, V]],
         conf: Dict[str, str],
         keyConverter: Optional[str] = ...,
         valueConverter: Optional[str] = ...,
     ) -> None: ...
+
     def saveAsNewAPIHadoopFile(
         self: RDD[Tuple[K, V]],
         path: str,
@@ -279,12 +329,14 @@ class RDD(Generic[T]):
         valueConverter: Optional[str] = ...,
         conf: Optional[Dict[str, str]] = ...,
     ) -> None: ...
+
     def saveAsHadoopDataset(
         self: RDD[Tuple[K, V]],
         conf: Dict[str, str],
         keyConverter: Optional[str] = ...,
         valueConverter: Optional[str] = ...,
     ) -> None: ...
+
     def saveAsHadoopFile(
         self: RDD[Tuple[K, V]],
         path: str,
@@ -296,51 +348,61 @@ class RDD(Generic[T]):
         conf: Optional[str] = ...,
         compressionCodecClass: Optional[str] = ...,
     ) -> None: ...
+
     def saveAsSequenceFile(
         self: RDD[Tuple[K, V]], path: str, compressionCodecClass: Optional[str] = ...
     ) -> None: ...
     def saveAsPickleFile(self, path: str, batchSize: int = ...) -> None: ...
+
     def saveAsTextFile(
         self, path: str, compressionCodecClass: Optional[str] = ...
     ) -> None: ...
     def collectAsMap(self: RDD[Tuple[K, V]]) -> Dict[K, V]: ...
     def keys(self: RDD[Tuple[K, V]]) -> RDD[K]: ...
     def values(self: RDD[Tuple[K, V]]) -> RDD[V]: ...
+
     def reduceByKey(
         self: RDD[Tuple[K, V]],
         func: Callable[[V, V], V],
         numPartitions: Optional[int] = ...,
         partitionFunc: Callable[[K], int] = ...,
     ) -> RDD[Tuple[K, V]]: ...
+
     def reduceByKeyLocally(
         self: RDD[Tuple[K, V]], func: Callable[[V, V], V]
     ) -> Dict[K, V]: ...
     def countByKey(self: RDD[Tuple[K, V]]) -> Dict[K, int]: ...
+
     def join(
         self: RDD[Tuple[K, V]],
         other: RDD[Tuple[K, U]],
         numPartitions: Optional[int] = ...,
     ) -> RDD[Tuple[K, Tuple[V, U]]]: ...
+
     def leftOuterJoin(
         self: RDD[Tuple[K, V]],
         other: RDD[Tuple[K, U]],
         numPartitions: Optional[int] = ...,
     ) -> RDD[Tuple[K, Tuple[V, Optional[U]]]]: ...
+
     def rightOuterJoin(
         self: RDD[Tuple[K, V]],
         other: RDD[Tuple[K, U]],
         numPartitions: Optional[int] = ...,
     ) -> RDD[Tuple[K, Tuple[Optional[V], U]]]: ...
+
     def fullOuterJoin(
         self: RDD[Tuple[K, V]],
         other: RDD[Tuple[K, U]],
         numPartitions: Optional[int] = ...,
     ) -> RDD[Tuple[K, Tuple[Optional[V], Optional[U]]]]: ...
+
     def partitionBy(
         self: RDD[Tuple[K, V]],
         numPartitions: int,
         partitionFunc: Callable[[K], int] = ...,
     ) -> RDD[Tuple[K, V]]: ...
+
     def combineByKey(
         self: RDD[Tuple[K, V]],
         createCombiner: Callable[[V], U],
@@ -349,6 +411,7 @@ class RDD(Generic[T]):
         numPartitions: Optional[int] = ...,
         partitionFunc: Callable[[K], int] = ...,
     ) -> RDD[Tuple[K, U]]: ...
+
     def aggregateByKey(
         self: RDD[Tuple[K, V]],
         zeroValue: U,
@@ -357,6 +420,7 @@ class RDD(Generic[T]):
         numPartitions: Optional[int] = ...,
         partitionFunc: Callable[[K], int] = ...,
     ) -> RDD[Tuple[K, U]]: ...
+
     def foldByKey(
         self: RDD[Tuple[K, V]],
         zeroValue: V,
@@ -364,25 +428,32 @@ class RDD(Generic[T]):
         numPartitions: Optional[int] = ...,
         partitionFunc: Callable[[K], int] = ...,
     ) -> RDD[Tuple[K, V]]: ...
+
     def groupByKey(
         self: RDD[Tuple[K, V]],
         numPartitions: Optional[int] = ...,
         partitionFunc: Callable[[K], int] = ...,
     ) -> RDD[Tuple[K, Iterable[V]]]: ...
+
     def flatMapValues(
         self: RDD[Tuple[K, V]], f: Callable[[V], Iterable[U]]
     ) -> RDD[Tuple[K, U]]: ...
-    def mapValues(self: RDD[Tuple[K, V]], f: Callable[[V], U]) -> RDD[Tuple[K, U]]: ...
+
+    def mapValues(self: RDD[Tuple[K, V]],
+                  f: Callable[[V], U]) -> RDD[Tuple[K, U]]: ...
+
     @overload
     def groupWith(
         self: RDD[Tuple[K, V]], __o: RDD[Tuple[K, V1]]
     ) -> RDD[Tuple[K, Tuple[ResultIterable[V], ResultIterable[V1]]]]: ...
+
     @overload
     def groupWith(
         self: RDD[Tuple[K, V]], __o1: RDD[Tuple[K, V1]], __o2: RDD[Tuple[K, V2]]
     ) -> RDD[
         Tuple[K, Tuple[ResultIterable[V], ResultIterable[V1], ResultIterable[V2]]]
     ]: ...
+
     @overload
     def groupWith(
         self: RDD[Tuple[K, V]],
@@ -400,22 +471,26 @@ class RDD(Generic[T]):
             ],
         ]
     ]: ...
+
     def cogroup(
         self: RDD[Tuple[K, V]],
         other: RDD[Tuple[K, U]],
         numPartitions: Optional[int] = ...,
     ) -> RDD[Tuple[K, Tuple[ResultIterable[V], ResultIterable[U]]]]: ...
+
     def sampleByKey(
         self: RDD[Tuple[K, V]],
         withReplacement: bool,
         fractions: Dict[K, Union[float, int]],
         seed: Optional[int] = ...,
     ) -> RDD[Tuple[K, V]]: ...
+
     def subtractByKey(
         self: RDD[Tuple[K, V]],
         other: RDD[Tuple[K, U]],
         numPartitions: Optional[int] = ...,
     ) -> RDD[Tuple[K, V]]: ...
+
     def subtract(
         self: RDD[T], other: RDD[T], numPartitions: Optional[int] = ...
     ) -> RDD[T]: ...
@@ -431,37 +506,69 @@ class RDD(Generic[T]):
     def getStorageLevel(self) -> StorageLevel: ...
     def lookup(self: RDD[Tuple[K, V]], key: K) -> List[V]: ...
     def countApprox(self, timeout: int, confidence: float = ...) -> int: ...
+
     def sumApprox(
         self: RDD[Union[float, int]], timeout: int, confidence: float = ...
     ) -> BoundedFloat: ...
+
     def meanApprox(
         self: RDD[Union[float, int]], timeout: int, confidence: float = ...
     ) -> BoundedFloat: ...
     def countApproxDistinct(self, relativeSD: float = ...) -> int: ...
-    def toLocalIterator(self, prefetchPartitions: bool = ...) -> Iterator[T]: ...
+    def toLocalIterator(
+        self, prefetchPartitions: bool = ...) -> Iterator[T]: ...
+
     def barrier(self: RDD[T]) -> RDDBarrier[T]: ...
     def withResources(self: RDD[T], profile: ResourceProfile) -> RDD[T]: ...
     def getResourceProfile(self) -> Optional[ResourceProfile]: ...
+
     @overload
     def toDF(
         self: RDD[RowLike],
         schema: Optional[List[str]] = ...,
         sampleRatio: Optional[float] = ...,
     ) -> DataFrame: ...
+
     @overload
-    def toDF(self: RDD[RowLike], schema: Optional[StructType] = ...) -> DataFrame: ...
+    def toDF(self: RDD[RowLike], schema: Optional[StructType]
+             = ...) -> DataFrame: ...
+
 
 class RDDBarrier(Generic[T]):
     rdd: RDD[T]
     def __init__(self, rdd: RDD[T]) -> None: ...
+
     def mapPartitions(
         self, f: Callable[[Iterable[T]], Iterable[U]], preservesPartitioning: bool = ...
     ) -> RDD[U]: ...
+
     def mapPartitionsWithIndex(
         self,
         f: Callable[[int, Iterable[T]], Iterable[U]],
         preservesPartitioning: bool = ...,
     ) -> RDD[U]: ...
+
+
+class MPIPipelinedRDD(RDD[U], Generic[T, U]):
+    func: Callable[[T], U]
+    preservesPartitioning: bool
+    is_cached: bool
+    is_checkpointed: bool
+    ctx: pyspark.context.SparkContext
+    prev: RDD[T]
+    partitioner: Optional[Partitioner]
+    is_barrier: bool
+
+    def __init__(
+        self,
+        prev: RDD[T],
+        func: Callable[[Iterable[T]], Iterable[U]],
+        preservesPartitioning: bool = ...,
+        isFromBarrier: bool = ...,
+    ) -> None: ...
+    def getNumPartitions(self) -> int: ...
+    def id(self) -> int: ...
+
 
 class PipelinedRDD(RDD[U], Generic[T, U]):
     func: Callable[[T], U]
@@ -472,6 +579,7 @@ class PipelinedRDD(RDD[U], Generic[T, U]):
     prev: RDD[T]
     partitioner: Optional[Partitioner]
     is_barrier: bool
+
     def __init__(
         self,
         prev: RDD[T],
@@ -481,3 +589,6 @@ class PipelinedRDD(RDD[U], Generic[T, U]):
     ) -> None: ...
     def getNumPartitions(self) -> int: ...
     def id(self) -> int: ...
+
+    def mpipipe(self, command: str,
+                env: Optional[Dict[str, str]] = ..., checkCode: bool = ...) -> RDD[str]: ...

@@ -3,16 +3,12 @@ package org.apache.spark.deploy.master
 
 import java.io.File
 import java.net.InetAddress
-
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 import scala.sys.exit
 import scala.util.control.Breaks.{break, breakable}
-
 import com.sun.security.auth.module.UnixSystem
-
 import org.apache.commons.io.FileUtils
-
 import org.apache.spark.blaze.deploy.mpi.{MPILauncher, NativeUtils}
 import org.apache.spark.deploy.master.MasterMessages.{BoundPortsRequest, BoundPortsResponse}
 import org.apache.spark.{SecurityManager, SparkConf}
@@ -22,11 +18,11 @@ import org.apache.spark.util.{SparkUncaughtExceptionHandler, Utils}
 
 
 class BlazeMaster(override val rpcEnv: RpcEnv,
-                  address: RpcAddress,
-                  webUiPort: Int,
-                  override val securityMgr: SecurityManager,
-                  override val conf: SparkConf
-                 ) extends Master(rpcEnv, address, webUiPort, securityMgr, conf) {
+  address: RpcAddress,
+  webUiPort: Int,
+  override val securityMgr: SecurityManager,
+  override val conf: SparkConf
+) extends Master(rpcEnv, address, webUiPort, securityMgr, conf) {
 }
 
 private[deploy] object BlazeMaster extends Logging {
@@ -40,11 +36,12 @@ private[deploy] object BlazeMaster extends Logging {
     Utils.initDaemon(log)
     val conf = new SparkConf
 
-//    conf.set("spark.local.ip", "192.168.32.197")
+    //    conf.set("spark.local.ip", "192.168.32.197")
     //      .set("spark.master.host", "192.168.32.197")
     val args = new MasterArguments(argStrings, conf)
     val (rpcEnv, _, _) = startRpcEnvAndEndpoint(args.host, args.port, args.webUiPort, conf)
     startMPIRuntimeEnv()
+    startLatticeServer()
     rpcEnv.awaitTermination()
   }
 
@@ -58,6 +55,28 @@ private[deploy] object BlazeMaster extends Logging {
     logInfo(s"${dirPath} has been cleaned before start up")
   }
 
+  def startLatticeServer(): Thread = {
+    logInfo("Starting lattice server")
+    val pb = new ProcessBuilder().command("lattice-server").inheritIO()
+    val proc = pb.start()
+    // scalastyle:off runtimeaddshutdownhook
+    Runtime.getRuntime.addShutdownHook(new Thread() {
+      override def run(): Unit = {
+        System.out.println("Shutting down")
+        proc.destroy()
+      }
+    })
+    val thread = new Thread() {
+      override def run(): Unit = {
+        val exitCode = proc.waitFor()
+        if (exitCode != 0) {
+          logError(s"lattice-server exited with code $exitCode")
+        }
+      }
+    }
+    thread.start()
+    thread
+  }
 
   def startMPIRuntimeEnv(): Thread = {
     // do some clean works before start
@@ -124,10 +143,10 @@ private[deploy] object BlazeMaster extends Logging {
    * (3) The REST server bound port, if any
    */
   def startRpcEnvAndEndpoint(
-                              host: String,
-                              port: Int,
-                              webUiPort: Int,
-                              conf: SparkConf): (RpcEnv, Int, Option[Int]) = {
+    host: String,
+    port: Int,
+    webUiPort: Int,
+    conf: SparkConf): (RpcEnv, Int, Option[Int]) = {
     val securityMgr = new SecurityManager(conf)
     val rpcEnv = RpcEnv.create(SYSTEM_NAME, host, port, conf, securityMgr)
     val masterEndpoint = rpcEnv.setupEndpoint(ENDPOINT_NAME,
