@@ -34,8 +34,9 @@ if __name__ == "__main__":
         y = random() * 2 - 1
         return 1 if x ** 2 + y ** 2 <= 1 else 0
 
-    # rdd = spark.sparkContext.parallelize(['1', '2', '', '3']).mpipipe('/home/xialb/git/ompi/examples/hello_c')
-    rdd = spark.sparkContext.parallelize(['1']).mpipipe('cat')
-    print(rdd.take(4))
+    rdd = spark.sparkContext.parallelize(['1', '2'], 2).mpipipe('/home/xialb/git/ompi/examples/hello_c').mpipipe("python /tmp/env.py")
+    # rdd = spark.sparkContext.parallelize(['1']).mpipipe('')
+    # rdd = spark.sparkContext.parallelize(['1']).mpipipe('cat')
+    rdd.foreach(lambda x: print(x))
 
     spark.stop()

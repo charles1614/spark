@@ -953,12 +953,15 @@ class RDD(object):
         >>> sc.parallelize(['1', '2', '', '3']).pipe('cat').collect()
         ['1', '2', '', '3']
         """
-        if env is None:
-            env = dict()
+        # if env is None:
+            # print(os.getenv(print(os.getenv("HOME"))))
+            # print(os.getenv(print(os.getenv("PMIX_NAMESPACE"))))
+            # env = dict()
 
         def func(iterator):
             pipe = Popen(
-                shlex.split(command), env=env, stdin=PIPE, stdout=PIPE)
+                shlex.split(command), stdin=PIPE, stdout=PIPE)
+                # shlex.split(command), env=env, stdin=PIPE, stdout=PIPE)
 
             def pipe_objs(out):
                 for obj in iterator:
