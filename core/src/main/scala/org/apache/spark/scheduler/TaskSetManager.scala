@@ -1277,7 +1277,7 @@ private[spark] class TaskSetManager(
       val th = new Thread() {
         //        NativeUtil.namespaceFinalize(split(0))
         // TODO:NOT WORK 2023!
-        val pb: ProcessBuilder = new ProcessBuilder("java", "-cp", "/home/xialb/git/spark/core/src/test/java/org/apache/spark/mpi:/home/xialb/git/spark/examples/target/scala-2.12/jars/*:/home/xialb/git/spark/assembly/target/scala-2.12/jars/*", "Q")
+        val pb: ProcessBuilder = new ProcessBuilder("java", "org.apache.spark.mpi.NamespaceFinalize")
         pb.inheritIO()
         try {
           val p: Process = pb.start()
