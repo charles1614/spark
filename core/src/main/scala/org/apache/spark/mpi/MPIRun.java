@@ -2,6 +2,8 @@ package org.apache.spark.mpi;
 
 // import java.io.IOException;
 
+import java.io.IOException;
+
 public class MPIRun extends JavaLoggingWrapper {
 
   public static int launch(String[] args) {
@@ -18,13 +20,13 @@ public class MPIRun extends JavaLoggingWrapper {
     }
     logInfo(() -> "MPIJob is starting with " + args[4] + " cores");
     // TODO: I DON'T KNOW WHY, BUT NOT WORKING in 2023!
-    int rc = NativeUtil.mpirun(argc, args);
-    // ProcessBuilder pb = new ProcessBuilder(args);
-    // try {
-      // Process process = pb.start();
-    // } catch (IOException e) {
-      // throw new RuntimeException(e);
-    // }
+//    int rc = NativeUtil.mpirun(argc, args);
+     ProcessBuilder pb = new ProcessBuilder(args);
+     try {
+       Process process = pb.start();
+     } catch (IOException e) {
+       throw new RuntimeException(e);
+     }
     return 0;
   }
 

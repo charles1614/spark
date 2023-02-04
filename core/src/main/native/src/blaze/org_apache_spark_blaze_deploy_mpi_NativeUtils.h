@@ -36,8 +36,8 @@ JNIEXPORT jint JNICALL Java_org_apache_spark_blaze_deploy_mpi_NativeUtils_test
  * Method:    setEnv
  * Signature: (Ljava/util/Map;)I
  */
-JNIEXPORT jint JNICALL Java_org_apache_spark_blaze_deploy_mpi_NativeUtils_setEnv
-  (JNIEnv *, jclass, jobject);
+//JNIEXPORT jint JNICALL Java_org_apache_spark_blaze_deploy_mpi_NativeUtils_setEnv
+//  (JNIEnv *, jclass, jobject);
 
 /*
  * Class:     org_apache_spark_blaze_deploy_mpi_NativeUtils

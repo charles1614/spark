@@ -143,6 +143,8 @@ JNIEXPORT jint JNICALL Java_org_apache_spark_mpi_NativeUtil_setEnv
         (*env)->ReleaseStringUTFChars(env, value, c_string_value);
         (*env)->DeleteLocalRef(env, value);
     }
+
+
     return 0;
 }
 

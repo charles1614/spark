@@ -959,6 +959,15 @@ class RDD(object):
             # env = dict()
 
         def func(iterator):
+            with open("/tmp/pmixsrv.env") as file:
+                for line in file:
+                    key, value = line.strip().split("=", 1)
+                    os.environ[key] = value
+            value = os.getenv("PMIX_NAMESPACE")
+            if value:
+                print("Value of VAR_NAME is:", value)
+            else:
+                print("VAR_NAME not found in environment variables")
             pipe = Popen(
                 shlex.split(command), stdin=PIPE, stdout=PIPE)
                 # shlex.split(command), env=env, stdin=PIPE, stdout=PIPE)

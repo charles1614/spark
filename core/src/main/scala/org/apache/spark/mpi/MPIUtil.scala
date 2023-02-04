@@ -1,8 +1,9 @@
 
 package org.apache.spark.mpi
 
-import scala.collection.JavaConverters._
+import org.apache.spark.blaze.deploy.mpi.NativeUtils
 
+import scala.collection.JavaConverters._
 import scala.io.Source
 import org.apache.spark.internal.Logging
 
@@ -46,6 +47,7 @@ object MPIUtil extends Logging {
       val value: String = line.split('=')(1)
 //      val map = new java.util.HashMap[String, String]()
       //      print(s"key: ${key}, value: ${value}\n")
+      logInfo(s"key: ${key}, value: ${value}\n")
       map.put(key, value)
     }
     // rank
@@ -53,9 +55,9 @@ object MPIUtil extends Logging {
     logDebug(s"Executor start rank ${rank}")
 
     // native env
-    NativeUtil.setEnv(map)
+    NativeUtils.setEnv(map)
     // jvm env
-    val env = map.asScala.toMap ++ System.getenv.asScala
+    val env = map.asScala.toMap ++ System.getenv.asScala ++ map.asScala.toMap
     EnvHacker.setEnv(env)
   }
 }

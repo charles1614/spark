@@ -69,55 +69,63 @@ JNIEXPORT jint JNICALL Java_org_apache_spark_blaze_deploy_mpi_NativeUtils_test
  * Method:    setEnv
  * Signature: (Ljava/util/Map;)I
  */
-JNIEXPORT jint JNICALL Java_org_apache_spark_blaze_deploy_mpi_NativeUtils_setEnv
-        (JNIEnv *env, jclass cls, jobject hashmap) {
-    jclass cls_hashmap = (*env)->GetObjectClass(env, hashmap);
-
-    /* get map-key */
-    jmethodID mtd_keyset =
-            (*env)->GetMethodID(env, cls_hashmap, "keySet", "()Ljava/util/Set;");
-    if (mtd_keyset == NULL) {
-        printf("keySet not found\n");
-        return -1;
-    }
-    jobject keyset = (*env)->CallObjectMethod(env, hashmap, mtd_keyset);
-    jclass cls_set = (*env)->GetObjectClass(env, keyset);
-
-    jmethodID mtd_to_array =
-            (*env)->GetMethodID(env, cls_set, "toArray", "()[Ljava/lang/Object;");
-    if (mtd_to_array == NULL) {
-        printf("to Array not found\n");
-        return -2;
-    }
-    jobjectArray array_of_keys =
-            (*env)->CallObjectMethod(env, keyset, mtd_to_array);
-    int array_size = (*env)->GetArrayLength(env, array_of_keys);
-
-    for (int i = 0; i < array_size; i++) {
-        jstring key = (*env)->GetObjectArrayElement(env, array_of_keys, i);
-        const char *c_string_key = (*env)->GetStringUTFChars(env, key, 0);
-        jmethodID mtd_get =
-                (*env)->GetMethodID(env,
-                                    cls_hashmap,
-                                    "get",
-                                    "(Ljava/lang/Object;)Ljava/lang/Object;");
-        if (mtd_get == NULL) {
-            return -3;
-        }
-        jobject value = (*env)->CallObjectMethod(env, hashmap, mtd_get, key);
-        const char *c_string_value = (*env)->GetStringUTFChars(env, value, 0);
-        setenv(c_string_key, c_string_value, 1);
-//        printf("[key, value]=[%s, %s]\n", c_string_key, c_string_value);
-
-        /* release local stuff*/
-        (*env)->ReleaseStringUTFChars(env, key, c_string_key);
-        (*env)->DeleteLocalRef(env, key);
-
-        (*env)->ReleaseStringUTFChars(env, value, c_string_value);
-        (*env)->DeleteLocalRef(env, value);
-    }
-    return 0;
-}
+//JNIEXPORT jint JNICALL Java_org_apache_spark_blaze_deploy_mpi_NativeUtils_setEnv
+//        (JNIEnv *env, jclass cls, jobject hashmap) {
+//
+//    printf("hello world/n");
+//
+//    jclass cls_hashmap = (*env)->GetObjectClass(env, hashmap);
+//
+//    /* get map-key */
+//    jmethodID mtd_keyset =
+//            (*env)->GetMethodID(env, cls_hashmap, "keySet", "()Ljava/util/Set;");
+//    if (mtd_keyset == NULL) {
+//        printf("keySet not found\n");
+//        return -1;
+//    }
+//    jobject keyset = (*env)->CallObjectMethod(env, hashmap, mtd_keyset);
+//    jclass cls_set = (*env)->GetObjectClass(env, keyset);
+//
+//    jmethodID mtd_to_array =
+//            (*env)->GetMethodID(env, cls_set, "toArray", "()[Ljava/lang/Object;");
+//    if (mtd_to_array == NULL) {
+//        printf("to Array not found\n");
+//        return -2;
+//    }
+//    jobjectArray array_of_keys =
+//            (*env)->CallObjectMethod(env, keyset, mtd_to_array);
+//    int array_size = (*env)->GetArrayLength(env, array_of_keys);
+//
+//    for (int i = 0; i < array_size; i++) {
+//        jstring key = (*env)->GetObjectArrayElement(env, array_of_keys, i);
+//        const char *c_string_key = (*env)->GetStringUTFChars(env, key, 0);
+//        jmethodID mtd_get =
+//                (*env)->GetMethodID(env,
+//                                    cls_hashmap,
+//                                    "get",
+//                                    "(Ljava/lang/Object;)Ljava/lang/Object;");
+//        if (mtd_get == NULL) {
+//            return -3;
+//        }
+//        jobject value = (*env)->CallObjectMethod(env, hashmap, mtd_get, key);
+//        const char *c_string_value = (*env)->GetStringUTFChars(env, value, 0);
+//        setenv(c_string_key, c_string_value, 1);
+////        printf("[key, value]=[%s, %s]\n", c_string_key, c_string_value);
+//
+//        /* release local stuff*/
+//        (*env)->ReleaseStringUTFChars(env, key, c_string_key);
+//        (*env)->DeleteLocalRef(env, key);
+//
+//        (*env)->ReleaseStringUTFChars(env, value, c_string_value);
+//        (*env)->DeleteLocalRef(env, value);
+//    }
+//
+//
+//    // TODO: DELET ME
+//pathvar = getenv("PMIX_NAMESPACE");
+//printf("pathvar=%s\n",pathvar);
+//    return 0;
+//}
 
 /*
  * Class:     org_apache_spark_blaze_deploy_mpi_NativeUtils
