@@ -32,14 +32,24 @@ if __name__ == "__main__":
     output = base + "/output/hmc.prec_wilson.out.xml"
     hmclog = base + "/output/hmc.prec_wilson.log.xml"
 
-    list = np.arange(0, 3, 1)
+    list = np.arange(0, 2, 1)
 
     rdd = spark.sparkContext\
-            .parallelize(np.arange(0, 4, 1), partitions)\
-            .mpipipe('/home/xialb/git/ompi/examples/hello_c')
+            .parallelize(np.arange(0, 4, 1), partitions)
+    rdd.cache()
 
-    rdd.foreach(lambda x: print(x))
-    rdd1 = rdd.mpipipe('/home/xialb/git/ompi/examples/hello_c')
+    rdd1=rdd.mpipipe('/home/xialb/git/ompi/examples/hello_c')
     rdd1.foreach(lambda x: print(x))
+
+    rdd1.map(lambda x:print(x))
+    rdd1.count()
+    rdd1.cache()
+    # rdd1 = rdd.mpipipe('/home/xialb/git/ompi/examples/hello_c')
+    # rdd2 = spark.sparkContext\
+            # .parallelize(np.arange(0, 4, 1), partitions)\
+    rdd2 = rdd1.mpipipe('/home/xialb/git/ompi/examples/hello_c')
+    rdd2.count()
+
+    rdd2.foreach(lambda x: print(x))
 
     spark.stop()
