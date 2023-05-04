@@ -1190,11 +1190,12 @@ private[spark] object JsonProtocol {
   }
 
   def storageLevelFromJson(json: JValue): StorageLevel = {
+    val useLattice = (json \ "use Lattice").extract[Boolean]
     val useDisk = (json \ "Use Disk").extract[Boolean]
     val useMemory = (json \ "Use Memory").extract[Boolean]
     val deserialized = (json \ "Deserialized").extract[Boolean]
     val replication = (json \ "Replication").extract[Int]
-    StorageLevel(useDisk, useMemory, deserialized, replication)
+    StorageLevel(useLattice, useDisk, useMemory, deserialized, replication)
   }
 
   def blockStatusFromJson(json: JValue): BlockStatus = {

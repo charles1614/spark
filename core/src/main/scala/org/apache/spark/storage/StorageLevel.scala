@@ -37,6 +37,7 @@ import org.apache.spark.util.Utils
  */
 @DeveloperApi
 class StorageLevel private(
+    private var _useLattice: Boolean,
     private var _useDisk: Boolean,
     private var _useMemory: Boolean,
     private var _useOffHeap: Boolean,
@@ -46,11 +47,13 @@ class StorageLevel private(
 
   // TODO: Also add fields for caching priority, dataset ID, and flushing.
   private def this(flags: Int, replication: Int) = {
-    this((flags & 8) != 0, (flags & 4) != 0, (flags & 2) != 0, (flags & 1) != 0, replication)
+    this((flags & 16) != 0,
+      (flags & 8) != 0, (flags & 4) != 0, (flags & 2) != 0, (flags & 1) != 0, replication)
   }
 
-  def this() = this(false, true, false, false)  // For deserialization
+  def this() = this(false, true, false, false, false)  // For deserialization
 
+  def useLattice: Boolean = _useLattice
   def useDisk: Boolean = _useDisk
   def useMemory: Boolean = _useMemory
   def useOffHeap: Boolean = _useOffHeap
@@ -65,11 +68,12 @@ class StorageLevel private(
   }
 
   override def clone(): StorageLevel = {
-    new StorageLevel(useDisk, useMemory, useOffHeap, deserialized, replication)
+    new StorageLevel(useLattice, useDisk, useMemory, useOffHeap, deserialized, replication)
   }
 
   override def equals(other: Any): Boolean = other match {
     case s: StorageLevel =>
+      s.useLattice == useLattice &&
       s.useDisk == useDisk &&
       s.useMemory == useMemory &&
       s.useOffHeap == useOffHeap &&
@@ -79,10 +83,13 @@ class StorageLevel private(
       false
   }
 
-  def isValid: Boolean = (useMemory || useDisk) && (replication > 0)
+  def isValid: Boolean = (useLattice || useMemory || useDisk) && (replication > 0)
 
   def toInt: Int = {
     var ret = 0
+    if (_useLattice) {
+      ret |= 16
+    }
     if (_useDisk) {
       ret |= 8
     }
@@ -116,13 +123,14 @@ class StorageLevel private(
   private def readResolve(): Object = StorageLevel.getCachedStorageLevel(this)
 
   override def toString: String = {
+    val lattice = if (useLattice) "lattice" else ""
     val disk = if (useDisk) "disk" else ""
     val memory = if (useMemory) "memory" else ""
     val heap = if (useOffHeap) "offheap" else ""
     val deserialize = if (deserialized) "deserialized" else ""
 
     val output =
-      Seq(disk, memory, heap, deserialize, s"$replication replicas").filter(_.nonEmpty)
+      Seq(lattice, disk, memory, heap, deserialize, s"$replication replicas").filter(_.nonEmpty)
     s"StorageLevel(${output.mkString(", ")})"
   }
 
@@ -133,6 +141,9 @@ class StorageLevel private(
     result += (if (useDisk) "Disk " else "")
     if (useMemory) {
       result += (if (useOffHeap) "Memory (off heap) " else "Memory ")
+    }
+    if (useLattice) {
+       result += (if (useLattice) "Lattice" else "")
     }
     result += (if (deserialized) "Deserialized " else "Serialized ")
     result += s"${replication}x Replicated"
@@ -146,19 +157,20 @@ class StorageLevel private(
  * new storage levels.
  */
 object StorageLevel {
-  val NONE = new StorageLevel(false, false, false, false)
-  val DISK_ONLY = new StorageLevel(true, false, false, false)
-  val DISK_ONLY_2 = new StorageLevel(true, false, false, false, 2)
-  val DISK_ONLY_3 = new StorageLevel(true, false, false, false, 3)
-  val MEMORY_ONLY = new StorageLevel(false, true, false, true)
-  val MEMORY_ONLY_2 = new StorageLevel(false, true, false, true, 2)
-  val MEMORY_ONLY_SER = new StorageLevel(false, true, false, false)
-  val MEMORY_ONLY_SER_2 = new StorageLevel(false, true, false, false, 2)
-  val MEMORY_AND_DISK = new StorageLevel(true, true, false, true)
-  val MEMORY_AND_DISK_2 = new StorageLevel(true, true, false, true, 2)
-  val MEMORY_AND_DISK_SER = new StorageLevel(true, true, false, false)
-  val MEMORY_AND_DISK_SER_2 = new StorageLevel(true, true, false, false, 2)
-  val OFF_HEAP = new StorageLevel(true, true, true, false, 1)
+  val NONE = new StorageLevel(false, false, false, false, false)
+  val LATTICE = new StorageLevel(true, false, false, false, false)
+  val DISK_ONLY = new StorageLevel(false, true, false, false, false)
+  val DISK_ONLY_2 = new StorageLevel(false, true, false, false, false, 2)
+  val DISK_ONLY_3 = new StorageLevel(false, true, false, false, false, 3)
+  val MEMORY_ONLY = new StorageLevel(false, false, true, false, true)
+  val MEMORY_ONLY_2 = new StorageLevel(false, false, true, false, true, 2)
+  val MEMORY_ONLY_SER = new StorageLevel(false, false, true, false, false)
+  val MEMORY_ONLY_SER_2 = new StorageLevel(false, false, true, false, false, 2)
+  val MEMORY_AND_DISK = new StorageLevel(false, true, true, false, true)
+  val MEMORY_AND_DISK_2 = new StorageLevel(false, true, true, false, true, 2)
+  val MEMORY_AND_DISK_SER = new StorageLevel(false, true, true, false, false)
+  val MEMORY_AND_DISK_SER_2 = new StorageLevel(false, true, true, false, false, 2)
+  val OFF_HEAP = new StorageLevel(false, true, true, true, false, 1)
 
   /**
    * :: DeveloperApi ::
@@ -167,6 +179,7 @@ object StorageLevel {
   @DeveloperApi
   def fromString(s: String): StorageLevel = s match {
     case "NONE" => NONE
+    case "LATTICE" => LATTICE
     case "DISK_ONLY" => DISK_ONLY
     case "DISK_ONLY_2" => DISK_ONLY_2
     case "DISK_ONLY_3" => DISK_ONLY_3
@@ -188,13 +201,14 @@ object StorageLevel {
    */
   @DeveloperApi
   def apply(
+      useLattice: Boolean,
       useDisk: Boolean,
       useMemory: Boolean,
       useOffHeap: Boolean,
       deserialized: Boolean,
       replication: Int): StorageLevel = {
     getCachedStorageLevel(
-      new StorageLevel(useDisk, useMemory, useOffHeap, deserialized, replication))
+      new StorageLevel(useLattice, useDisk, useMemory, useOffHeap, deserialized, replication))
   }
 
   /**
@@ -203,11 +217,13 @@ object StorageLevel {
    */
   @DeveloperApi
   def apply(
+      useLattice: Boolean,
       useDisk: Boolean,
       useMemory: Boolean,
       deserialized: Boolean,
       replication: Int = 1): StorageLevel = {
-    getCachedStorageLevel(new StorageLevel(useDisk, useMemory, false, deserialized, replication))
+    getCachedStorageLevel(new StorageLevel(useLattice,
+      useDisk, useMemory, false, deserialized, replication))
   }
 
   /**
