@@ -15,10 +15,10 @@ public class MPIRun extends JavaLoggingWrapper {
   public int exec(String[] args) {
     int argc = args.length;
     // -n [num] hostname
-    if (argc != 6) {
-      throw new RuntimeException("MPI job Nssdpace setting need 3 args: -n [num] exe");
-    }
-    logInfo(() -> "MPIJob is starting with " + args[4] + " cores");
+//    if (argc != 6) {
+//      throw new RuntimeException("MPI job Nssdpace setting need 3 args: -n [num] exe");
+//    }
+    logInfo(() -> "MPIJob is starting with " + args[7] + " cores");
     // TODO: I DON'T KNOW WHY, BUT NOT WORKING in 2023!
 //    int rc = NativeUtil.mpirun(argc, args);
      ProcessBuilder pb = new ProcessBuilder(args);

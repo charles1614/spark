@@ -19,7 +19,7 @@
 package org.apache.spark.examples
 
 import mpi.{MPI, MPIException}
-import org.apache.spark.SparkConf
+//import org.apache.spark.SparkConf
 
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.util.random.XORShiftRandom
@@ -40,14 +40,14 @@ object SparkPi {
 
   def main(args: Array[String]): Unit = {
 
-    val conf = new SparkConf().set("spark.master", "spark://192.168.32.197:7077")
-      .setJars(Array[String]("/home/xialb/opt/spark/examples/target/scala-2.12/jars/spark-examples_2.12-3.0.3-SNAPSHOT.jar"))
+//    val conf = new SparkConf().set("spark.master", "spark://192.168.32.197:7077")
+//      .setJars(Array[String]("/home/xialb/opt/spark/examples/target/scala-2.12/jars/spark-examples_2.12-3.0.3-SNAPSHOT.jar"))
 
     val spark = SparkSession
       .builder
       //      .config(conf)
-      .master("spark://besh01:7077")
-      .master("local[*]")
+      .master("spark://lenovo:7077")
+//      .master("local[*]")
       .appName("Spark Pi")
       .getOrCreate()
 

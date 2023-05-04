@@ -1256,7 +1256,10 @@ private[spark] class TaskSetManager(
     // TODO: mpi use partitions.length as mpi job cores
     val np = this.numTasks
     logInfo(s"attempt to start ${np} cores for MPIJob")
-    val cmd = Array[String]("prun", "--map-by", "rankfile:file=/tmp/rankfile", "-np", np.toString, "hostname")
+    val cmd = Array[String]("prun",
+      "-tag-output",
+      "-d",
+      "--map-by", "rankfile:file=/tmp/rankfile", "-np", np.toString, "hostname")
     //    logInfo(s"Running MPI with ${np.toString} partitions")
     val rc = MPIRun.launch(cmd)
     if (0 != rc) {

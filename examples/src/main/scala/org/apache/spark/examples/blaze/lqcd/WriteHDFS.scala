@@ -37,6 +37,9 @@ object WriteHDFS {
     sc.makeRDD(limes.map("/dev/shm/cfgs/" + _.getPath.getName)).collect().foreach(println)
 //    fs.copyToLocalFile(new Path("/lqcd/cfgs/*.lime"), new Path("/dev/shm"))
 
+    val rdd = sc.textFile("hdfs://helion01:8020/lqcd/cfgs/wilson1_cfg_10.lime")
+//    val rdd = sc.binaryFiles("hdfs://helion01:8020/lqcd/cfgs/wilson1_cfg_10.lime")
+    rdd.collect()
 
     spark.stop()
   }

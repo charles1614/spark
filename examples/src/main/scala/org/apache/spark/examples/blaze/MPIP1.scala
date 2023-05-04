@@ -61,6 +61,8 @@ object MPIP1 {
     val blaze = BlazeSession
       .builder
       .appName("blazePi")
+      .master("spark://lenovo:7077")
+      .config("spark.executor.cores", "1")
 //      .master("local[*]")
       .getOrCreate()
 

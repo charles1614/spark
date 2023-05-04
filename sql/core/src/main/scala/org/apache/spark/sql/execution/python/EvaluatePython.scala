@@ -299,7 +299,7 @@ object EvaluatePython {
    */
   def javaToPython(rdd: RDD[Any]): RDD[Array[Byte]] = {
     rdd.mapPartitions { iter =>
-      registerPicklers()  // let it called in executor
+      registerPidcklers()  // let it called in executor
       new SerDeUtil.AutoBatchedPickler(iter)
     }
   }

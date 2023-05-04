@@ -12,7 +12,7 @@
       </FilePath>
     </option>
     <option name="beforeShellScript" value="" />
-    <option name="className" value="org.apache.spark.examples.blaze.lqcd.Test" />
+    <option name="className" value="org.apache.spark.examples.SparkPi" />
     <option name="clusterManager" value="STANDALONE" />
     <option name="conf" value="" />
     <option name="deployMode" value="CLUSTER" />
@@ -73,7 +73,7 @@
         <option name="type" value="SERVER" />
       </FilePath>
     </option>
-    <option name="totalExecutorCores" value="8" />
+    <option name="totalExecutorCores" value="20" />
     <option name="verbose" value="false" />
     <option name="workDirectoryPath">
       <FilePath>

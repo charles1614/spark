@@ -2165,7 +2165,15 @@ abstract class RDD[T: ClassTag](
     // TODO: mpi use partitions.length as mpi job cores
     val np = partitions.length
     logInfo(s"attempt to start ${np} cores for MPIJob")
-    val cmd = Array[String]("prun", "--map-by", ":OVERSUBSCRIBE", "-n", np.toString, "hostname")
+    val cmd = Array[String]("prun",
+      "--mca",
+      "shmem",
+      "posix",
+      "--map-by",
+      ":OVERSUBSCRIBE",
+      "-n",
+      np.toString,
+      "hostname")
     logInfo(s"Running MPI with ${np.toString} partitions")
     val rc = MPIRun.launch(cmd)
     if (0 != rc) {

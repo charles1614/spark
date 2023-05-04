@@ -12,7 +12,7 @@
       </FilePath>
     </option>
     <option name="beforeShellScript" value="" />
-    <option name="className" value="org.apache.spark.examples.blaze.MPIP1" />
+    <option name="className" value="org.apache.spark.examples.SparkPi" />
     <option name="clusterManager" value="STANDALONE" />
     <option name="conf" value="" />
     <option name="deployMode" value="CLIENT" />
@@ -42,7 +42,7 @@
         <option name="type" value="CUSTOM" />
       </FilePath>
     </option>
-    <option name="master" value="spark://yoga:7077" />
+    <option name="master" value="spark://lenovo:7077" />
     <option name="numExecutors" value="4" />
     <option name="packages" value="" />
     <option name="principal" value="" />
@@ -64,8 +64,8 @@
     </option>
     <option name="shellExecutor" value="/bin/bash" />
     <option name="sparkHome" value="$PROJECT_DIR$" />
-    <option name="sparkMonitoringDriverId" value="" />
-    <option name="sshConfigId" value="bc33632e-e1d8-48c9-8632-cd0d0bce2a16" />
+    <option name="sparkMonitoringDriverId" value="Spark monitoring connection@SparkMonitoringConnections@3813721135445125893" />
+    <option name="sshConfigId" value="8fd0ac03-c31c-4961-92d7-2c7523d6ac99" />
     <option name="supervise" value="false" />
     <option name="targetDirectory">
       <FilePath>
