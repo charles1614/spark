@@ -4,3 +4,4 @@ services:
     image: ghcr.io/charles1614/java-dev:latest
     volumes:
       - ../..:/workspaces:cached
+    command: sleep infinity
