@@ -1,0 +1,6 @@
+version: '0.1'
+services:
+  devcontainer:
+    image: ghcr.io/charles1614/java-dev:latest
+    volumes:
+      - ../..:/workspaces:cached
