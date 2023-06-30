@@ -1,0 +1,7 @@
+version: '0.1'
+services:
+  devcontainer:
+    image: ghcr.io/charles1614/devcontainer-images/scala:latest
+    volumes:
+      - ../..:/workspaces:cached
+    command: sleep infinity
